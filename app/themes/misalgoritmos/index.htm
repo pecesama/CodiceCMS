@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+	{includes}
+	<meta name="generator" content="Codice CMS" />
+	{helper::html->includeCss("style")}
+	{helper::html->includeJsAbsolute("jquery")}
+	{helper::html->includeJs("jquery.scrollTo-min")}
+	{helper::html->includeJs("php.pack")}
+	{helper::html->includeJs("validateComment")}
+	<title>{title_for_layout}</title>
+</head>
+<body>
+	<div id="todo">
+		<div id="header">
+			<h1>{helper::html->linkTo("{conf.blog_name}")}</a></h1>
+			<h2>{conf.blog_description}</h2>
+		</div><!-- header -->
+		<div id="topnav">
+			<p>
+				{helper::html->linkTo("Inicio")} | 
+				{helper::html->linkto("¿Sidebar?","#sidebars")} | 
+				{helper::html->linkTo("RSS","feed/rss")}
+				{if $info.isAdmin} | 
+					{helper::html->linkTo("Panel de control","admin/login")} |
+					{helper::html->linkTo("Cerrar sesión","admin/logout")}
+				{/if}
+			</p>
+		</div><!-- topnav -->
+		<div id="columnas" class="clearfix">
+			<div id="contenido">
+				{if !$single}
+					{if count($posts) > 0}
+						{block $posts as $post}
+							<div class="post">
+								<h3>{helper::html->linkTo("{$post.title}","{$post.urlfriendly}","rel=\"bookmark\" title=\"Enlace a {$post.title}\"")}</h3>
+								{if !isset($busqueda)}
+									<div class="post_txt">
+										{$post.content}
+									</div>		
+									<div class="post_meta_com">
+										<p>{if $info.isAdmin}{helper::html->linkTo("Editar","admin/edit/{$post.ID}")} |{/if} {helper::html->linkTo("{$post.comments_count}","{$post.urlfriendly}/#comments","rel=\"bookmark\" title=\"Comentarios de {$post.title}\"")}
+										 &#187;</p>
+										{if $post.tags}
+											<p class="tags">
+												Tags:
+												{block $post.tags as $tag}
+													{helper::html->linkTo("{$tag.tag}","/tag/{$tag.urlfriendly}")} /
+												{/block}
+												<br />
+											</p>
+										{/if}
+									</div><!-- post_meta_com -->
+									<div class="post_meta">
+										<p>Escrito por {$post.autor.name} el {$post.created}</p>
+									</div><!-- post_meta -->
+								{/if}
+							</div><!-- post -->
+						{/block}
+						{pagination}
+					{else}
+						<h2 class="center">No se encontr&oacute; lo que buscabas :(</h2>
+						<p class="center">Lo sentimos, pero parece que lo que buscas no est&aacute; aqui.</p>
+					{/if}
+				{else}
+					<div class="post">
+						<h3>{$post.title}</h3>
+<script type="text/javascript"><!--
+google_ad_client = "pub-1164943173026261";
+/* 336x280, creado 9/08/09 */
+google_ad_slot = "7867597355";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+<script type="text/javascript"><!--
+google_ad_client = "pub-1164943173026261";
+/* 336x280, creado 9/08/09 */
+google_ad_slot = "7867597355";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+
+						<div class="post_txt">
+							{$post.content}
+						</div>
+						<div class="comentarios">
+							{if $comments}<h4 id="comments">{$comments_count} comentarios en "{post.title}"</h4>{/if}
+							<div class="commentlist">
+							{if $comments}
+								{block $comments as $comment}
+                                	{if $comment.status == "waiting"}
+                                    <div class="comentario waiting" id="comment-{$comment.ID}">
+                                    	{helper::html->linkTo("Editar","comments/edit/{$comment.ID}","class=\"edit\" title=\"{$comment.ID}\"")}
+										{helper::html->linkTo("Borrar","comments/remove/{$comment.ID}","class=\"remove\" title=\"{$comment.ID}\"")}
+                                    {else}
+									<div class="comentario" id="comment-{$comment.ID}">
+                                    {/if}
+										<img alt="" src="http://www.gravatar.com/avatar/{$comment.md5_email}?s=50" class="avatar avatar-50 photo" width="50" height="50">
+										<p class="comment_author">
+											<a href="{$comment.url}" {if !$comment.user_id} rel="external nofollow"{/if} class="url">{$comment.author}</a>
+											{if $info.isAdmin}
+												{helper::html->linkTo("Editar","comments/edit/{$comment.ID}")}
+											{/if}
+										</p>
+										<div class="comment_meta commentmetadata">
+											<p>
+												{helper::html->linkTo("{$comment.created}","{$post.urlfriendly}/#comment-{$comment.ID}")}
+											</p>
+										</div>
+										<div class="comment_txt">
+											<p>{$comment.content}</p>
+										</div>
+									</div>
+								{/block}
+							{/if}
+							</div>
+							<h4 class="respond">Deja un comentario</h4> 
+							{helper::html->form("index/addComment/{id}","post","id=\"commentform\"")}
+								<p>
+									<label for="author">Nombre (requerido)</label>
+									{helper::html->textField("author","value=\"{cookie.author}\" size=\"22\" tabindex=\"1\"")}
+									{helper::html->validateError("author")}
+								</p>
+								<p>
+									<label for="email">Email (requerido)</label>
+									{helper::html->textField("email","value=\"{cookie.email}\" size=\"22\" tabindex=\"2\"")}
+									{helper::html->validateError("email")}
+								</p>
+								<p>
+									<label for="url">Website/Blog</label>
+									{helper::html->textField("url","value=\"{cookie.url}\" size=\"22\" tabindex=\"3\"")}
+									{helper::html->validateError("url")}
+								</p>
+								<p>
+									<label>Comentario</label>
+									{helper::html->textArea("content","","cols=\"100\" rows=\"10\" tabindex=\"4\"")}
+									{helper::html->validateError("content")}
+								</p>
+								
+								<p>{helper::html->checkBox("suscribe","value=\"1\" checked=\"true\"")} Suscribirse a los comentarios.</p>
+								<p>
+									<input id="submit" tabindex="5" value="Submit Comment" type="submit">
+								</p>
+							</form>
+						</div>
+					</div>
+				{/if}
+			</div><!-- contenido -->
+			<div id="sidebars">
+				<div class="sidebar clearfix">
+					<h4 class="widgettitle">Amigos y Recomendados</h4>
+					{block $links as $link}
+						<a href="{$link.link}">{$link.name}</a>, 
+					{/block}
+				</div>
+			</div><!-- sidebars -->
+			<div id="footer">
+				Gestionado con <a href="http://www.codice-cms.org/">Codice CMS</a> | 
+				Theme ported from  <a href="http://www.512megas.com/2009/01/tema-para-wordpress-stan512/" rel="nofollow">Stan512</a>
+			</div><!-- footer -->
+		</div><!-- columnas -->
+	</div>
+	
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-256387-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+</body>
+</html>
