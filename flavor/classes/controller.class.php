@@ -56,7 +56,7 @@ abstract class controller {
 		exit();
 	}
 	
-	public function render($view=NULL){ 
+	public function render($view=NULL) {
 		if($this->html->type == "views"){
 			if (is_null($view)) {
 				$view = $this->action;
@@ -104,9 +104,7 @@ abstract class controller {
 		return (substr($str, strlen($str) - strlen($sub)) == $sub);
 	}
 	
-	/*Why private??*/ function isAjax() {
-		//var_dump($_SERVER);
-		//die();
+	function isAjax() {
 		return (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH']=="XMLHttpRequest");
 	} 
 	

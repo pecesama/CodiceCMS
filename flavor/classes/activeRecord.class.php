@@ -79,6 +79,49 @@ class activeRecord implements ArrayAccess {
 		}		
 	}
 	
+	public function prepareFromJSON($jsonData){
+		$this->prepareFromArray(json_decode($jsonData));
+	}
+	
+	public function jsonCrud($jsonData){
+		//echo "<br><br>".$jsonData."<br>";
+		$arrayData = json_decode($jsonData);
+		//print_r($arrayData);
+		//die();
+		$primary = $this->keyField;
+		if(in_array($arrayData->action,array("add","update","delete"))){
+			//echo "Que hace: $arrayData->action<br>";
+			if(count($arrayData->data)>0){
+				foreach($arrayData->data as $data){
+					if(isset($data->$primary)){ // <-- Esto no esta del todo bien creo...
+						if(is_numeric($data->$primary) && $data->$primary > 0){
+							//echo "Registro: ".$data->$primary."<br>";
+							$this->find($data->$primary);
+							$dataArray = get_object_vars($data);
+							//print_r($dataArray);
+							if($arrayData->action == "add" || $arrayData->action == "update"){
+								$this->prepareFromArray($dataArray);
+								$this->save();
+							}
+							if($arrayData->action == "delete"){
+								$this->delete();
+							}
+							//echo "<br>";
+						} else {
+							throw new Exception("Wrong Primary Key, action failed");
+						}
+					} else {
+						throw new Exception("Primary Key Missing, action failed");
+					}
+				}
+			} else {
+				throw new Exception("No hay nada en el data!");   
+			}
+		} else {
+			throw new Exception("Unknow Action, process failed");
+		}
+	}
+	
 	public function create($values) {		
 				
 		$sql = "INSERT INTO ".$this->table.$this->db->buildArray("INSERT", $values);
@@ -171,7 +214,7 @@ class activeRecord implements ArrayAccess {
 		return $this->isNew;
 	}
 	
-	public function find($id) {
+	public function find($id) { 
 		$sql = "SELECT * FROM ".$this->table." WHERE ".$this->keyField."=".intval($id)." LIMIT 1";
         return $this->findBySql($sql);
 	}	
@@ -188,27 +231,33 @@ class activeRecord implements ArrayAccess {
 		}else{
 			$sql = "SELECT * FROM ".$this->table." WHERE ".$field."='".$this->db->sql_escape($value)."' LIMIT 1";
 		}
+
 		return $this->findBySql($sql);
 	}
 	
-	public function findBySql($sql) { 		
-		$re = $this->db->query($sql);
-		
-        if($re->num_rows > 0){
-            $this->record = $this->db->fetchRow();
-            $this->isNew = false;
-			$this->multipleRecords = false;
-        }
+	public function findBySql($sql){
+		$rs = $this->db->query($sql);
 
+		if($this->db->numRows() > 0){
+			$this->record = $this->db->fetchRow();
+			$this->isNew = false;
+			$this->multipleRecords = false;
+		}else{
+			$this->isNew = true;
+			$this->record = false;
+			$this->multipleRecords = false;
+		}
+		
 		return $this->record;
 	}
 	
-	public function findAll($fields=NULL, $order=NULL ,$limit=NULL, $extra=NULL) {
+	public function findAll($fields=NULL, $order=NULL ,$limit=NULL, $extra=NULL){
 		$fields = $fields ? $fields : '*';
 		$sql = "SELECT ".$fields." FROM ". $this->table." ";
 		if($extra) $sql.= $extra." ";
 		if($order) $sql.= "ORDER BY ".$order.' ';
 		if($limit) $sql.= "LIMIT ".$limit;
+		
 		return $this->findAllBySql($sql);
 	}
 	
@@ -227,7 +276,7 @@ class activeRecord implements ArrayAccess {
 		return $this->findAllBySql($sql);
 	}
 	
-	public function findAllBySql($sql) { 		
+	public function findAllBySql($sql){
 		$rs = $this->db->query($sql);
 		$rows = array();
 		if($this->db->numRows() != 0){
@@ -236,6 +285,7 @@ class activeRecord implements ArrayAccess {
 			$this->multipleRecords = true;
 			$this->record = $rows;
 		}
+
 		return $rows;
 	}
 	
@@ -279,3 +329,4 @@ class activeRecord implements ArrayAccess {
 	}
 }
 ?>
+

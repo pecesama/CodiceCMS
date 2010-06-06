@@ -103,9 +103,6 @@ class mysqli_db extends singleton implements data {
 	
 	public function numRows() {
 		$re = @mysqli_num_rows($this->query_result);
-		if (!$re) {
-			throw new Exception($this->errorInfo());
-		}
 		return $re;
 	}
 	
@@ -124,7 +121,7 @@ class mysqli_db extends singleton implements data {
 		return mysqli_real_escape_string($this->connectionId, $msg);
 	}
 	
-	public function errorInfo($sql = '') { 
+	public function errorInfo($sql = 'NO SQL') { 
 		return '<u>SQL ERROR</u> <br /><br />' . @mysqli_error($this->connectionId) . '<br /><br /><u>SQL ERROR NUMBER</u> <br /><br />' . @mysqli_errno($this->connectionId) . (($sql != '') ? '<br /><br /><u>SQL</u><br /><br />' . $sql : '') . '<br />';
 	}
 	

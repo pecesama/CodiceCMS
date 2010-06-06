@@ -7,7 +7,7 @@ class dbFactory {
 	
 	public function __construct($strategy) {
 		$dbm = array('mysql','mysqli','pgsql');
-		if (!in_array($strategy,$dbm)) {
+		if (in_array($strategy,$dbm) === false) {
 			throw new Exception('Invalid parameter for Data Base Strategy');
 		}
 		try {
@@ -24,7 +24,6 @@ class dbFactory {
 			}
 		} catch(Exception $e) {
 			echo $e->getMessage();
-			exit();
 		}
 	}
 	
@@ -82,7 +81,7 @@ class dbFactory {
 		}
 	}
 	
-	public function numRows() {
+	public function numRows(){
 		try {
 			return $this->strategy->numRows();
 		} catch(Exception $e) {

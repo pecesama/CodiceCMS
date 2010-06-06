@@ -1,7 +1,7 @@
 <?php
 class router{
 	private $registry;
-	public $class = array(
+	private $class = array(
 		'controller'=>'index',
 		'action'=>'index',
 		'params'=>''
@@ -9,6 +9,10 @@ class router{
 	private $route,$uri,$originalUri;
 	private $routes = array();
 	private $parts;
+	
+	public function getClass(){
+		return $this->class;
+	}
 	
 	public function __construct() {
 		$this->registry = registry::getInstance();
@@ -31,7 +35,7 @@ class router{
 
 		$controller->action = $action;
 		$controller->params = $params;
-
+		
 		if($params)
 			$controller->$action($params);
 		else
