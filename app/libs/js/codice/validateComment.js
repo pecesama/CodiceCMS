@@ -1,4 +1,4 @@
-﻿var VALID_NOT_EMPTY = RegExp(".+");
+var VALID_NOT_EMPTY = RegExp(".+");
 var VALID_NUMERIC = RegExp("[0-9]+");
 var VALID_EMAIL = RegExp("^[a-zA-Z0-9]{1}([\._a-zA-Z0-9-]+)(\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+){1,3}$");
 var VALID_URL = RegExp("^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}((:[0-9]{1,5})?\/.*)?$");
@@ -82,9 +82,9 @@ $(document).ready(function(){
 				datos["content"] = str_replace("<","&lt;",datos["content"]);
 				datos["content"] = str_replace(">","&gt;",datos["content"]);
 				datos["content"] = str_replace("\n","<br>",datos["content"]);
-
+				
 				mensaje["comentario"] = "\
-				<div class=\"comentario\" id=\"comment-" + datos["id"] + "\"> \
+				<div class=\"comentario\" id=\"comment-" + $.trim(datos["id"]) + "\"> \
 					<div class=\"waiting\">Tu mensaje está en espera de aprobación. Muchas gracias por comentar!</div>\
 					<img alt=\"\" src=\"http://www.gravatar.com/avatar/" + md5(datos["email"]) + "}?s=50\" class=\"avatar avatar-50 photo\" width=\"50\" height=\"50\"> \
 					<p class=\"comment_author\"> \
@@ -113,9 +113,10 @@ $(document).ready(function(){
 				$("form#commentform input#submit").removeAttr("disabled");
 
 				$("div.commentlist").append(mensaje["comentario"]);
-				$.scrollTo("div#comment-" + datos["id"], 200);
+				$.scrollTo("div#comment-" + $.trim(datos["id"]), 200);
 
 				$("form#commentform textarea#content").val("");
+				alert("Thanks for commenting " + datos["author"] + ".");
 			},
 			error: function(xhr,error){
 				alert("Algo andubo mal con tu conexión a internet. Por favor intenta una vez mas.");
