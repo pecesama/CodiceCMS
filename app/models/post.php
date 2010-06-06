@@ -1,8 +1,8 @@
 <?php
 
-class post extends models {
+class post extends models{
 
-	public function countPosts($extra = array('status'=>'publish','tag'=>null)) { 
+	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
 		$sql = "SELECT \n";
 			$sql .= "\tcount(*) as total \n";
 		$sql .= "FROM posts as p\n";
@@ -19,6 +19,104 @@ class post extends models {
 		return 0;
 	}
 
+	public function busqueda($q){
+		$P = new post();
+		
+		$q = $P->sql_escape($q);
+		
+		$rows = $P->findAll(
+			"urlfriendly,title,match(title, content, urlfriendly) against('$q') as score",
+			"score DESC",
+			20,
+			"WHERE status='publish' AND match(title, content, urlfriendly) against('$q')"
+		);
+		
+		return $rows;
+	}
+
+	public function getPosts($status = null, $limitQuery = null){
+		$P = new post();
+		$posts = array();
+		if(is_null($status) === true){
+			$posts = $P->findAll(
+				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
+				'ID DESC',
+				$limitQuery,
+				null
+			);
+		}else if(is_array($status) === false){
+			$posts = $P->findAll(
+				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
+				'ID DESC',
+				$limitQuery,
+				"WHERE status='$status'"
+			);
+		}else{
+			$status_sql = "";
+			foreach($status as $st){
+				$status_sql .= "status ='$st' OR ";
+			}
+			$status_sql = substr($status_sql,0,-3);
+			
+			$posts = $P->findAll(
+				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
+				'ID DESC',
+				$limitQuery,
+				"WHERE ($status_sql)"
+			);
+		}
+		
+		$C = new comment();
+		foreach($posts as $k=>$p){
+			$posts[$k]['title'] = htmlspecialchars($posts[$k]['title']);
+			$posts[$k]['tags'] = $this->getTags($posts[$k]['ID']);
+			
+			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['ID'],"publish");
+			
+			$U = new user();
+			if($posts[$k]['id_user'] < 2){
+				$posts[$k]['autor'] = $U->find(1);
+			}else{
+				$posts[$k]['autor'] = $U->find($posts[$k]['id_user']);
+			}
+		}
+		
+		return $posts;
+	}
+	
+	public function getPost($urlfriendly, $status = null){
+		$urlfriendy = rawurlencode($this->sql_escape($urlfriendly));
+		$post = array();
+		
+		if(is_null($status) === true){
+			$post = $this->findBy(
+				'urlfriendly',
+				$urlfriendly
+			);
+		}else{
+			$post = $this->findBy(
+				array('urlfriendly','status'),
+				array($urlfriendly,$status)
+			);
+		}
+
+		if($this->isNew() === false){
+			if($post['title']){
+				$post['title'] = htmlspecialchars($post['title']);
+			}else{
+				$post['title'] = "Untitled";
+			}
+			
+			$post['tags'] = $this->getTags($post['ID']);
+			
+			$C = new comment();
+			$post["comments_count"] = $C->countCommentsByPost($post['ID'],"publish");
+			$post["comments"] = $C->getAll($post['ID'],"publish");
+		}
+		
+		return $post;
+	}
+	
 	/*
 	 * Genera un url amigable a partir de una cadena de texto
 	 * Function aVictorada De la Rocheada. /LaOnda
@@ -89,7 +187,7 @@ class post extends models {
 		return $tags;
 	}
 	
-	public function updateTags($post_id,$tags_raw=''){		
+	public function updateTags($post_id,$tags_raw=''){
 		if(get_magic_quotes_gpc())
 			$tags_raw = stripslashes($tags_raw);
 

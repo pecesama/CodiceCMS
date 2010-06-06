@@ -26,25 +26,4 @@ class configuration extends models{
 		
 		return $configuration;
 	}
-	
-	public function setConfiguration($name,$value){
-		$C = new configuration();
-		$conf = $C->findBy("name",$name);
-		
-		if($C->isNew() === true){
-			return false;
-		}
-		
-		$conf["value"] = $value;
-		$C->prepareFromArray($conf);
-		$C->save();
-		return true;
-	}
-	
-	public function getDefaultTheme(){
-		/*
-		 * Si no existiera el default, debería regresar el que exista.
-		 */
-		return "stan512";
-	}
 }

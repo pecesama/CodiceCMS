@@ -10,7 +10,7 @@ class comment extends models {
 
 	public function __construct() {
 		parent::__construct();
-
+		
 		$this->spam = antispam::getInstance();
 		$this->security = security::getInstance();	
 		
@@ -109,9 +109,9 @@ class comment extends models {
 	public function countCommentsByPost($idPost = null,$status = null){
 	
 		$sql = "SELECT count(*) as total FROM `comments` WHERE 1 = 1 ";
-		$sql.= !is_null($status)?"AND status = '$status'":'';
-		$sql .= !is_null($idPost)?"AND id_post = $idPost":'';
-
+		$sql.= !is_null($status)?" AND status = '$status'":'';
+		$sql .= !is_null($idPost)?" AND id_post = $idPost":'';
+		
 		$valid = $this->findBySql($sql);	
 		
 		if($valid){				
@@ -121,4 +121,46 @@ class comment extends models {
 		return 0;
 	}
 	
+	public function getAll($ID_post, $status = null){
+		$C = new comment();
+		
+		$rows = array();
+		if(is_null($status) === true){
+			$rows = $C->findAll(
+				'comments.*, md5(comments.email) as md5_email',
+				'created ASC',
+				null,
+				"WHERE ID_post={$ID_post}"
+			);
+		}else if(is_array($status)){
+			$status_sql = "";
+			foreach($status as $st){
+				$status_sql .= "status = '$st' OR ";
+			}
+			$status_sql = substr($status_sql,0,-4);
+			
+			$rows = $C->findAll(
+				'comments.*, md5(comments.email) as md5_email',
+				'created ASC',
+				null,
+				"WHERE ID_post={$ID_post} AND ($status_sql)"
+			);
+		}else{
+			$rows = $C->findAll(
+				'comments.*, md5(comments.email) as md5_email',
+				'created ASC',
+				null,
+				"WHERE ID_post={$ID_post} AND status='$status'"
+			);
+		}
+		
+		foreach($rows as $key => $comment){
+			$comment['content'] = utils::htmlentities($comment['content']);
+			$comment['content'] = utils::nl2br($comment['content']);
+			
+			$rows[$key] = $comment;
+		}
+		
+		return $rows;
+	}
 }

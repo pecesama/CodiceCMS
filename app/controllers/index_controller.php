@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 class index_controller extends appcontroller {
 
@@ -6,19 +6,7 @@ class index_controller extends appcontroller {
 
 	public function __construct() {
 		parent::__construct();
-
 		$this->plugin->call('index_init');
-
-		$Config = new configuration();
-		$config = $Config->getBlogConfiguration();
-
-		if(utils::themeExists($config["blog_current_theme"]) === false){
-			$Config->setConfiguration("blog_current_theme",$Config->getDefaultTheme());
-		}
-		
-		$this->conf = $config;
-		$this->registry->conf = $config;
-		$this->themes->conf = $config;
 	}
 
 	public function __call($method, $args){
@@ -31,193 +19,164 @@ class index_controller extends appcontroller {
 		}
 	}
 
-	public function index($id=NULL, $page=1){
-
-		$this->plugin->call('index_load');	
-	
+	public function index($urlfriendly = null, $page=1,$vistas = false){
+		$this->plugin->call('index_load');
+		
 		$page = (int) (is_null($page)) ? 1 : $page ;
-
-		$post = new post();
-		$link = new link();
-		$comment = new comment();
-
-		$this->html->useTheme($this->conf['blog_current_theme']);
-
-		$info = array();
-		$info["isAdmin"] = false;
-		if($this->cookie->check("logged") and $this->cookie->id_user == 1){
-			$info["isAdmin"] = true;
-		}
-
-		$this->themes->info = $info;
-
-		$includes['charset'] = $this->html->charsetTag("UTF-8");
-		$includes['rssFeed'] = $this->html->includeRSS();
-
-		if($page>1){
-			$includes['canonical'] = $this->html->includeCanonical("/index/page/$page");
-		}else if(rawurlencode($post->sql_escape($id))){
-			$includes['canonical'] = $this->html->includeCanonical(rawurlencode($post->sql_escape($id)));
-		}else{
-			$includes['canonical'] = $this->html->includeCanonical();
-		}
-
-		$this->registry->includes = $includes;
-		$this->plugin->call('index_includes');
-
-		$includes = null;
-		foreach($this->registry->includes as $include){
-			$includes .= $include;
-		}
-		$this->themes->includes = $includes;
-
-		$this->themes->links = $link->findAll();
-		$single = ($id) ? true : false;
-		if($id){
-			if($info["isAdmin"]){
-				$post_content = $post->findAll('*',null,1,"WHERE urlfriendly='".rawurlencode($post->sql_escape($id))."' AND (status='publish' OR status='draft')");
+		
+		$C = new configuration();
+		$P = new post();
+		$L = new link();
+		
+		$urlfriendly = rawurlencode($P->sql_escape($urlfriendly));//Sanitize
+		
+		$codice = $C->getBlogConfiguration();
+		$title_for_layout = $codice['blog_name'];
+		
+		$links = $L->findAll();//links para el sidebar
+		
+		$single = ($urlfriendly) ? true : false;
+		$this->registry->single = $single;
+		
+		if($urlfriendly){
+			$post = $P->getPost($urlfriendly,'publish');
+			$posts = null;
+			
+			if($P->isNew() === false){
+				$title_for_layout = $post["title"];
+				$busqueda = null;
+				$pagination = null;
 			}else{
-				$post_content = $post->findAll('*',null,1,"WHERE urlfriendly='".rawurlencode($post->sql_escape($id))."' AND status='publish'");
-			}
-
-			if($post_content){
-				if($post_content[0]['title']){
-					$post_content[0]['title'] = htmlspecialchars($post_content[0]['title']);
-				}else{
-					$post_content[0]['title'] = "Untitled";
-				}
-
-				$post_content[0]['tags'] = $post->getTags($post_content[0]['ID']);
-
-				$this->registry->posts = $post_content;
-				$this->plugin->call("index_post_content");
-				$this->themes->post = $this->registry->posts[0];
-				
-				$this->themes->title_for_layout = $this->registry->posts[0]['title'];
-
-				//Si está autentificado, extraemos todos los comentarios.
-				if($this->session->check("logged") === true) {
-					$this->themes->comments_count = $comment->countCommentsByPost($post_content[0]['ID']);					
-					$comments = $comment->findAll('comments.*, md5(comments.email) as md5_email','created',NULL,"WHERE ID_post={$post_content[0]['ID']}");
-				}else{
-					//Si no, sólo los aprobados o en estado "publish".
-					$this->themes->comments_count = $comment->countCommentsByPost($post_content[0]['ID'],"publish");					
-					$comments = $comment->findAll('comments.*, md5(comments.email) as md5_email','created',NULL,"WHERE ID_post={$post_content[0]['ID']} AND status='publish'");
-				}
-
-				foreach($comments as $k=>$comment){
-					$comment['content'] = utils::htmlentities($comment['content']);
-					$comment['content'] = utils::nl2br($comment['content']);
-					$comments[$k] = $comment;
-				}
-
-				$this->themes->cookie = array(
-					'author' => $this->cookie->check('author')?$this->cookie->author:'',
-					'email' => $this->cookie->check('email')?$this->cookie->email:'',
-					'url' => $this->cookie->check('url')?$this->cookie->url:'',
-				);
-
-				$this->registry->comments = $comments;
-				$this->plugin->call("index_comment_content");
-				$this->themes->comments = $this->registry->comments;
-				
-				$this->themes->id = $post_content[0]['ID'];
-			} else {
-				//buscar
+				$title_for_layout = "Búsquedas";
+				$posts = $P->busqueda($urlfriendly); 
+				$busqueda = true;
+				$pagination = null;
 				$single = false;
-
-				$this->themes->title_for_layout = "Búsquedas";
-				$this->themes->busqueda = strip_tags($id);
-				$this->themes->pagination = "";
-
-				$posts = $this->themes->searches = $post->findAll("urlfriendly,title,match(title, content, urlfriendly) against('".$post->sql_escape($id)."') as score","score DESC",20,"WHERE status='publish' AND match(title, content, urlfriendly) against('".$post->sql_escape($id)."')");
-				$this->themes->posts = $posts;
 			}
 		}else{
-			$total_rows = $post->countPosts();
-			$limit = $this->conf['blog_posts_per_page'];
+			$total_rows = $P->countPosts();
+			$limit = $codice['blog_posts_per_page'];
 			$offset = (($page-1) * $limit);
 			$limitQuery = $offset.",".$limit;
 			$targetpage = $this->path.'index/page/';
 			
-			$this->themes->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
+			$busqueda = null;
+			$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 			
-			if($info["isAdmin"]){
-				$posts = $post->findAll("ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",'ID DESC',$limitQuery,"WHERE (status='publish' OR status='draft')");
-			}else{
-				$posts = $post->findAll("ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",'ID DESC',$limitQuery,"WHERE status='publish'");
-			}
-
-			foreach($posts as $k=>$p){
-				$posts[$k]['title'] = htmlspecialchars($p['title']);
-				$posts[$k]['tags'] = $post->getTags($posts[$k]['ID']);
-
-				$posts[$k]['comments_count'] = $comment->countCommentsByPost($posts[$k]['ID'],"publish");
-
-				$user = new user();
-				if($posts[$k]['id_user']<2){
-					$posts[$k]['autor'] = $user->find(1);
-				}else{
-					$posts[$k]['autor'] = $user->find($posts[$k]['id_user']);
-				}
-			}
-
-			$this->registry->posts = $posts;
-			$this->plugin->call("index_post_content");
-			$this->themes->posts = $this->registry->posts;
+			$post = null;
+			$posts = $P->getPosts("publish",$limitQuery);
 		}
-
-		$this->themes->single = $single;
-		$this->registry->single = $single;
-
-		if(!$single) $this->themes->title_for_layout = $this->conf['blog_name'];
-
-		$this->render();
+		
+		//Creamos los tags <meta> que van dentro del layout.
+		$includes = array();
+		$includes['charset'] = $this->html->charsetTag("UTF-8");
+		$includes['rssFeed'] = $this->html->includeRSS();
+		
+		if($page>1){
+			$includes['canonical'] = $this->html->includeCanonical("/index/page/$page");
+		}else if($urlfriendly){
+			$includes['canonical'] = $this->html->includeCanonical($urlfriendly);
+		}else{
+			$includes['canonical'] = $this->html->includeCanonical();
+		}
+		
+		$this->registry->includes = $includes;
+		$this->plugin->call('index_includes');
+		
+		//Convertimos de Array a String, para que pueda ser mostrado en la vista.
+		$includes = null;
+		foreach($this->registry->includes as $include){
+			$includes .= $include;
+		}
+		
+		$this->registry->post = $post;
+		$this->registry->posts = $posts;
+		$this->plugin->call("index_post_content");
+		
+		$this->view->setLayout("codice");
+		
+		$this->view->codice = $codice;
+		$this->view->urlfriendly = $urlfriendly;
+		$this->view->pagination = $pagination;
+		$this->view->busqueda = $busqueda;
+		$this->view->includes = $includes;
+		$this->view->links = $links;
+		$this->view->single = $single;
+		$this->view->posts = $this->registry->posts;
+		$this->view->post = $this->registry->post;
+		
+		$this->view->cookie = array(
+			'author' => $this->cookie->check('author')?$this->cookie->author:'',
+			'email' => $this->cookie->check('email')?$this->cookie->email:'',
+			'url' => $this->cookie->check('url')?$this->cookie->url:'',
+		);
+		
+		$this->title_for_layout($title_for_layout);
+		
+		$this->render("index");
 	}
 	
-	public function addComment($id=null){
-		if($_SERVER["REQUEST_METHOD"]=="POST"){
-			if(is_null($id))
-				$this->redirect($this->conf->blog_siteurl, false);
+	public function addComment($urlfriendly = null){
+		$C = new configuration();
+		$codice = $C->getBlogConfiguration();
+	
+		if($this->data){
+			if(is_null($urlfriendly) === true){
+				$this->redirect($codice['blog_siteurl'], true);
+			}
+		
+			$P = new post();
+			$post = $P->findBy('urlfriendly',$urlfriendly);
+
+			if($P->isNew() === true){
+				$this->redirect($codice['blog_siteurl'], true);
+			}
 			
-			$id = (int) $id;
+			if(isset($this->data["resultado"]) === true){
+				$captcha = $this->data['resultado'];
+				if($captcha != '5'){
+					$this->session->flash('Tu comentario no puede ser agregado. Necesitas contestar la pregunta correctamente.');
+					$this->redirect("{$post['urlfriendly']}#comments");
+				}
+				unset($this->data['resultado']);
+			}else{
+				$this->session->flash('Tu comentario no puede ser agregado. Necesitas contestar la pregunta.');
+				$this->redirect("{$post['urlfriendly']}#comments");
+			}
 			
 			if($this->cookie->check('id_user')){
-				$_POST['user_id'] = $this->cookie->id_user;
-				$_POST['status'] = 'publish';
+				$this->data['user_id'] = $this->cookie->id_user;
+				$this->data['status'] = 'publish';
 			}else{
-				$_POST['user_id'] = 0;
-				$_POST['status'] = 'waiting';
+				$this->data['user_id'] = 0;
+				$this->data['status'] = 'waiting';
 			}
 
-			$_POST['type'] = '';//'pingback', 'trackback', ''
+			$this->data['type'] = '';//'pingback', 'trackback', ''
 
-			$_POST['IP'] = utils::getIP();
-			$_POST['ID_post'] = $id;
+			$this->data['IP'] = utils::getIP();
+			$this->data['ID_post'] = $post["ID"];
 
-			$this->cookie->author = $_POST['author'];
-			$this->cookie->email = $_POST['email'];
-			$this->cookie->url = $_POST['url'];
+			$this->cookie->author = $this->data['author'];
+			$this->cookie->email = $this->data['email'];
+			$this->cookie->url = $this->data['url'];
 
-			$comment = new comment();
-			$comment->prepareFromArray($_POST);
-			$valid = $comment->save();
+			$C = new comment();
+			$C->prepareFromArray($this->data);
+			$valid = $C->save();
 			
 			if($valid){
 				$this->registry->lastCommentID = $valid;
-				$this->registry->postID = $id;
+				$this->registry->postID = $post["ID"];
 				$this->plugin->call("index_comment_added");
 			}
-			
-			$post = new post();
-			$p = $post->findBy('ID',$id);
 			
 			if($valid and $this->isAjax()){
 				echo $valid;
 			}else if($valid){
-				$this->redirect("{$p['urlfriendly']}#comment-{$valid}");
+				$this->redirect("{$post['urlfriendly']}#comment-{$valid}");
 			}else{
-				$this->redirect("{$p['urlfriendly']}");
+				$this->redirect("{$post['urlfriendly']}");
 			}
 		}
 	}
