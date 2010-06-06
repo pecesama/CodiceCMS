@@ -7,27 +7,42 @@ class evalphp extends plugins{
 		$this->addAction('index_post_content', 'findPHPcode');
 	}
 	
-	public function findPHPcode() {
-		$rows = $this->registry->posts;
+	public function findPHPcode(){
+		if(is_null($this->registry->post) === false){
+			$row = $this->registry->post;
+			$text = $row['content'];
+			if(preg_match('/<\?php.+/',$text)){
+				$text = str_replace('\\','\\\\',$text);
+				$text = "echo \"".str_replace('"','\"',$text)."\";";
+				$text = str_replace('$','\$',$text);
 
-		if(count($rows)>0){
-			foreach($rows as $key=>$post){
-				$text = $rows[$key]['content'];
-				if(preg_match('/<\?php.+/',$text)){
-					$text = str_replace('\\','\\\\',$text);
-					$text = "echo \"".str_replace('"','\"',$text)."\";";
-					$text = str_replace('$','\$',$text);
+				$result = preg_replace_callback("/<\?php\s(.+?)\?>/Usi",array('evalphp', 'interpret'), $text);
 
-					$result = preg_replace_callback("/<\?php\s(.+?)\?>/Usi",array('evalphp', 'interpret'), $text);
+				ob_start();
+				eval($result);
+				$row['content'] = ob_get_clean();
+			}
+			$this->registry->modify('post',$row);
+		}else if(is_null($this->registry->posts) === false){
+			$rows = $this->registry->posts;
+			if(count($rows) > 0){
+				foreach($rows as $key=>$post){
+					$text = $rows[$key]['content'];
+					if(preg_match('/<\?php.+/',$text)){
+						$text = str_replace('\\','\\\\',$text);
+						$text = "echo \"".str_replace('"','\"',$text)."\";";
+						$text = str_replace('$','\$',$text);
 
-					ob_start();
-					eval($result);
-					$rows[$key]['content'] = ob_get_clean();
+						$result = preg_replace_callback("/<\?php\s(.+?)\?>/Usi",array('evalphp', 'interpret'), $text);
+
+						ob_start();
+						eval($result);
+						$rows[$key]['content'] = ob_get_clean();
+					}
 				}
 			}
+			$this->registry->modify('posts',$rows);
 		}
-				
-		$this->registry->modify('posts',$rows);
 	}
 	
 	private function interpret($code){

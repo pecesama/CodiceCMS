@@ -24,8 +24,8 @@ class feedburner extends plugins {
 	}
 
 	public function feedRedirect(){
-		$Conf = new configuration();
-		if($row = $Conf->findBy('name','blog_feedburner_rssLink')){
+		$C = new configuration();
+		if($row = $C->findBy('name','blog_feedburner_rssLink')){
 			$rssLink = $row['value'];
 		
 			if(preg_match(VALID_URL,$rssLink)){

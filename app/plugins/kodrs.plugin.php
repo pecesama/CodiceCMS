@@ -15,22 +15,34 @@ class kodrs extends plugins {
 		$this->addAction('index_comment_content', 'comment_source_code_beautifier');
 	}
 
-	public function source_code_beautifier() {
-		$rows = $this->registry->posts;
+	public function source_code_beautifier(){
+		if(is_null($this->registry->post) === false){
+			$row = $this->registry->post;
+			$text = $row['content'];
+			
+			#$regexp = "/<code\s+.*lang\s*=\"(.*)\">(.*)<\/code>/siU";
+			$regexp = "/<code(.*)>(.*)<\/code>/siU";
+			
+			$result = preg_replace_callback($regexp, array('kodrs', 'replace_with_geshi'), $text);
+			$row['content'] = $result;
+			
+			$this->registry->modify('post',$row);
+		}else if(is_null($this->registry->posts) === false){
+			$rows = $this->registry->posts;
+			if(count($rows)>0){
+				foreach($rows as $key=>$post){
+					$text = $rows[$key]['content'];            
 
-		if(count($rows)>0){
-			foreach($rows as $key=>$post){
-				$text = $rows[$key]['content'];            
+					#$regexp = "/<code\s+.*lang\s*=\"(.*)\">(.*)<\/code>/siU";
+					$regexp = "/<code(.*)>(.*)<\/code>/siU";
 
-				#$regexp = "/<code\s+.*lang\s*=\"(.*)\">(.*)<\/code>/siU";
-				$regexp = "/<code(.*)>(.*)<\/code>/siU";
-
-				$result = preg_replace_callback($regexp, array('kodrs', 'replace_with_geshi'), $text);
-				$rows[$key]['content'] = $result;
+					$result = preg_replace_callback($regexp, array('kodrs', 'replace_with_geshi'), $text);
+					$rows[$key]['content'] = $result;
+				}
 			}
+			
+			$this->registry->modify('posts',$rows);
 		}
-		
-		$this->registry->modify('posts',$rows);
 	}
 
 	public function comment_source_code_beautifier() {
@@ -48,7 +60,7 @@ class kodrs extends plugins {
 		$this->registry->modify('comments',$rows);
 	}
 
-	private function replace_with_geshi($matches) {         
+	private function replace_with_geshi($matches) {
 		$params = $this->getParams(strtolower($matches[1]));
 		$code = trim($matches[2]);
 		$lang = $params['lang'];
