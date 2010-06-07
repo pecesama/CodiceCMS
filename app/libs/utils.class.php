@@ -33,4 +33,12 @@ class utils{
 			return nl2br($comment);
 		}	
 	}
+
+	public function themeExists($name){
+		if(file_exists(Absolute_Path."app".DIRSEP."themes".DIRSEP.$name) === false){
+			return false;
+		}else{
+			return true;
+		}
+}
 }
