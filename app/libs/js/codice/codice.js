@@ -1,8 +1,26 @@
-var VALID_NOT_EMPTY = RegExp(".+");
-var VALID_NUMERIC = RegExp("[0-9]+");
-var VALID_EMAIL = RegExp("^[a-zA-Z0-9]{1}([\._a-zA-Z0-9-]+)(\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+){1,3}$");
-var VALID_URL = RegExp("^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}((:[0-9]{1,5})?\/.*)?$");
 $(document).ready(function(){
+	var VALID_NOT_EMPTY = RegExp(".+");
+	var VALID_NUMERIC = RegExp("[0-9]+");
+	var VALID_EMAIL = RegExp("^[a-zA-Z0-9]{1}([\._a-zA-Z0-9-]+)(\.[_a-zA-Z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+){1,3}$");
+	var VALID_URL = RegExp("^(http|https):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}((:[0-9]{1,5})?\/.*)?$");
+
+	/* Carga footer y links via ajax. Es mas divertido ¿que no? */
+	$.ajax({
+		url: relativePathToApp + 'index/ajax/index_sidebars',
+		success: function(data) {
+			$("div#contenido").append(data);
+			$.ajax({
+				url: relativePathToApp + 'index/ajax/index_footer',
+				success: function(data) {
+					$("div#contenido").append(data);
+				}
+			});
+		}
+	});
+
+	/*
+	 * Comments validations.
+	 */
 	var datos = new Object();
 	var mensaje = new Object();
 

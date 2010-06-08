@@ -10,10 +10,6 @@ class router{
 	private $routes = array();
 	private $parts;
 	
-	public function getClass(){
-		return $this->class;
-	}
-	
 	public function __construct() {
 		$this->registry = registry::getInstance();
 		$this->getRoutes();
@@ -35,7 +31,7 @@ class router{
 
 		$controller->action = $action;
 		$controller->params = $params;
-		
+
 		if($params)
 			$controller->$action($params);
 		else
@@ -83,17 +79,18 @@ class router{
 						$params = null;
 					}
 				} else {					
-					if ($this->parts[0] == "index") {						
-						ob_start();
-						$path = Absolute_Path."app".DIRSEP."views/start/index.php";
-						include ($path);
-						$contents = ob_get_contents();
-						ob_end_clean();
-						echo $contents;
-						die();
-					} else {
-						$this->notFound();
+					if ($this->parts[0] == "index") {
+						$path = Absolute_Path.APPDIR.DIRSEP."views/start/index.php";
+						if(file_exists($path)){
+							ob_start();
+							include ($path);
+							$contents = ob_get_contents();
+							ob_end_clean();
+							echo $contents;
+							exit;
+						}
 					}
+					$this->notFound();
 				}
 			}
 		}else{
@@ -114,7 +111,7 @@ class router{
 	/*
 	 * - Si no se envia el parametro $route, deja en $this->uri la url formateada y 
 	 *   en $this->parts deja todas las partes listas para procesar.
-	 * - Si se define $route, únicamente retorna la url formateada correctamente.
+	 * - Si se define $route, unicamente retorna la url formateada correctamente.
 	 *
 	 * ejemplo de salida => 
 	 *  uri: index/saludo/1
@@ -139,11 +136,11 @@ class router{
 		}else{
 			$this->uri = $uri;
 			$this->parts = $parts;
-		}
+		}		
 	}
 	
 	/*
-	 * Extrae el parámetro que se enviará y busca las rutas definidas en $this->routes para procesarlas.
+	 * Extrae el parametro que se enviara y busca las rutas definidas en $this->routes para procesarlas.
 	 */
 	private function getParams(){
 		foreach($this->routes as $target=>$route){
@@ -159,17 +156,36 @@ class router{
 					}
 				}
 			}
-		}		
+		}
+
+		/*
+		 * Generador del relativePath a la carpeta "app" para utilizar desde las views
+		 * genera algo asi: ../../../app/folder/folder/folder/...etc/
+		 */
+		$relativePath = "";
+		$relative = substr_count(trim($this->uri,"/")."/","/");
+
+		if(substr($this->route,-1,1) == "/"){
+			$offset = 0;
+		}else{
+			$offset = 1;
+		}
+
+		for($c=0;$c<$relative-$offset;$c++){
+			$relativePath .= "../";
+		}
+		
+		define("relativePathToApp",$relativePath);
 	}
 
 	private function controllerExists($controller){
-		return file_exists(Absolute_Path.'app'.DIRSEP.'controllers'.DIRSEP."{$controller}_controller.php");
+		return file_exists(Absolute_Path.APPDIR.DIRSEP.'controllers'.DIRSEP."{$controller}_controller.php");
 	}
 	/*
 	 * Obtiene las rutas desde el archivo app/routes.php
 	 */
 	private function getRoutes(){
-		require(Absolute_Path.'app'.DIRSEP.'routes.php');
+		require(Absolute_Path.APPDIR.DIRSEP.'routes.php');
 	}
 	
 	/*

@@ -4,9 +4,10 @@
 	<meta name="generator" content="Codice CMS" />
 	<?php echo $this->html->includeCss("stan512/style"); ?>
 	<?php echo $this->html->includeJs("jquery"); ?>
+	<script> var relativePathToApp = "<?php echo relativePathToApp; ?>"; </script>
 	<?php echo $this->html->includeJs("codice/jquery.scrollTo-min"); ?>
 	<?php echo $this->html->includeJs("codice/php.pack"); ?>
-	<?php echo $this->html->includeJs("codice/validateComment"); ?>
+	<?php echo $this->html->includeJs("codice/codice"); ?>
 	<?php echo $includes; ?>
 	<title><?php echo $title_for_layout; ?></title>
 </head>
@@ -27,8 +28,6 @@
 			<div id="contenido">
 				<?php echo $content_for_layout ?>
 			</div><!-- contenido -->
-			<?php echo $this->renderElement("index_sidebars"); ?>
-			<?php echo $this->renderElement("index_footer"); ?>
 		</div><!-- columnas -->
 	</div>
 	

@@ -9,14 +9,29 @@ class index_controller extends appcontroller {
 		$this->plugin->call('index_init');
 	}
 
-	public function __call($method, $args){
-		$page = (int)$args[0];
-		if ($method == 'page' and isset($args[0])) {
-			if ($page == 1) {
-				$this->redirect("");
-			}
-			$this->index(NULL, $page);
+	public function ajax($element = null){
+		if($this->isAjax() === false){
+			$this->redirect("index");
 		}
+
+		switch($element){
+			case 'index_sidebars':
+				$L = new link();
+
+				$this->view->links = $L->findAll();
+				$this->view->element = $element;
+
+				$this->render();
+			break;
+			case 'index_footer':
+				$this->view->element = $element;
+				$this->render();
+			break;
+		}
+	}
+
+	public function page($page = null){
+		$this->index(null,$page);
 	}
 
 	public function index($urlfriendly = null, $page=1,$vistas = false){
