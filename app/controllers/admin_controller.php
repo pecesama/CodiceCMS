@@ -8,7 +8,7 @@ class admin_controller extends appcontroller {
 		parent::__construct();
 		
 		$registry = registry::getInstance();
-		$class = $registry->router->class;
+		$class = $registry->router->getClass();
 		if($class["action"] != "login" && $class["action"] != "logout") {
 			if($this->session->check("logged") == false) {
 				$this->redirect("admin/login/nosession/");
