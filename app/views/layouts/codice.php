@@ -28,6 +28,7 @@
 			<div id="contenido">
 				<?php echo $content_for_layout ?>
 			</div><!-- contenido -->
+			<?php echo $this->renderElement("index_internalSidebars"); ?>
 		</div><!-- columnas -->
 	</div>
 	

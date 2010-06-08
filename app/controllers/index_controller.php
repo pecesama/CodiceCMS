@@ -5,7 +5,7 @@ class index_controller extends appcontroller {
 	private $conf;
 
 	public function __construct() {
-		parent::__construct();
+		parent::__construct(); 
 		$this->plugin->call('index_init');
 	}
 
@@ -14,11 +14,13 @@ class index_controller extends appcontroller {
 			$this->redirect("index");
 		}
 
+		$this->view->setLayout("ajax");
+
 		switch($element){
 			case 'index_sidebars':
 				$L = new link();
 
-				$this->view->links = $L->findAll();
+				$this->view->links = $L->findAllBy("type","external");
 				$this->view->element = $element;
 
 				$this->render();
@@ -48,7 +50,7 @@ class index_controller extends appcontroller {
 		$codice = $C->getBlogConfiguration();
 		$title_for_layout = $codice['blog_name'];
 		
-		$links = $L->findAll();//links para el sidebar
+		$links = $L->findAllBy("type","internal");//links para el sidebar
 		
 		$single = ($urlfriendly) ? true : false;
 		$this->registry->single = $single;
