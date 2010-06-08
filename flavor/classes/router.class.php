@@ -15,6 +15,10 @@ class router{
 		$this->getRoutes();
 	}
 	
+	public function getClass(){
+		return $this->class;	
+	}
+
 	public function dispatch() {
 		$this->getController();
 
