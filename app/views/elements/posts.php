@@ -1,7 +1,7 @@
 <?php if(count($posts) > 0){?>
 	<?php foreach($posts as $post){?>
 		<div class="post">
-			<h3><?php echo $this->html->linkTo($post["title"],$post["urlfriendly"],'rel="bookmark" title="Enlace a {$post["title"]}"'); ?></h3>
+			<h3><?php echo $this->html->linkTo($post["title"],$post["urlfriendly"],'rel="bookmark" title="Enlace a '.$post["title"].'"'); ?></h3>
 			<?php if(isset($busqueda) === false){?>
 				<div class="facebook">
 					<fb:like href="http://mis-algoritmos.com/<?php echo $post['urlfriendly']; ?>" layout="button_count"></fb:like>
@@ -10,7 +10,7 @@
 					<?php echo $post["content"]; ?>
 				</div>		
 				<div class="post_meta_com">
-					<p><?php echo $this->html->linkTo($post["comments_count"],"{$post["urlfriendly"]}#comments",'rel="bookmark" title="Comentarios de {$post["title"]}"'); ?> &#187;</p>
+					<p><?php echo $this->html->linkTo($post["comments_count"],"{$post["urlfriendly"]}#comments",'rel="bookmark" title="Comentarios de '.$post["title"].'"'); ?> &#187;</p>
 					<?php if($post["tags"]){ ?>
 						<p class="tags">
 							Tags:
