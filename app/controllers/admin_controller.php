@@ -67,15 +67,16 @@ class admin_controller extends appcontroller {
 			$this->session->flash("Haz terminado la sesion correctamente.");
 		}
 		
-		$User = new user();
-		if ($_SERVER["REQUEST_METHOD"] == "POST"){
-			if(($valid = $User->validateLogin($_POST)) == true) {
-                $this->session->id_user = $valid['id_user'];
-                $this->session->logged = $valid ? true : false ;
-                $this->redirect("admin/");
-            } else {
+		$U = new user();
+		if($this->data){
+			if($id_user = $U->validateLogin($this->data)) {
+				$user = $U->find($id_user);
+				$this->session->user = $user;
+				$this->session->logged = true;
+				$this->redirect("admin/");
+			} else {
 				$this->redirect("admin/login/fail/");
-            }
+			}
 		}else{
 			$this->view->setLayout("admin");
 			$this->title_for_layout("Login - Codice CMS");
