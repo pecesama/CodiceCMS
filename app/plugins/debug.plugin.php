@@ -11,8 +11,19 @@ class debug extends plugins {
 	}
 	
 	public function init(){
-		$this->recreate_tables();
-		$this->generate_configurations();
+		$action = isset($_GET['action'])?$_GET['action']:'';
+		switch($action){
+			case 'create_tables': $this->create_tables(); break;
+			case 'delete_tables': $this->delete_tables(); break;
+			case 'generate_configurations': $this->generate_configurations(); break;
+			case 'delete_configurations': $this->delete_configurations(); break;
+			case 'add_posts': $this->add_posts(); break;
+			case 'delete_posts': $this->delete_posts(); break;
+			case 'add_tags': $this->add_tags(); break;
+			case 'delete_tables': $this->delete_tables(); break;
+			case 'add_comments': $this->add_comments(); break;
+			case 'delete_commentss': $this->delete_comments(); break;
+		}
 	}
 	
 	public function addToolbar(){
@@ -26,28 +37,42 @@ class debug extends plugins {
 		<div class="toolbar">
 			<h1>DEBUG MODE</h1>
 			<ul>
-				<li><a href="?action=recreate_tables">Create tables</a></li>
-				<li><a href="?action=recreate_tables">Empty tables</a></li>
-				<li><a href="?action=recreate_tables">Fill tables</a></li>
-				<li><a href="?action=recreate_tables">Delete comments</a></li>
-				<li><a href="?action=recreate_tables">Add comments</a></li>
+				<li><a href="?action=create_tables">Create tables</a></li>
+				<li><a href="?action=delete_tables">Delete tables</a></li>
+				<li><a href="?action=generate_configurations">Generate Configurations</a></li>
+				<li><a href="?action=delete_configurations">Delete Configurations</a></li>
+				<li><a href="?action=add_posts">Add Posts</a></li>
+				<li><a href="?action=delete_posts">Delete Posts</a></li>
+				<li><a href="?action=add_tags">Add Tags</a></li>
+				<li><a href="?action=delete_tables">Delete Tags</a></li>
+				<li><a href="?action=add_comments">Add comments</a></li>
+				<li><a href="?action=delete_comments">Delete comments</a></li>
 			</ul>
 		</div>
 	<?php
 	}
 	
-	public function recreate_tables(){
-		$this->drop_tables();
-		$this->create_tables();
-	}
-	
-	public function drop_tables(){
+	public function delete_tables(){
 		$M = mysqli_db::getInstance();
-		$sql = "DROP TABLE `comments`, `configurations`, `files`, `links`, `posts`, `tags`, `tags_rel`, `users`;";
-		$M->query($sql);
+		$sqls = array();
+		
+		$sqls[] = "DROP TABLE IF EXISTS `comments`;";
+		$sqls[] = "DROP TABLE IF EXISTS `configurations`;";
+		$sqls[] = "DROP TABLE IF EXISTS `files`;";
+		$sqls[] = "DROP TABLE IF EXISTS `links`;";
+		$sqls[] = "DROP TABLE IF EXISTS `posts`;";
+		$sqls[] = "DROP TABLE IF EXISTS `tags`;";
+		$sqls[] = "DROP TABLE IF EXISTS `tags_rel`;";
+		$sqls[] = "DROP TABLE IF EXISTS `users`;";
+		
+		foreach($sqls as $sql){
+			$M->query($sql);
+		}
 	}
 	
 	public function create_tables(){
+		$this->delete_tables();
+		
 		$M = mysqli_db::getInstance();
 		
 		$sqls = array();
@@ -145,12 +170,13 @@ class debug extends plugins {
 	}
 	
 	public function generate_configurations(){
+		$this->delete_configurations();
 		$M = mysqli_db::getInstance();
 		
 		$sql = "INSERT INTO `configurations` (`name`, `value`, `id_user`, `id`) VALUES
-('blog_name', 'Mis Algoritmos', 1, 1),
-('blog_description', 'El sitio que en su tiempo Macedonian Dark Security le di&oacute; en su madre', 1, 2),
-('blog_siteurl', 'http://mis-algoritmos.com', 1, 3),
+('blog_name', 'Codice CMS', 1, 1),
+('blog_description', 'Content management made easy', 1, 2),
+('blog_siteurl', 'http://localhost/CodiceCMS', 1, 3),
 ('blog_current_theme', 'misalgoritmos', 1, 4),
 ('blog_posts_per_page', '3', 1, 5),
 ('posts_per_page', '15', 1, 6),
@@ -158,5 +184,37 @@ class debug extends plugins {
 ('blog_upload_folder', 'uploads', 1, 8);";
 		
 		$M->query($sql);
+	}
+	
+	public function delete_configurations(){
+		$M = mysqli_db::getInstance();
+		
+		$sql = "TRUNCATE TABLE `configurations`";
+		
+		$M->query($sql);
+	}
+	
+	public function add_posts(){
+	
+	}
+	
+	public function delete_posts(){
+	
+	}
+	
+	public function add_tags(){
+	
+	}
+	
+	public function delete_tags(){
+	
+	}
+	
+	public function add_comments(){
+	
+	}
+	
+	public function delete_comments(){
+	
 	}
 }
