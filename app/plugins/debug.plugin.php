@@ -202,6 +202,19 @@ class debug extends plugins {
 	}
 	
 	public function add_posts(){
+		$M = mysqli_db::getInstance();
+		
+		$sqls = array();
+		
+		/* Aqui falta generar posts de ejemplo que utilicen código php, 
+		 * inclusión de archivos, uso de html, css, javascript, ajax,
+		 */
+		
+		$sqls[] = "..."; // deben ya venir en base 64 http://www.motobit.com/util/base64-decoder-encoder.asp
+		
+		foreach($sqls as $sql){
+			$M->query(base64_decode($sql));
+		}
 	
 	}
 	
