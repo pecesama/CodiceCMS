@@ -30,13 +30,20 @@ class debug extends plugins {
 	?>
 		<style>
 			div.toolbar{
+				font-size:.75em;
 				background-color:yellow;
 				padding:5px;
+			}
+			div.toolbar ol{padding:20px 0 0 0;}
+			div.toolbar ol li{
+				list-style-type: decimal;
+				list-style-position: inside;
+				padding:0 0 0 20px;
 			}
 		</style>
 		<div class="toolbar">
 			<h1>DEBUG MODE</h1>
-			<ul>
+			<ol>
 				<li><a href="?action=create_tables">Create tables</a></li>
 				<li><a href="?action=delete_tables">Delete tables</a></li>
 				<li><a href="?action=generate_configurations">Generate Configurations</a></li>
@@ -47,7 +54,7 @@ class debug extends plugins {
 				<li><a href="?action=delete_tables">Delete Tags</a></li>
 				<li><a href="?action=add_comments">Add comments</a></li>
 				<li><a href="?action=delete_comments">Delete comments</a></li>
-			</ul>
+			</ol>
 		</div>
 	<?php
 	}
