@@ -2,13 +2,14 @@
 
 class admin_controller extends appcontroller {
 
-	private $conf;
+	private $blogConfig;
 
 	public function __construct() {
 		parent::__construct();
 		
-		$registry = registry::getInstance();
-		$class = $registry->router->getClass();
+		$R = registry::getInstance();
+		$class = $R->router->getClass();
+		
 		if($class["action"] != "login" && $class["action"] != "logout") {
 			if($this->session->check("logged") == false) {
 				$this->redirect("admin/login/nosession/");
@@ -17,21 +18,18 @@ class admin_controller extends appcontroller {
 		
 		$this->plugin->call('admin_init');
 		
-		$config = new configuration();
-		$blogConfig = $config->getBlogConfiguration();
-		$userConfig = $config->getUserConfiguration(1);
-
-		$this->conf = $blogConfig;
-		$this->userConf = $userConfig;
+		$C = new configuration();
+		$this->blogConfig = $C->getBlogConfiguration();
+		$this->userConf = $C->getUserConfiguration(1);
+		
+		$this->view->blogConfig = $this->blogConfig;
+		$this->view->userConf = $this->userConf;
 	}
 
 	public function index($id = NULL){
-		$this->view->conf = $this->conf;
-		$this->view->userConf = $this->userConf;
+		$P = new post();
 		
-		$Post = new post();
-				
-		$total_rows = $Post->countPosts();
+		$total_rows = $P->countPosts();
 		
 		$page = $id;
 		$page = (is_null($page)) ? 1 : $page ;
@@ -42,23 +40,22 @@ class admin_controller extends appcontroller {
 		$targetpage = $this->path.'admin/index/';
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		
-		$this->view->pagination = $pagination;
-		$this->view->posts = $Post->findAll(NULL, "ID DESC", $limitQuery, NULL);
-		$this->view->setLayout("admin");
-		
 		$this->title_for_layout("Administraci&oacute;n - Codice CMS");
 		
+		$this->view->pagination = $pagination;
+		$this->view->posts = $P->findAll(NULL, "ID DESC", $limitQuery, NULL);
+		$this->view->blogConfig = $this->blogConfig;
+		$this->view->userConf = $this->userConf;
+		
+		$this->view->setLayout("admin");
 		$this->render();
 	}
 	
 	public function login($msg = null){
-		$this->view->conf = $this->conf;
-		$this->view->userConf = $this->userConf;
-		
 		if($this->session->check("logged") == true) {
 			$this->redirect("admin");
 		}
-
+		
 		if ($msg == "nosession") {
 			$this->session->flash("La URL solicitada necesita autentificacion.");
 		} elseif ($msg == "fail") {
@@ -67,8 +64,8 @@ class admin_controller extends appcontroller {
 			$this->session->flash("Haz terminado la sesion correctamente.");
 		}
 		
-		$U = new user();
 		if($this->data){
+			$U = new user();
 			if($id_user = $U->validateLogin($this->data)) {
 				$user = $U->find($id_user);
 				$this->session->user = $user;
@@ -85,42 +82,38 @@ class admin_controller extends appcontroller {
 	}
 
 	public function add(){
-		$this->view->conf = $this->conf;
-		$this->view->userConf = $this->userConf;
-		
-		$post = new post();
-		if ($_SERVER["REQUEST_METHOD"]=="POST") {
-		
-			if(isset($_POST['cancelar'])) {
+		if ($this->data) {
+			$P = new post();
+			if(isset($this->data['cancelar'])) {
 				$this->redirect("admin/");
 			}
 			
-			if (isset($_POST['borrador'])) {
-				$_POST['status'] = 'draft';
-				unset($_POST['borrador']);
+			if (isset($this->data['borrador'])) {
+				$this->data['status'] = 'draft';
+				unset($this->data['borrador']);
 				
-			} elseif (isset($_POST['publicar'])) {
-				$_POST['status'] = 'publish';
-				unset($_POST['publicar']);
+			} elseif (isset($this->data['publicar'])) {
+				$this->data['status'] = 'publish';
+				unset($this->data['publicar']);
 			} else {
 				$this->redirect("admin/");
 			}
 			
-			if(!preg_match("/\S+/",$_POST['title']) OR $_POST['title'] == ""){
-				$_POST['title'] = "Untitled";
+			if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
+				$this->data['title'] = "Untitled";
 			}
 			
-			$_POST['urlfriendly'] = $post->buildUrl($_POST['title']);
-
-			$tags = $_POST['tags'];
-			unset($_POST['tags']);
-
-			$post->prepareFromArray($_POST);
-			$post->save();
-
-			$post_id = $post->db->lastId();
-			$post->updateTags($post_id,$tags);
-
+			$this->data['urlfriendly'] = $P->buildUrl($this->data['title']);
+			
+			$tags = $this->data['tags'];
+			unset($this->data['tags']);
+			
+			$P->prepareFromArray($this->data);
+			$P->save();
+			
+			$post_id = $P->db->lastId();
+			$P->updateTags($post_id,$tags);
+			
 			$this->redirect("admin/");
 		} else {
 			$this->view->setLayout("admin");
@@ -130,84 +123,89 @@ class admin_controller extends appcontroller {
 	}
 
 	public function edit($id = NULL) {
-		$this->view->conf = $this->conf;
-		$this->view->userConf = $this->userConf;
-		
 		$id = (int) $id;
 		if(!$id)$this->redirect('admin');
-
-		$post = new post();
-		$post->find($id);
-		$post['title'] = utils::convert2HTML($post['title']);
-		$post['content'] = utils::convert2HTML($post['content']);
-		$post['tags'] = $post->getTags($id,'string');
-
-		$this->view->post = $post;
-		$this->view->id = $id;
-		$statuses = array("publish", "draft");
-		$this->view->statuses = $statuses;
-		if ($_SERVER["REQUEST_METHOD"]=="POST") {
-			if(isset($_POST['cancelar'])){
+		
+		$statuses = array(
+			"publish",
+			"draft"
+		);
+		
+		if ($this->data) {
+			if(isset($this->data['cancelar'])){
 				$this->redirect("admin/");
-			} else {
-				###########
-				# Las siguientes dos lineas no deberian estar pero algo anda mal con el ActiveRecord que no deja las variables
-				# de las consultas que se realizan directamente desde dentro de algun metodo en el model con $this->db->query e interfiere
-				# con el actualizar por que podria haber campos que no se requieren en la actualizacion.
-				###########
-				$post = new post();#######
-				$post->find($id);####### 
-						
-				if(!preg_match("/\S+/",$_POST['title']) OR $_POST['title'] == ""){
-					$_POST['title'] = "Untitled";
+			}else{
+				$P = new post();
+				$P->find($id); 
+				
+				if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
+					$this->data['title'] = "Untitled";
 				}
 				
-				if(!preg_match("/\S+/",$_POST['urlfriendly']) OR $_POST['urlfriendly'] == ""){
-					$_POST['urlfriendly'] = $_POST['title'];
+				if(!preg_match("/\S+/",$this->data['urlfriendly']) OR $this->data['urlfriendly'] == ""){
+					$this->data['urlfriendly'] = $this->data['title'];
 				}
 				
-				$_POST['urlfriendly'] = $post->buildUrl($_POST['urlfriendly'], $id);
-
-	 			$post->updateTags($id,$_POST['tags']);
-				unset($_POST['tags']);
-
-				$post->prepareFromArray($_POST);
-
-				$post->save();
-
+				$this->data['urlfriendly'] = $P->buildUrl($this->data['urlfriendly'], $id);
+				
+	 			$P->updateTags($id,$this->data['tags']);
+				unset($this->data['tags']);
+				
+				$P->prepareFromArray($this->data);
+				
+				$P->save();
+				
+				$this->session->flash('Información guardada correctamente.');
+				
 				$this->redirect("admin/edit/$id");
 			}
-		} else {
-			$this->view->setLayout("admin");
-			$this->title_for_layout($this->l10n->__("Editar post - Codice CMS"));
-			$this->render();
 		}
+		
+		$P = new post();
+		
+		$post = $P->find($id);
+		$post['title'] = utils::convert2HTML($P['title']);
+		$post['content'] = utils::convert2HTML($P['content']);
+		$post['tags'] = $P->getTags($id,'string');
+		
+		$this->title_for_layout($this->l10n->__("Editar post - Codice CMS"));
+		
+		$this->view->id = $id;
+		$this->view->post = $post;
+		$this->view->statuses = $statuses;
+		
+		$this->view->setLayout("admin");
+		$this->render();
 	}
 
 	public function remove($id){
-		$post = new post();
-		$post->find($id);
-		$post->delete();
+		$P = new post();
+		$P->find($id);
+		$P->delete();
+		
 		$this->redirect("admin/");
 	}
-		
+
 	public function config($id = null){
-		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			$Conf = new configuration();
+		if($this->data){
+			$C = new configuration();
 			
-			foreach($_POST as $name => $value){	
-				if($Conf->findBy("name", $name)){
-					$Conf['value'] = trim($value);
-					$Conf->save();
+			foreach($this->data as $name => $value){
+				if($C->findBy("name", $name)){
+					//updating
+					$C['value'] = trim($value);
+					$C->save();
 				}else{
-					$Conf = new configuration();
+					//adding new record.
+					$C = new configuration();
 					
-					$conf['name'] = $name;
-					$conf['value'] = $value;
-					$conf['id_user'] = 1;
+					$new_value = array();
+					$new_value['name'] = $name;
+					$new_value['value'] = $value;
+					$new_value['id_user'] = 1;
 					
-					$Conf->prepareFromArray($conf);
-					$Conf->save();
+					$C->prepareFromArray($new_value);
+					$C->save();
 				}
 			}
 			
@@ -217,13 +215,12 @@ class admin_controller extends appcontroller {
 		$this->registry->conf = $this->conf;
 		$this->registry->userConf = $this->userConf;
 		$this->plugin->call('admin_init_config');
-
-		$this->view->conf = $this->registry->conf;		
+		$this->view->conf = $this->registry->conf;
 		$this->view->userConf = $this->registry->userConf;
-
+		
 		$this->view->setLayout("admin");
 		$this->render();
-	}	
+	}
 
 	function logout() {
 		$this->session->destroy("id_user");

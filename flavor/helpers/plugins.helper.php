@@ -7,7 +7,7 @@ class plugins extends singleton{
 		$this->registry = registry::getInstance();
 	}
 
-	public function addAction($name, $function){	
+	public function addAction($name, $function){
 	
 		$actions = $this->registry->plugins;
 		$actions['actions'][$name][] = $function;

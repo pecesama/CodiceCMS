@@ -13,14 +13,14 @@ class debug extends plugins {
 	public function init(){
 		$action = isset($_GET['action'])?$_GET['action']:'';
 		switch($action){
-			case 'create_tables': $this->create_tables(); break;
-			case 'delete_tables': $this->delete_tables(); break;
+			case 'create_tables': $this->create_tables(); $this->redirect('/'); break;
+			case 'delete_tables': $this->delete_tables(); $this->redirect('/'); break;
 			case 'generate_configurations': $this->generate_configurations(); break;
 			case 'delete_configurations': $this->delete_configurations(); break;
 			case 'add_posts': $this->add_posts(); break;
-			case 'delete_posts': $this->delete_posts(); break;
+			case 'delete_posts': $this->delete_posts(); $this->redirect('/');break;
 			case 'add_tags': $this->add_tags(); break;
-			case 'delete_tables': $this->delete_tables(); break;
+			case 'delete_tables': $this->delete_tables(); $this->redirect('/'); break;
 			case 'add_comments': $this->add_comments(); break;
 			case 'delete_commentss': $this->delete_comments(); break;
 		}
@@ -183,7 +183,7 @@ class debug extends plugins {
 		$sql = "INSERT INTO `configurations` (`name`, `value`, `id_user`, `id`) VALUES
 ('blog_name', 'Codice CMS', 1, 1),
 ('blog_description', 'Content management made easy', 1, 2),
-('blog_siteurl', 'http://localhost/CodiceCMS', 1, 3),
+('blog_siteurl', 'http://localhost/codice/CodiceCMS', 1, 3),
 ('blog_posts_per_page', '3', 1, 5),
 ('posts_per_page', '15', 1, 6),
 ('blog_upload_folder', 'uploads', 1, 8);";

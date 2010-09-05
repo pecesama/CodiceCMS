@@ -7,7 +7,8 @@
 	</div>
 
 	<div id="page-content" class="clearfix">
-		<h1>Ingresar</h1> 
+		<h1>Ingresar</h1>
+		
 		<div class="inner-box clearfix">
 			<?php if ($this->cookie->check('flash')) { ?>
 			<div id="sidebar">
@@ -16,14 +17,15 @@
 				</div>
 			</div>
 			<?php } ?>
+			
 			<?php echo $this->html->form("admin/login/"); ?>
-			<div id="form-block">    
-				<label for="login">Usuario</label>
-				<?php echo $this->html->textField("login", " class=\"short\" "); ?>
-				<label for="password">Contrase&ntilde;a</label> 
-				<?php echo $this->html->passwordField("password", " class=\"short\" "); ?>                
-				<input type="submit" class="submit" value="Ingresar" />    
-			</div>
+				<div id="form-block">    
+					<label for="login">Usuario</label>
+					<?php echo $this->html->textField("login", " class=\"short\" "); ?>
+					<label for="password">Contrase&ntilde;a</label> 
+					<?php echo $this->html->passwordField("password", " class=\"short\" "); ?>                
+					<input type="submit" class="submit" value="Ingresar" />    
+				</div>
 			</form>
 		</div>    
 	</div>
