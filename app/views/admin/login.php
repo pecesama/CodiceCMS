@@ -1,33 +1,35 @@
-	<?php echo $this->renderElement("admin_header"); ?>
+<div class="row">
+	<div class="span12">
+		<?php echo $this->html->form("admin/login/"); ?>
+			<fieldset>
+				<legend>Authentication</legend>
+				
+				<?php if ($this->cookie->check('flash')) { ?>
+					<div class="alert-message error">
+					  <p><strong>Holy guacamole!</strong> <?php echo $this->cookie->flash; ?></p>
+					</div>
+				<?php } ?>
 
-	<div id="page-navigation" class="clearfix"> 
-		<ul class="aright">
-			<li><?php echo $this->html->linkTo("Regresar", "", " title=\"Regresar al inicio\""); ?></li>
-		</ul>
-	</div>
-
-	<div id="page-content" class="clearfix">
-		<h1>Ingresar</h1>
-		
-		<div class="inner-box clearfix">
-			<?php if ($this->cookie->check('flash')) { ?>
-			<div id="sidebar">
-				<div class="error">
-					<?php echo $this->cookie->flash; ?>
-				</div>
-			</div>
-			<?php } ?>
-			
-			<?php echo $this->html->form("admin/login/"); ?>
-				<div id="form-block">    
+				<div class="clearfix">
 					<label for="login">Usuario</label>
-					<?php echo $this->html->textField("login", " class=\"short\" "); ?>
-					<label for="password">Contrase&ntilde;a</label> 
-					<?php echo $this->html->passwordField("password", " class=\"short\" "); ?>                
-					<input type="submit" class="submit" value="Ingresar" />    
+					<div class="input">
+						<?php echo $this->html->textField("login", " class=\"short\" "); ?>
+					</input>
 				</div>
-			</form>
-		</div>    
-	</div>
+				
+				<div class="clearfix">
+					<label for="password">Contrase&ntilde;a</label> 
+					<div class="input">
+						<?php echo $this->html->passwordField("password", " class=\"short\" "); ?>
+					</input>
+				</div>				
+							
+				<div class="actions">
+					<input type="submit" class="btn" value="Ingresar" />
+				</div>
 
-	<?php echo $this->renderElement("admin_footer"); ?>
+			</legend>	
+		</form>
+	</div>
+</div>
+<?php echo $this->renderElement("admin_footer"); ?>

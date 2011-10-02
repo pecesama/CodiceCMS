@@ -1,7 +1,6 @@
-<?php echo $this->html->form("admin/add/"); ?>
 <div class="row">
     <div class="span12">
-      <form>
+      <?php echo $this->html->form("admin/add/"); ?>
         <fieldset>
           <legend>Add entry</legend>
           

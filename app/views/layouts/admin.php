@@ -6,7 +6,6 @@
 		<meta name="generator" content="flavorPHP" />
 		<?php echo $this->html->charsetTag("UTF-8"); ?>
 		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
-    <?php echo $this->html->includeJs("bootstrap-popover"); ?>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>

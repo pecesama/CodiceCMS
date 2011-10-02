@@ -1,9 +1,7 @@
-
-<?php echo $this->html->form("admin/edit/".$id."/"); ?>
-
 <div class="row">
     <div class="span12">
-      <form>
+      <?php echo $this->html->form("admin/edit/".$id."/"); ?>
+
         <fieldset>
           <legend>Updating entry <strong><?php echo $post["title"]; ?></strong></legend>
           
