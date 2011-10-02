@@ -37,10 +37,11 @@
 
           <div class="clearfix">
           	<label for="tags">Etiquetas</label>
-			<div class="input">
-				<?php echo $this->html->textField("tags", " value=\"".htmlspecialchars($post["tags"])."\" class=\"xlarge\" "); ?><br />
-				<small>Separate each tag with a space: urban moblog phone. Or to join 2 words in one tag, use double quotes: "daily commute".</small>
-			</div>
+            <div class="input">
+              <p>Separate each tag with a space: urban moblog phone. Or to join 2 words in one tag, use double quotes: "daily commute".</p>
+              
+      				<?php echo $this->html->textField("tags", " value=\"".htmlspecialchars($post["tags"])."\" class=\"xlarge\" "); ?><br />
+      			</div>
           </div>
 
     	  <div class="actions">

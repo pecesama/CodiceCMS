@@ -2,8 +2,8 @@
 <div class="row">
     <div class="span12">
 		<?php echo $this->html->form("comments/edit/".$id."/"); ?>
-			<div class="row">
-				<div class="offset1">
+			<div class="clearfix">
+				<div class="input">
 					<p><strong>IP</strong> <?php echo $comment["IP"]; ?></p>
 					<p><strong>created</strong>	<?php echo $comment["created"]; ?></p>
 					<p><strong>modified</strong> <?php echo $comment["modified"]; ?></p>
