@@ -27,10 +27,10 @@
           <a class="brand" href="#">Codice CMS</a>
           <ul class="nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">Posts</a></li>
-            <li><a href="#contact">Comments</a></li>
-            <li><a href="#contact">Configuration</a></li>
-            <li><a href="#contact">Logout</a></li>
+            <li><?php echo $this->html->linkTo("Posts","admin");?></li>
+            <li><?php echo $this->html->linkTo("Comments","comments"); ?></li>
+            <li><?php echo $this->html->linkTo("Configuration","admin/config"); ?></li>
+            <li><?php echo $this->html->linkTo("Logout","admin/logout"); ?></li>
           </ul>
            <p class="pull-right">Logged in as <a href="#">username</a></p>
         </div>
@@ -42,11 +42,11 @@
        <div class="well">
           <h5>Manage</h5>
           <ul>
-            <li><a href="#">Entries</a></li>
-            <li><a href="#">Comments</a></li>
-            <li><a href="#">Bookmarks</a></li>
-            <li><a href="#">Upladed files</a></li>
-            <li><a href="#">Codice 	configuration</a></li>
+            <li><?php echo $this->html->linkTo("Entries","admin"); ?></li>
+            <li><?php echo $this->html->linkTo("Comments","comments"); ?></li>
+            <li><?php echo $this->html->linkTo("Bookmarks","#"); ?></li>
+            <li><?php echo $this->html->linkTo("Uploaded files","#"); ?></li>
+            <li><?php echo $this->html->linkTo("Configuration","admin/config"); ?></li>
           </ul>
         </div>
     </div>
