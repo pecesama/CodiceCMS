@@ -1,51 +1,66 @@
-	<?php echo $this->renderElement("admin_header"); ?>
 
-	<div id="page-navigation" class="clearfix">
-		<ul>
-			<li><?php echo $this->html->linkTo("Administrar posts", "admin/", " title=\"Administrar los posts\""); ?></li>
-			<li><?php echo $this->html->linkTo("Administrar comentarios", "comments/", " title=\"Administrar los comentarios\""); ?></li>
-			<li><?php echo $this->html->linkTo("Agregar post", "admin/add/", " title=\"Agregar un nuevo post\""); ?></li>
-			<li><?php echo $this->html->linkTo("Configuraci&oacute;n", "admin/config/", " title=\"Configurar blog\""); ?></li>
-			<li><?php echo $this->html->linkTo("Cerrar sesi&oacute;n", "admin/logout/", " title=\"Terminar la sesi&oacute;n\""); ?></li>
-			<li><?php echo $this->html->linkTo("Ir al blog", "", " title=\"Regresar al blog\""); ?></li>
-		</ul>
-	</div>
-		
-	<div id="page-content" class="clearfix"> 
-		<h1>Codice CMS Dashboard</h1> 
-		
-		<h2>Editar post: <span><?php echo $post["title"]; ?></span></h2> 
-		
-		<div class="inner-box clearfix">
-			<div id="form-block">
-			
-				<?php echo $this->html->form("admin/edit/".$id."/"); ?>
-				
-					<label for="title">T&iacute;tulo</label>
-					<?php echo $this->html->textField("title", " value=\"".$post["title"]."\" class=\"medium\" "); ?>
-					
-					<label for="urlfriendly">URL</label>
-					<?php echo $this->html->textField("urlfriendly", " value=\"".$post["urlfriendly"]."\" class=\"medium\" "); ?>
-					<?php echo $this->html->linkTo("View post",$post["urlfriendly"],"target=\"_blank\"")?>
-					
-					<label for="status">Estado</label>
-					<?php echo $this->html->select("status", $statuses, $post["status"]); ?>
+<?php echo $this->html->form("admin/edit/".$id."/"); ?>
 
-					<label for="content">Contenido</label>
-					<?php echo $this->html->textArea("content", $post["content"], " rows=\"3\" cols=\"3\" "); ?>
-					<em>Contenido del post</em>
-					
-					<label for="tags">Etiquetas</label>
-					<?php echo $this->html->textField("tags", " value=\"".htmlspecialchars($post["tags"])."\" class=\"medium\" "); ?>
-					<em>Separa cada etiqueta con un espacio: moblog urbano teléfono. O bien, para unir 2 palabras en una sola etiqueta, utiliza comillas dobles: "transporte diario". </em>
-					
-					<input class="submit" type="submit" value="Modificar" /> 
-					<input class="submit reset" id="cancelar" name="cancelar" type="submit" value="Cancelar">
-					
-				</form>
-			</div> 
-		
-		</div> 
-	</div>
 	
-	<?php echo $this->renderElement("admin_footer"); ?>
+	
+
+	
+
+	
+	
+	
+</form>
+
+
+<div class="row">
+    <div class="span12">
+      <form>
+        <fieldset>
+          <legend>Updating entry <strong><?php echo $post["title"]; ?></strong></legend>
+          
+          <div class="clearfix">
+          	<label for="title">Title</label>
+          	<div class="input">
+				<?php echo $this->html->textField("title", " class='xlarge' value=\"".$post["title"]."\" "); ?>
+			</div>
+          </div>
+
+          <div class="clearfix">
+			<label for="urlfriendly">URl friendly</label>
+			<div class="input">
+				<?php echo $this->html->textField("urlfriendly", " value=\"".$post["urlfriendly"]."\" class='xlarge' ");?>
+			</div>
+          </div>
+
+          <div class="clearfix">
+          	<label for="status">Publishing status</label>
+          	<div class="input">
+				<?php echo $this->html->select("status", $statuses, $post["status"]); ?>
+			</div>
+          </div>
+
+          <div class="clearfix">
+          	<label for="content">Content for the entry</label>
+          	<div class="input">
+				<?php echo $this->html->textArea("content", $post["content"], " rows=\"3\" class='xxlarge'"); ?>
+			</div>
+          </div>
+
+          <div class="clearfix">
+          	<label for="tags">Etiquetas</label>
+			<div class="input">
+				<?php echo $this->html->textField("tags", " value=\"".htmlspecialchars($post["tags"])."\" class=\"xlarge\" "); ?><br />
+				<small>Separate each tag with a space: urban moblog phone. Or to join 2 words in one tag, use double quotes: "daily commute".</small>
+			</div>
+          </div>
+
+    	  <div class="actions">
+            <input type="submit" class="btn primary" value="Update entry">
+            <button type="reset" class="btn">Cancel</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div><!-- /row -->
+
+<?php echo $this->renderElement("admin_footer"); ?>

@@ -6,8 +6,7 @@
 		<meta name="generator" content="flavorPHP" />
 		<?php echo $this->html->charsetTag("UTF-8"); ?>
 		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
-		
-
+    
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -19,19 +18,6 @@
         padding-top: 60px;
       }
     </style>
-
-		<?php echo $this->html->includeJs("jquery"); ?>
-		<?php echo $this->html->includeJs("controlPanelAjax"); ?>
-		<?php echo $this->html->includeJs("markitup/jquery.markitup.pack"); ?>
-		<?php echo $this->html->includeJs("markitup/sets/html/set"); ?>
-		<?php echo $this->html->includeJs("utils"); ?>
-		<?php echo $this->html->includeCssAbsolute("js/markitup/skins/simple/style"); ?>
-		<?php echo $this->html->includeCssAbsolute("js/markitup/sets/html/style"); ?>
-		<script type="text/javascript" >
-		   $(document).ready(function() {
-			  $("#content").markItUp(my_html);
-		   });
-		</script>
 	</head> 
 	<body> 
 
