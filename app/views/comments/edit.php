@@ -2,6 +2,14 @@
 <div class="row">
     <div class="span12">
 		<?php echo $this->html->form("comments/edit/".$id."/"); ?>
+			<div class="row">
+				<div class="offset1">
+					<p><strong>IP</strong> <?php echo $comment["IP"]; ?></p>
+					<p><strong>created</strong>	<?php echo $comment["created"]; ?></p>
+					<p><strong>modified</strong> <?php echo $comment["modified"]; ?></p>
+				</div>
+			</div>
+
 			<div class="clearfix">
 				<label for="status">Publishing status</label>
 				<div class="input">
@@ -50,29 +58,13 @@
 				</div>
 			</div>
 
-			<p>
-				<strong>IP</strong>
-				<?php echo $comment["IP"]; ?>
-			</p>
-
-			<p>
-				<strong>created</strong>
-				<?php echo $comment["created"]; ?>
-			</p>
-
-			<p>
-				<strong>modified</strong>
-				<?php echo $comment["modified"]; ?>
-			</p>
-
-			
 			<div class="clearfix">
 				<label for="content">Entry content</label>
 				<div class="input">
 				<?php echo $this->html->textArea("content", $comment["content"], " rows=\"3\" class='xxlarge' "); ?>
 				</div>
 			</div>
-			
+
 			<div class="actions">
 				<input class="btn" id="cancelar" name="cancelar" type="submit" value="Cancel">
 				<input class="btn danger" type="submit" value="Save changes" />
