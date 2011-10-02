@@ -21,9 +21,6 @@ class admin_controller extends appcontroller {
 		$C = new configuration();
 		$this->blogConfig = $C->getBlogConfiguration();
 		$this->userConf = $C->getUserConfiguration(1);
-		
-		$this->view->blogConfig = $this->blogConfig;
-		$this->view->userConf = $this->userConf;
 	}
 
 	public function index($id = NULL){
@@ -45,6 +42,9 @@ class admin_controller extends appcontroller {
 		$this->view->pagination = $pagination;
 		$this->view->posts = $P->findAll(NULL, "ID DESC", $limitQuery, NULL);
 		
+		$this->view->blogConfig = $this->blogConfig;
+		$this->view->userConf = $this->userConf;
+
 		$this->view->setLayout("admin");
 		$this->render();
 	}
@@ -74,6 +74,10 @@ class admin_controller extends appcontroller {
 			}
 		}else{
 			$this->view->setLayout("admin");
+
+			$this->view->blogConfig = $this->blogConfig;
+			$this->view->userConf = $this->userConf;
+
 			$this->title_for_layout("Login - Codice CMS");
 			$this->render();
 		}
@@ -116,6 +120,10 @@ class admin_controller extends appcontroller {
 		} else {
 			$this->view->setLayout("admin");
 			$this->title_for_layout($this->l10n->__("Agregar post - Codice CMS"));
+
+			$this->view->blogConfig = $this->blogConfig;
+			$this->view->userConf = $this->userConf;
+
 			$this->render();
 		}
 	}
@@ -172,6 +180,9 @@ class admin_controller extends appcontroller {
 		$this->view->post = $post;
 		$this->view->statuses = $statuses;
 		
+		$this->view->blogConfig = $this->blogConfig;
+		$this->view->userConf = $this->userConf;
+
 		$this->view->setLayout("admin");
 		$this->render();
 	}
@@ -180,7 +191,7 @@ class admin_controller extends appcontroller {
 		$P = new post();
 		$P->find($id);
 		$P->delete();
-		
+
 		$this->redirect("admin/");
 	}
 
@@ -210,9 +221,10 @@ class admin_controller extends appcontroller {
 			$this->redirect("admin/config");
 		}
 		
-		$this->registry->conf = $this->conf;
+		$this->registry->conf = $this->blogConfig;
 		$this->registry->userConf = $this->userConf;
 		$this->plugin->call('admin_init_config');
+
 		$this->view->conf = $this->registry->conf;
 		$this->view->userConf = $this->registry->userConf;
 		

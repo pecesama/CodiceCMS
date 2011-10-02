@@ -1,17 +1,6 @@
 
 <?php echo $this->html->form("admin/edit/".$id."/"); ?>
 
-	
-	
-
-	
-
-	
-	
-	
-</form>
-
-
 <div class="row">
     <div class="span12">
       <form>
