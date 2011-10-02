@@ -44,8 +44,6 @@ class admin_controller extends appcontroller {
 		
 		$this->view->pagination = $pagination;
 		$this->view->posts = $P->findAll(NULL, "ID DESC", $limitQuery, NULL);
-		$this->view->blogConfig = $this->blogConfig;
-		$this->view->userConf = $this->userConf;
 		
 		$this->view->setLayout("admin");
 		$this->render();
