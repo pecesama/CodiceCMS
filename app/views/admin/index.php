@@ -1,3 +1,5 @@
+<h1>Last entries</h1>
+
 <table class="zebra-striped">
 	<thead>
 		<tr>
