@@ -1,17 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head profile="http://gmpg.org/xfn/11">
-	<meta name="generator" content="Codice CMS" />
-	<?php echo $this->html->includeCss("stan512/style"); ?>
-	<?php echo $this->html->includeJs("jquery"); ?>
-	<script> var relativePathToApp = "<?php echo relativePathToApp; ?>"; </script>
-	<?php echo $this->html->includeJs("codice/jquery.scrollTo-min"); ?>
-	<?php echo $this->html->includeJs("codice/php.pack"); ?>
-	<?php echo $this->html->includeJs("codice/codice"); ?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <?php echo $this->html->charsetTag("UTF-8"); ?>
+    <title><?php echo $title_for_layout; ?></title>
+   	<meta name="generator" content="Codice CMS" />
+	<meta name="description" content="">
+    <meta name="author" content="">
+    
+	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
 	<?php echo $includes; ?>
-	<title><?php echo $title_for_layout; ?></title>
 </head>
 <body>
+
+<?php utils::pre($codice);?>
+
 	<div id="todo">
 		<div id="header">
 			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></a></h1>
