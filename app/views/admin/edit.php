@@ -8,7 +8,10 @@
           <div class="clearfix">
           	<label for="title">Title</label>
           	<div class="input">
-				<?php echo $this->html->textField("title", " class='xlarge' value=\"".$post["title"]."\" "); ?>
+				<?php echo $this->html->textField("title", " class='xlarge' value=\"".$post["title"]."\""); ?>
+        <?php echo $this->html->linkTo("?","#"," rel='popover' title='A Title' data-content='And here\'s some amazing content. It's very engaging. right?'"); ?>
+
+         <a href="#" class="btn danger" rel="popover" title="A Title" data-content="And here's some amazing content. It's very engaging. right?">hover for popover</a>
 			</div>
           </div>
 

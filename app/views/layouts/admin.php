@@ -9,14 +9,24 @@
     <meta name="generator" content="flavorPHP" />
 		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <?php echo $this->html->includeJs("jquery"); ?>
-    <?php echo $this->html->includeJs("bootstrap/bootstrap-twipsy"); ?>
+    <?php echo $this->html->includeJs("bootstrap/twipsy"); ?>
+    <?php echo $this->html->includeJs("bootstrap/popover"); ?>
           <script>
             $(function () {
               $("a[rel=twipsy]").twipsy();
             });
           </script>
-
-
+          <script>
+            $(function () {
+              $("a[rel=popover]")
+                .popover({
+                  offset: 10
+                })
+                .click(function(e) {
+                  e.preventDefault()
+                })
+            })
+          </script>
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -52,7 +62,6 @@
       <?php echo $content_for_layout ?>
     </div>
   </div>
-
 
 	</body>
 </html>
