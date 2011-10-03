@@ -34,9 +34,9 @@
     <div class="topbar">
       <div class="fill">
         <div class="container">
-          <a class="brand" href="#">Codice CMS</a>
+          <?php echo $this->html->linkTo("Codice CMS","index","class='brand'");?>
           <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
+            <li class="active"><?php echo $this->html->linkTo("Home","admin"); ?></li>
             <li><?php echo $this->html->linkTo("Posts","admin");?></li>
             <li><?php echo $this->html->linkTo("Comments","comments"); ?></li>
             <li><?php echo $this->html->linkTo("Configuration","admin/config"); ?></li>
