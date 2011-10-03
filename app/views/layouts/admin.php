@@ -47,7 +47,7 @@
           <?php echo $this->html->linkTo("Codice CMS","index","class='brand'");?>
           <ul class="nav">
             <li class="active"><?php echo $this->html->linkTo("Home","admin"); ?></li>
-            <li><?php echo $this->html->linkTo("Posts","admin");?></li>
+            <li><?php echo $this->html->linkTo("Entries","admin");?></li>
             <li><?php echo $this->html->linkTo("Comments","comments"); ?></li>
             <li><?php echo $this->html->linkTo("Configuration","admin/config"); ?></li>
             <li><?php echo $this->html->linkTo("Logout","admin/logout"); ?></li>

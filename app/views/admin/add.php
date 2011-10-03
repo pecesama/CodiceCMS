@@ -8,6 +8,7 @@
           	<label for="title">Title</label>
           	<div class="input">
 				<?php echo $this->html->textField("title", " class='xlarge'"); ?>
+        <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Title.'"); ?>
 			</div>
           </div>
 
@@ -15,6 +16,7 @@
 			<label for="urlfriendly">URl friendly</label>
 			<div class="input">
 				<?php echo $this->html->textField("urlfriendly", " class='xlarge' ");?>
+        <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about URL friendly.'"); ?>
 			</div>
           </div>
 
@@ -22,15 +24,17 @@
           	<label for="content">Content for the entry</label>
           	<div class="input">
 				<?php echo $this->html->textArea("content", null, " rows=\"3\" class='xxlarge'"); ?>
+
 			</div>
           </div>
 
           <div class="clearfix">
-          	<label for="tags">Etiquetas</label>
+          	<label for="tags">Labels or Tags</label>
       			<div class="input">
       				<p>Separate each tag with a space: urban moblog phone. Or to join 2 words in one tag, use double quotes: "daily commute".</p>
               
-              <?php echo $this->html->textField("tags", " class=\"xlarge\" "); ?><br />
+              <?php echo $this->html->textField("tags", " class=\"xlarge\" "); ?>
+              <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Labels or Tags.'"); ?>
       			</div>
           </div>
 
