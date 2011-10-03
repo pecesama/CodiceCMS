@@ -50,9 +50,3 @@
   </div><!-- /row -->
 
 <?php echo $this->renderElement("admin_footer"); ?>
-
-<script>
-$('textarea')
-.css("border","1px solid red")
-.popover(options);
-</script>
