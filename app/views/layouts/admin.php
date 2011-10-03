@@ -8,6 +8,14 @@
     <meta name="author" content="">
     <meta name="generator" content="flavorPHP" />
 		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <?php echo $this->html->includeJs("jquery"); ?>
+    <?php echo $this->html->includeJs("bootstrap/bootstrap-twipsy"); ?>
+          <script>
+            $(function () {
+              $("a[rel=twipsy]").twipsy();
+            });
+          </script>
+
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
