@@ -11,11 +11,27 @@
 	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 
+    <!-- Le styles -->
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+      }
+    </style>
 	<?php echo $includes; ?>
 </head>
 <body>
+	
+	<?php echo $this->renderElement("topbar"); ?>
 
-<?php utils::pre($codice);?>
+	<div class="container">
+		<div class="content">
+			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></h1>
+
+			<h2><?php echo $this->html->linkto($codice["blog_description"]); ?></h2>
+		</div>
+	</div>
+
+<?php exit; ?>
 
 	<div id="todo">
 		<div id="header">
