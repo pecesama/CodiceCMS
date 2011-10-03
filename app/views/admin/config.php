@@ -32,7 +32,7 @@
 
 			<div class="actions">
 				<input class="btn danger" type="submit" value="Save changes" /> 
-				<input class="btn" id="cancelar" name="cancelar" type="submit" value="Cancel">
+				<?php echo $this->html->linkTo("Cancel","admin","class='btn'"); ?>
 			</div>
 		</form>
 	</div>
