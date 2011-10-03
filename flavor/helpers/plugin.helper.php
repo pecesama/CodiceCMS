@@ -21,16 +21,15 @@ class plugin extends singleton{
 		if ($gestor = opendir(Absolute_Path.'/app/plugins')){
 			$plugins = array();
 			while (false !== ($archivo = readdir($gestor))) {
-				if(preg_match('/([\w]+)\.plugin\.php/',$archivo,$out)){
+				if(preg_match('/([\w]+)\.plugin\.php$/',$archivo,$out)){
 					$plugins[] = $out[1];
 				}
 			}
-
 			$this->registry->modify('plugins',array('plugins'=>$plugins));
 		}
 		closedir($gestor);
 	
-		foreach ($this->registry->plugins['plugins'] as $index => $plugin){			
+		foreach ($this->registry->plugins['plugins'] as $index => $plugin){					
 			if (!file_exists(Absolute_Path."app".DIRSEP."plugins".DIRSEP."$plugin.plugin.php")) {
 				unset($this->plugins->plugins[$index]);
 				continue;
