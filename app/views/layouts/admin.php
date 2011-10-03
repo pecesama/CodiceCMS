@@ -55,7 +55,7 @@
                 <li><?php echo $this->html->linkTo("Add entry","admin/add"); ?></li>
               </ul>
             </li>
-            <li class="dropdown active">
+            <li class="dropdown">
               <?php echo $this->html->linkTo("Comments","#"," class='dropdown-toggle'"); ?>
               <ul class="dropdown-menu">
                 <li><?php echo $this->html->linkTo("Last comments","comments"); ?></li>
