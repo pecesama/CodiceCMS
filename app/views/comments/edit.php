@@ -4,9 +4,12 @@
 		<?php echo $this->html->form("comments/edit/".$id."/"); ?>
 			<div class="clearfix">
 				<div class="input">
-					<p><strong>IP</strong> <?php echo $comment["IP"]; ?></p>
-					<p><strong>created</strong>	<?php echo $comment["created"]; ?></p>
-					<p><strong>modified</strong> <?php echo $comment["modified"]; ?></p>
+					<p><strong>IP</strong> <?php echo $comment["IP"]; ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about IP.'"); ?></p>
+					<p><strong>Created date</strong>	<?php echo $comment["created"]; ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Created date.'"); ?></p>
+					<p><strong>Modified date</strong> <?php echo $comment["modified"]; ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Modified date.'"); ?></p>
 				</div>
 			</div>
 
@@ -14,6 +17,7 @@
 				<label for="status">Publishing status</label>
 				<div class="input">
 					<?php echo $this->html->select("status", $statuses, $comment["status"]); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Publishing status.'"); ?>
 				</div>
 			</div>
 
@@ -21,6 +25,7 @@
 				<label for="author">Comment author</label>
 				<div class="input">
 					<?php echo $this->html->textField("author"," value=\"{$comment["author"]}\" class='xlarge'");?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Comment author.'"); ?>
 				</div>
 			</div>
 
@@ -28,6 +33,7 @@
 				<label for="email">Email</label>
 				<div class="input">
 					<?php echo $this->html->textField("email"," value=\"{$comment["email"]}\"");?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Email.'"); ?>
 				</div>
 			</div>
 
@@ -35,6 +41,7 @@
 				<label for="url">Web page</label>
 				<div class="input">
 					<?php echo $this->html->textField("url"," value=\"{$comment["url"]}\" class='xlarge'");?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Web page.'"); ?>
 				</div>
 			</div>
 
@@ -44,8 +51,10 @@
                 		<li>
                 			<label>
                 				<?php $checked = $comment["suscribe"]?"checked=\"true\"":""; ?>
-								<?php echo $this->html->checkbox("suscribe",$checked);?> Suscribed to comments.</span>
+								<?php echo $this->html->checkbox("suscribe",$checked);?> Suscribed to comments.
+								<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Sucribing to comments.'"); ?>
                   			</label>
+
                 		</li>
                 	</ul>
                 </div>
@@ -55,6 +64,7 @@
 				<label>View post</label>
 				<div class="input">
 					<?php echo $this->html->linkTo("Go to: {$comment["post"]["title"]}", $comment["post"]["urlfriendly"]."/", " title=\"View posst\" target=\"_blank\" class='btn'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about View post.'"); ?>
 				</div>
 			</div>
 
