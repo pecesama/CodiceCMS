@@ -66,8 +66,8 @@
 			</div>
 
 			<div class="actions">
-				<input class="btn" id="cancelar" name="cancelar" type="submit" value="Cancel">
 				<input class="btn danger" type="submit" value="Save changes" />
+				<?php echo $this->html->linkTo("Cancel","comments","class='btn'");?>
 			</div>
 		</form>
 	</div>

@@ -37,23 +37,7 @@
       </div>
     </div>
 
-  <div class="container-fluid">
-    <div class="sidebar">
-       <div class="well">
-          <h5>Manage</h5>
-          <ul>
-            <li><?php echo $this->html->linkTo("Entries","admin"); ?>
-              <ul>
-                <li><?php echo $this->html->linkTo("Add","admin/add"); ?></li>
-              </ul>
-            </li>
-            <li><?php echo $this->html->linkTo("Comments","comments"); ?></li>
-            <li><?php echo $this->html->linkTo("Bookmarks","#"); ?></li>
-            <li><?php echo $this->html->linkTo("Uploaded files","#"); ?></li>
-            <li><?php echo $this->html->linkTo("Configuration","admin/config"); ?></li>
-          </ul>
-        </div>
-    </div>
+  <div class="container">
     <div class="content">
       <?php echo $content_for_layout ?>
     </div>

@@ -43,8 +43,8 @@
           </div>
 
     	  <div class="actions">
-            <input type="submit" class="btn primary" value="Update entry">
-            <button type="reset" class="btn">Cancel</button>
+            <input type="submit" class="btn success" value="Update entry">
+            <?php echo $this->html->linkTo("Cancel","admin","class='btn'"); ?>
           </div>
         </fieldset>
       </form>

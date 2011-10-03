@@ -11,7 +11,7 @@
 			<tr id="row<?php echo $comment["ID"];?>">
 				<td><?php echo $comment["content"]; ?></td>
 				<td><?php echo $comment["status"]; ?></td>
-				<td><?php echo $this->html->linkTo("Editar","comments/edit/{$comment["ID"]}"," title=\"{$comment["ID"]}\" class='btn info'"); ?></td>
+				<td><?php echo $this->html->linkTo("Editar","comments/edit/{$comment["ID"]}"," title=\"{$comment["ID"]}\" class='btn primary'"); ?></td>
 				<td><?php echo $this->html->linkTo("Borrar","comments/remove/{$comment["ID"]}"," title=\"{$comment["ID"]}\" class='btn danger'"); ?></td>
 				<td><?php echo $this->html->linkTo("Aprobar","comments/approve/{$comment["ID"]}"," title=\"{$comment["ID"]}\" class='btn success'"); ?></td>
 			</tr>
