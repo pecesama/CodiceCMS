@@ -26,31 +26,16 @@
 	<div class="container">
 		<div class="content">
 			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></h1>
-
 			<h2><?php echo $this->html->linkto($codice["blog_description"]); ?></h2>
-		</div>
-	</div>
 
-<?php exit; ?>
+			<ul class="pills">
+			  <li><?php echo $this->html->linkTo("Home"); ?></li>
+			  <li><?php echo $this->html->linkTo("RSS","feed/rss"); ?></li>
+			</ul>
 
-	<div id="todo">
-		<div id="header">
-			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></a></h1>
-			<h2><?php echo $this->html->linkto($codice["blog_description"]); ?></h2>
-		</div><!-- header -->
-		<div id="topnav">
-			<p>
-				<?php echo $this->html->linkTo("Inicio"); ?>
-				<?php echo $this->html->linkTo("¿Sidebar?","#sidebars"); ?>
-				<?php echo $this->html->linkTo("RSS","feed/rss"); ?>
-			</p>
-		</div><!-- topnav -->
-		<div id="columnas" class="clearfix">
-			<div id="contenido">
-				<?php echo $content_for_layout ?>
-			</div><!-- contenido -->
+			<?php echo $content_for_layout; ?>
 			<?php echo $this->renderElement("index_internalSidebars"); ?>
-		</div><!-- columnas -->
+		</div>
 	</div>
 	
 	<div id="fb-root"></div>
