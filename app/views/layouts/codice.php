@@ -7,9 +7,71 @@
    	<meta name="generator" content="Codice CMS" />
 	<meta name="description" content="">
     <meta name="author" content="">
-    
 	<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+    <?php echo $this->html->includeJs("bootstrap/dropdown"); ?>
+    <?php echo $this->html->includeJs("bootstrap/twipsy"); ?>
+    <?php echo $this->html->includeJs("bootstrap/popover"); ?>
+
+          <script>
+            $(function () {
+              $("a[rel=twipsy]").twipsy();
+              $("a[rel=popover]")
+                .popover({
+                  offset: 10
+                })
+                .click(function(e) {
+                  e.preventDefault()
+                });
+              $(".topbar").dropdown();
+            });
+          </script>
+
+<style>
+/* Based on http://meyerweb.com/eric/tools/css/reset/ */
+.resetCSS input, .resetCSS div, .resetCSS span, .resetCSS applet, .resetCSS object, .resetCSS iframe,
+.resetCSS h1, .resetCSS h2, .resetCSS h3, .resetCSS h4, .resetCSS h5, .resetCSS h6, .resetCSS p, .resetCSS blockquote, .resetCSS pre,
+.resetCSS a, .resetCSS abbr, .resetCSS acronym, .resetCSS address, .resetCSS big, .resetCSS cite, .resetCSS code,
+.resetCSS del, .resetCSS dfn, .resetCSS em, .resetCSS img, .resetCSS ins, .resetCSS kbd, .resetCSS q, .resetCSS s, .resetCSS samp,
+.resetCSS small, .resetCSS strike, .resetCSS strong, .resetCSS sub, .resetCSS sup, .resetCSS tt, .resetCSS var,
+.resetCSS b, .resetCSS u, .resetCSS i, .resetCSS center,
+.resetCSS dl, .resetCSS dt, .resetCSS dd, .resetCSS ol, .resetCSS ul, .resetCSS li,
+.resetCSS fieldset, .resetCSS form, .resetCSS label, .resetCSS legend,
+.resetCSS table, .resetCSS caption, .resetCSS tbody, .resetCSS tfoot, .resetCSS thead, .resetCSS tr, .resetCSS th, .resetCSS td,
+.resetCSS article, .resetCSS aside, .resetCSS canvas, .resetCSS details, .resetCSS embed, 
+.resetCSS figure, .resetCSS figcaption, .resetCSS footer, .resetCSS header, .resetCSS hgroup, 
+.resetCSS menu, .resetCSS nav, .resetCSS output, .resetCSS ruby, .resetCSS section, .resetCSS summary,
+.resetCSS time, .resetCSS mark, .resetCSS audio, .resetCSS video {
+  margin: 0;
+  padding: 0;
+  
+  
+  /*font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;*/
+}
+/* HTML5 display-role reset for older browsers */
+.resetCSS article, .resetCSS aside, .resetCSS details, .resetCSS figcaption, .resetCSS figure, 
+.resetCSS footer, .resetCSS header, .resetCSS hgroup, .resetCSS menu, .resetCSS nav, .resetCSS section {
+  display: block;
+}
+.resetCSS ol, .resetCSS ul {
+  list-style: none;
+}
+.resetCSS blockquote, .resetCSS q {
+  quotes: none;
+}
+.resetCSS blockquote:before, .resetCSS blockquote:after,
+.resetCSS q:before, .resetCSS q:after {
+  content: '';
+  content: none;
+}
+.resetCSS table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+</style>
 
     <!-- Le styles -->
     <style type="text/css">
