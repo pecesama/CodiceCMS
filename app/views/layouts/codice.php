@@ -90,7 +90,7 @@
 			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></h1>
 			<h2><?php echo $this->html->linkto($codice["blog_description"]); ?></h2>
 
-			<ul class="pills">
+			<ul class="tabs">
 			  <li><?php echo $this->html->linkTo("Home"); ?></li>
 			  <li><?php echo $this->html->linkTo("RSS","feed/rss"); ?></li>
 			</ul>

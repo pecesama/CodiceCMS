@@ -14,7 +14,7 @@
 						<?php }?>
 					<?php } ?>
 				</div>
-				<div class="span"><?php echo $this->html->linkTo($post["comments_count"] . " Comentarios","{$post["urlfriendly"]}#comments",'rel="bookmark" title="Comentarios de '.$post["title"].'"'); ?> &#187;</div>
+				<div class="span"><?php echo $this->html->linkTo($post["comments_count"] . " Comments","{$post["urlfriendly"]}#comments",'rel="bookmark" title="Comentarios de '.$post["title"].'"'); ?> &#187;</div>
 				<div class="span facebook"><fb:like href="http://mis-algoritmos.com/<?php echo $post['urlfriendly']; ?>" layout="button_count"></fb:like></div>
 			</div>
 		</div>
