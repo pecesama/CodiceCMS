@@ -1,6 +1,6 @@
 <?php
 
-class Admin_controller extends AppController {
+class Login_controller extends AppController {
 
 	private $blogConfig;
 
@@ -12,7 +12,7 @@ class Admin_controller extends AppController {
 		
 		if($class["action"] != "index" && $class["action"] != "logout") {
 			if($this->session->check("logged") == false) {
-				$this->redirect("admin/index/nosession/");
+				$this->redirect("login/index/nosession/");
 			}
 		}
 		
@@ -43,9 +43,9 @@ class Admin_controller extends AppController {
 				$user = $U->find($id_user);
 				$this->session->user = $user;
 				$this->session->logged = true;
-				$this->redirect("admin/");
+				$this->redirect("login/");
 			} else {
-				$this->redirect("admin/index/fail/");
+				$this->redirect("login/index/fail/");
 			}
 		}else{
 			$this->view->setLayout("admin");
@@ -61,7 +61,7 @@ class Admin_controller extends AppController {
 	function logout() {
 		$this->session->destroy("id_user");
 		$this->session->destroy("logged");
-		$this->redirect("admin/index/logout/");
+		$this->redirect("login/index/logout/");
 	}
 
 }
