@@ -88,7 +88,7 @@
 	<div class="container">
 		<div class="content">
 			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></h1>
-			<h2><?php echo $this->html->linkto($codice["blog_description"]); ?></h2>
+			<h2><?php echo $codice["blog_description"]; ?></h2>
 
 			<ul class="tabs">
 			  <li><?php echo $this->html->linkTo("Home"); ?></li>

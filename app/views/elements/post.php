@@ -39,7 +39,7 @@ $post["autor"]["name"] = "Temporal";
 	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
 
-	<div class="row resetCSS"><?php echo $post['content']; ?></div>
+	<div class="row"><?php echo $post['content']; ?></div>
 
 			<div class="row">
 				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
