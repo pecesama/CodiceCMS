@@ -27,14 +27,17 @@ class Login_controller extends AppController {
 		if($this->session->check("logged") == true) {
 			$this->redirect("entries");
 		}
-		
+
 		//FIXME: utilizar libjrería para mensajes.
 		if ($msg == "nosession") {
-			$this->session->flash("La URL solicitada necesita autentificacion.");
+			$this->session->flash("You need to authenticate to get in this place. Please use your credentiales in the form below.");
+			$this->redirect("login");
 		} elseif ($msg == "fail") {
-			$this->session->flash("Lo siento, la informacion ingresada es incorrecta.");
+			$this->session->flash("The username or password you entered is incorrect.");
+			$this->redirect("login");
 		} elseif ($msg == "logout") {
-			$this->session->flash("Haz terminado la sesion correctamente.");
+			$this->session->flash("Your session has terminated.");
+			$this->redirect("login");
 		}
 
 		if($this->data){
