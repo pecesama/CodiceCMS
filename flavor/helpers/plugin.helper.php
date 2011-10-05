@@ -21,7 +21,7 @@ class plugin extends singleton{
 		if ($gestor = opendir(Absolute_Path.'/app/plugins')){
 			$plugins = array();
 			while (false !== ($archivo = readdir($gestor))) {
-				if(preg_match('/([\w]+)\.plugin\.php/',$archivo,$out)){
+				if(preg_match('/^([\w]+)\.plugin\.php$/',$archivo,$out)){
 					$plugins[] = $out[1];
 				}
 			}
@@ -30,20 +30,24 @@ class plugin extends singleton{
 		}
 		closedir($gestor);
 	
-		foreach ($this->registry->plugins['plugins'] as $index => $plugin){			
-			if (!file_exists(Absolute_Path."app".DIRSEP."plugins".DIRSEP."$plugin.plugin.php")) {
-				unset($this->plugins->plugins[$index]);
-				continue;
-			}else{
-				$file = Absolute_Path.'app'.DIRSEP.'plugins'.DIRSEP.$plugin.'.plugin.php';
-				require_once($file);
-			}
-  
-			if (!class_exists($plugin)) {
-				continue;
-			}
+		$plugins = $this->registry->plugins['plugins'];
+		
+		if(count($plugins) > 0){
+			foreach ($plugins as $index => $plugin){			
+				if (!file_exists(Absolute_Path."app".DIRSEP."plugins".DIRSEP."$plugin.plugin.php")) {
+					unset($this->plugins->plugins[$index]);
+					continue;
+				}else{
+					$file = Absolute_Path.'app'.DIRSEP.'plugins'.DIRSEP.$plugin.'.plugin.php';
+					require_once($file);
+				}
+	  
+				if (!class_exists($plugin)) {
+					continue;
+				}
 
-			$this->plugins['instances'][$plugin] = new $plugin;
+				$this->plugins['instances'][$plugin] = new $plugin;
+			}
 		}
 	}
 	
