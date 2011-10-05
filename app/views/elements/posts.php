@@ -3,7 +3,7 @@
 		<div class="row">
 			<h3><?php echo $this->html->linkTo($post["title"],$post["urlfriendly"],'rel="bookmark" title="Enlace a '.$post["title"].'"'); ?></h3>
 			
-			<div class="row resetCSS"><?php echo $post["content"]; ?></div>
+			<div class="row"><?php echo $post["content"]; ?></div>
 			
 			<div class="row">
 				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
