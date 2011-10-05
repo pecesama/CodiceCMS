@@ -1,6 +1,6 @@
 <?php
 
-class Login_controller extends AppController {
+class Admin_controller extends AppController {
 
 	private $blogConfig;
 
