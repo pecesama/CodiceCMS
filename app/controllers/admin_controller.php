@@ -6,13 +6,13 @@ class Admin_controller extends AppController {
 
 	public function __construct() {
 		parent::__construct();
-		
+
 		$R = registry::getInstance();
 		$class = $R->router->getClass();
 		
-		if($class["action"] != "login" && $class["action"] != "logout") {
+		if($class["action"] != "index" && $class["action"] != "logout") {
 			if($this->session->check("logged") == false) {
-				$this->redirect("admin/login/nosession/");
+				$this->redirect("admin/index/nosession/");
 			}
 		}
 		
@@ -36,7 +36,7 @@ class Admin_controller extends AppController {
 		} elseif ($msg == "logout") {
 			$this->session->flash("Haz terminado la sesion correctamente.");
 		}
-		
+
 		if($this->data){
 			$U = new user();
 			if($id_user = $U->validateLogin($this->data)) {
@@ -45,7 +45,7 @@ class Admin_controller extends AppController {
 				$this->session->logged = true;
 				$this->redirect("admin/");
 			} else {
-				$this->redirect("admin/login/fail/");
+				$this->redirect("admin/index/fail/");
 			}
 		}else{
 			$this->view->setLayout("admin");
@@ -61,7 +61,7 @@ class Admin_controller extends AppController {
 	function logout() {
 		$this->session->destroy("id_user");
 		$this->session->destroy("logged");
-		$this->redirect("admin/login/logout/");
+		$this->redirect("admin/index/logout/");
 	}
 
 }
