@@ -44,8 +44,7 @@
 
 <?php echo $this->renderElement("topbar"); ?>
 
-  <div class="container">
-    
+  <div class="container">    
     <div class="content">
       <?php echo $content_for_layout ?>
     </div>
