@@ -6,15 +6,6 @@ class Login_controller extends AppController {
 
 	public function __construct() {
 		parent::__construct();
-
-		$R = registry::getInstance();
-		$class = $R->router->getClass();
-		
-		if($class["action"] != "index" && $class["action"] != "logout") {
-			if($this->session->check("logged") == false) {
-				$this->redirect("login/index/nosession/");
-			}
-		}
 		
 		$this->plugin->call('admin_init');
 		
@@ -28,7 +19,7 @@ class Login_controller extends AppController {
 			$this->redirect("entries");
 		}
 
-		//FIXME: utilizar libjrería para mensajes.
+		//FIXME: utilizar librería para mensajes.
 		if ($msg == "nosession") {
 			$this->session->flash("You need to authenticate to get in this place. Please use your credentiales in the form below.");
 			$this->redirect("login");

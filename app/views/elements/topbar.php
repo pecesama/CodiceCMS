@@ -1,3 +1,4 @@
+<?php if($this->User->isLogged()){ ?>
     <div class="topbar">
       <div class="fill">
         <div class="container">
@@ -26,10 +27,11 @@
           </form>
 
           <ul>
-            <li><?php echo $this->html->linkTo("Logout","admin/logout"); ?></li>
+            <li><?php echo $this->html->linkTo("Logout","login/logout"); ?></li>
           </ul>
 
           <p class="pull-right">Logged in as <a href="#">username</a></p>
         </div>
       </div>
     </div>
+<?php } ?>
