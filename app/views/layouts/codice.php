@@ -38,20 +38,19 @@
 </head>
 <body>
 	
-	<?php echo $this->renderElement("topbar"); ?>
+	<?php echo $this->renderElement("admin_topbar"); ?>
 
-	<div class="container">
+	<div class="container-fluid">
+		<div class="sidebar">
+			<?php echo $this->renderElement("index_sidebar"); ?>
+		</div>
 		<div class="content">
-			<h1><?php echo $this->html->linkTo($codice["blog_name"]); ?></h1>
-			<h2><?php echo $codice["blog_description"]; ?></h2>
+			<h1><?php echo $this->html->linkTo($config["blog"]["blog_name"]); ?></h1>
+			<h2><?php echo $config["blog"]["blog_description"]; ?></h2>
 
-			<ul class="tabs">
-			  <li><?php echo $this->html->linkTo("Home"); ?></li>
-			  <li><?php echo $this->html->linkTo("RSS","feed/rss"); ?></li>
-			</ul>
+			<?php echo $this->renderElement("index_tabs"); ?>
 
 			<?php echo $content_for_layout; ?>
-			<?php echo $this->renderElement("index_internalSidebars"); ?>
 		</div>
 	</div>
 	

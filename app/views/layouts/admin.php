@@ -42,7 +42,7 @@
 	</head> 
 	<body> 
 
-<?php echo $this->renderElement("topbar"); ?>
+<?php echo $this->renderElement("admin_topbar"); ?>
 
   <div class="container">    
     <div class="content">

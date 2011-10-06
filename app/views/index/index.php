@@ -1,5 +1,5 @@
 <?php if($single === true){
-	$this->renderElement("post");
+	$this->renderElement("entry");
 }else{
-	$this->renderElement("posts");
+	$this->renderElement("entries");
 } ?>
