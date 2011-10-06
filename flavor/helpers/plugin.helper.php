@@ -25,7 +25,6 @@ class plugin extends singleton{
 					$plugins[] = $out[1];
 				}
 			}
-
 			$this->registry->modify('plugins',array('plugins'=>$plugins));
 		}
 		closedir($gestor);
