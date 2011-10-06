@@ -5,8 +5,9 @@ class Entries_controller extends AppController{
 	public function __construct(){
 		parent::__construct();
 
-		echo $this->User->isLogged() ? "si" : "no";
-		exit;
+		if($this->User->isLogged() === FALSE){
+			$this->redirect("login");
+		}
 	}
 
 	public function index($id = null){
