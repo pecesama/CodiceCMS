@@ -23,10 +23,11 @@ class Config_controller extends AppController{
 					//adding new record.
 					$C = new configuration();
 					
-					$new_value = array();
-					$new_value['name'] = $name;
-					$new_value['value'] = $value;
-					$new_value['id_user'] = 1;
+					$new_value = array(
+						"name" => $name,
+						"value" => $value,
+						"id_user" => 1
+					);
 					
 					$C->prepareFromArray($new_value);
 					$C->save();

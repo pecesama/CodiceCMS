@@ -1,17 +1,10 @@
 <?php
 
 class Login_controller extends AppController {
-
-	private $blogConfig;
-
 	public function __construct() {
 		parent::__construct();
 		
 		$this->plugin->call('admin_init');
-		
-		$C = new configuration();
-		$this->blogConfig = $C->getBlogConfiguration();
-		$this->userConf = $C->getUserConfiguration(1);
 	}
 
 	public function index($msg = null){
@@ -43,10 +36,6 @@ class Login_controller extends AppController {
 			}
 		}else{
 			$this->view->setLayout("admin");
-
-			$this->view->blogConfig = $this->blogConfig;
-			$this->view->userConf = $this->userConf;
-
 			$this->title_for_layout("Login - Codice CMS");
 			$this->render();
 		}

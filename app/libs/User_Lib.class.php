@@ -4,6 +4,10 @@ class User_lib extends singleton{
 
 	private $session;
 
+	public static function getInstance() {
+		return parent::getInstance(get_class());
+	}
+
 	public function __construct(){
 		$this->session = session::getInstance();
 	}

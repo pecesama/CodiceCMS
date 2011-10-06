@@ -2,8 +2,6 @@
 
 class index_controller extends appcontroller {
 
-	private $conf;
-
 	public function __construct() {
 		parent::__construct(); 
 		$this->plugin->call('index_init');
@@ -40,15 +38,13 @@ class index_controller extends appcontroller {
 		$this->plugin->call('index_load');
 		
 		$page = (int) (is_null($page)) ? 1 : $page ;
-		
-		$C = new configuration();
+
 		$P = new post();
 		$L = new link();
 		
 		$urlfriendly = rawurlencode($P->sql_escape($urlfriendly));//Sanitize
 		
-		$codice = $C->getBlogConfiguration();
-		$title_for_layout = $codice['blog_name'];
+		$title_for_layout = $this->config["blog"]['blog_name'];
 		
 		$links = $L->findAllBy("type","internal");//links para el sidebar
 		
@@ -72,7 +68,7 @@ class index_controller extends appcontroller {
 			}
 		}else{
 			$total_rows = $P->countPosts();
-			$limit = $codice['blog_posts_per_page'];
+			$limit = $this->config["blog"]['blog_posts_per_page'];
 			$offset = (($page-1) * $limit);
 			$limitQuery = $offset.",".$limit;
 			$targetpage = $this->path.'index/page/';
@@ -112,7 +108,6 @@ class index_controller extends appcontroller {
 		
 		$this->view->setLayout("codice");
 		
-		$this->view->codice = $codice;
 		$this->view->urlfriendly = $urlfriendly;
 		$this->view->pagination = $pagination;
 		$this->view->busqueda = $busqueda;
@@ -134,19 +129,16 @@ class index_controller extends appcontroller {
 	}
 	
 	public function addComment($urlfriendly = null){
-		$C = new configuration();
-		$codice = $C->getBlogConfiguration();
-	
 		if($this->data){
 			if(is_null($urlfriendly) === true){
-				$this->redirect($codice['blog_siteurl'], true);
+				$this->redirect($this->config["blog"]['blog_siteurl'], true);
 			}
 		
 			$P = new post();
 			$post = $P->findBy('urlfriendly',$urlfriendly);
 
 			if($P->isNew() === true){
-				$this->redirect($codice['blog_siteurl'], true);
+				$this->redirect($this->config["blog"]['blog_siteurl'], true);
 			}
 			
 			if(isset($this->data["resultado"]) === true){

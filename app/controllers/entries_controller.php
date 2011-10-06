@@ -10,14 +10,14 @@ class Entries_controller extends AppController{
 		}
 	}
 
-	public function index($id = null){
+	public function index($page = null){
 		$P = new post();
 		
 		$total_rows = $P->countPosts();
 		
 		//preparing pagination.
 		$page = (is_null($page)) ? 1 : $page ;
-		$limit = $this->userConf['posts_per_page'];
+		$limit = $this->config["user"]["posts_per_page"];
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		
@@ -25,13 +25,10 @@ class Entries_controller extends AppController{
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		
 		//preparing views
-		$this->title_for_layout("Administraci&oacute;n - Codice CMS");
+		$this->title_for_layout("Control panel - Codice CMS");
 		
 		$this->view->pagination = $pagination;
 		$this->view->posts = $P->findAll(NULL, "ID DESC", $limitQuery, NULL);
-		
-		$this->view->blogConfig = $this->blogConfig;
-		$this->view->userConf = $this->userConf;
 
 		$this->view->setLayout("admin");
 		$this->render();
@@ -72,11 +69,8 @@ class Entries_controller extends AppController{
 			
 			$this->redirect("admin/");
 		} else {
+			$this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
 			$this->view->setLayout("admin");
-			$this->title_for_layout($this->l10n->__("Agregar post - Codice CMS"));
-
-			$this->view->blogConfig = $this->blogConfig;
-			$this->view->userConf = $this->userConf;
 
 			$this->render();
 		}
@@ -138,9 +132,6 @@ class Entries_controller extends AppController{
 		$this->view->post = $post;
 		$this->view->statuses = $statuses;
 		
-		$this->view->blogConfig = $this->blogConfig;
-		$this->view->userConf = $this->userConf;
-
 		$this->view->setLayout("admin");
 		$this->render();
 	}

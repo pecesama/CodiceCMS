@@ -7,25 +7,17 @@ class comments_controller extends appcontroller{
 		if($this->User->isLogged() === FALSE){
 			$this->redirect("login");
 		}
-
-		$config = new configuration();
-		$blogConfig = $config->getBlogConfiguration();
-		$userConfig = $config->getUserConfiguration(1);
-
-		$this->conf = $blogConfig;
-		$this->userConf = $userConfig;
 	}
 	
 	public function index($id = NULL){
 		$this->view->setLayout("admin");
-		$this->view->conf = $this->conf;
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
 
 		$comment = new comment();
 		$total_rows = $comment->countCommentsByPost();
 		$page = $id;
 		$page = (is_null($page)) ? 1 : $page ;
-		$limit = $this->userConf['posts_per_page'];
+		$limit = $this->config["user"]['posts_per_page'];
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		$targetpage = $this->path.'comments/';
@@ -61,7 +53,6 @@ class comments_controller extends appcontroller{
 		$id = (int) $id;
 		if(!$id)$this->redirect('comments');
 
-		$this->view->conf = $this->conf;
 		$Comment = new comment();
 		$comment = $Comment->find($id);
 

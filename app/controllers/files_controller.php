@@ -7,23 +7,16 @@ class files_controller extends appcontroller{
 		if($this->session->check("logged") == false) {
 			$this->redirect("admin/login/nosession/");
 		}
-		
-		$config = new configuration();
-		$blogConfig = $config->getBlogConfiguration();
-		$userConfig = $config->getUserConfiguration(1);
-		$this->conf = $blogConfig;
-		$this->userConf = $userConfig;
 	}
 	
 	public function index($id = NULL){
 		$this->view->setLayout("admin");
-		$this->view->conf = $this->conf;
 		$this->title_for_layout($this->l10n->__("Archivos - Codice CMS"));
 		$f= new file();
 		$this->view->files = $f->findAll();
 		//Comprobamos que el directorio destino exista
-		if(!is_dir('app/'.$this->conf['blog_upload_folder'])){
-			$this->session->flash($this->l10n->__("Para poder subir archivos tiene que existir y tener los permisos correspondientes  el directorio ").$this->conf['blog_upload_folder']);
+		if(!is_dir('app/'.$this->config["blog"]['blog_upload_folder'])){
+			$this->session->flash($this->l10n->__("Para poder subir archivos tiene que existir y tener los permisos correspondientes  el directorio ").$this->config["blog"]['blog_upload_folder']);
 			$this->view->disableUploadForm = true;
 		}else{
 			$this->view->disableUploadForm = false;
@@ -48,7 +41,7 @@ class files_controller extends appcontroller{
 		$file->find($id);
 		$file->delete();
 		try{
-			unlink('app/'.$this->conf['blog_upload_folder'].'/'.$file->name);
+			unlink('app/'.$this->config["blog"]['blog_upload_folder'].'/'.$file->name);
 			$this->session->flash($this->l10n->__("Borrado"));
 		}catch(Exception $e){
 			$this->session->flash($this->l10n->__("No se pudo borrar el archivo, comprueba los permisos del directorio"));
@@ -69,11 +62,11 @@ class files_controller extends appcontroller{
 				exit();
 			}
 			$ref = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : ''; 
-			if($file->hotlink === 1 && !empty($ref) && strpos($ref,$this->conf['blog_siteurl'])===0 || strpos($ref,'http')!==0){
+			if($file->hotlink === 1 && !empty($ref) && strpos($ref,$this->config["blog"]['blog_siteurl'])===0 || strpos($ref,'http')!==0){
 				header('HTTP/1.0 403 Forbidden');
 				exit();
 			}
-			$file_url = 'app/'.$this->conf['blog_upload_folder'].'/'.$file->url;
+			$file_url = 'app/'.$this->config["blog"]['blog_upload_folder'].'/'.$file->url;
 			$file->touch(); // actualiza los tiempos de acceso
 			$stat=stat($file_url);
 			// Caching control
@@ -131,7 +124,7 @@ class files_controller extends appcontroller{
 				$this->session->flash("Archivo duplicado");
 				$error = true;
 			}
-			if(!$error && move_uploaded_file($_FILES['new_file']['tmp_name'],'app/'.$this->conf['blog_upload_folder'].'/'.$_FILES['new_file']['name'])){
+			if(!$error && move_uploaded_file($_FILES['new_file']['tmp_name'],'app/'.$this->config["blog"]['blog_upload_folder'].'/'.$_FILES['new_file']['name'])){
 				$file->save();
 				$this->session->flash('Agregado');
 			}else{
