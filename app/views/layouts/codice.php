@@ -40,17 +40,20 @@
 	
 	<?php echo $this->renderElement("admin_topbar"); ?>
 
-	<div class="container-fluid">
-		<div class="sidebar">
-			<?php echo $this->renderElement("index_sidebar"); ?>
-		</div>
-		<div class="content">
+	<div class="container">
+		<div class="row">
 			<h1><?php echo $this->html->linkTo($config["blog"]["blog_name"]); ?></h1>
 			<h2><?php echo $config["blog"]["blog_description"]; ?></h2>
 
 			<?php echo $this->renderElement("index_tabs"); ?>
-
-			<?php echo $content_for_layout; ?>
+		</div>
+		<div class="row">
+			<div class="span4">
+				<?php echo $this->renderElement("index_sidebar"); ?>
+			</div>
+			<div class="span12">
+				<?php echo $content_for_layout; ?>
+			</div>
 		</div>
 	</div>
 	

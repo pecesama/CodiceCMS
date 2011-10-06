@@ -1,7 +1,7 @@
 <?php
 $post["autor"]["name"] = "Temporal";
 ?>
-<div class="row">
+<div>
 	<h3><?php echo $post['title']; ?></h3>
 				<div class="row">
 				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
@@ -39,7 +39,7 @@ $post["autor"]["name"] = "Temporal";
 	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	</script>
 
-	<div class="row"><?php echo $post['content']; ?></div>
+	<?php echo $post['content']; ?>
 
 			<div class="row">
 				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
@@ -55,9 +55,9 @@ $post["autor"]["name"] = "Temporal";
 			</div>
 
 	<div class="row">
-		<?php echo $this->renderElement("comentarios"); ?>
+		<?php echo $this->renderElement("comments"); ?>
 		
 		<h4 class="respond">Deja un comentario</h4>
-		<?php echo $this->renderElement("form_addComment"); ?>
+		<?php echo $this->renderElement("comments_add"); ?>
 	</div>
 </div>
