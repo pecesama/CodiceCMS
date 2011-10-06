@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span12">
-      <?php echo $this->html->form("admin/add/"); ?>
+      <?php echo $this->html->form("entries/create/"); ?>
         <fieldset>
           <legend>Add entry</legend>
           
@@ -41,7 +41,7 @@
     	  <div class="actions">
             <input type="submit" class="btn primary" name="borrador" value="Save as Draft">
             <input type="submit" class="btn danger" name="publicar" value="Publish Entry">
-            <button type="reset" class="btn">Cancel</button>
+            <?php echo $this->html->linkTo("Cancel","entries"," class='btn'"); ?> 
           </div>
 
         </fieldset>

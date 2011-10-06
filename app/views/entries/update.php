@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span12">
-      <?php echo $this->html->form("admin/edit/".$id."/"); ?>
+      <?php echo $this->html->form("entries/update/".$id."/"); ?>
 
         <fieldset>
           <legend>Updating entry <strong><?php echo $post["title"]; ?></strong></legend>
@@ -49,7 +49,7 @@
 
     	  <div class="actions">
             <input type="submit" class="btn success" value="Update entry">
-            <?php echo $this->html->linkTo("Cancel","admin","class='btn'"); ?>
+            <?php echo $this->html->linkTo("Cancel","entries","class='btn'"); ?>
           </div>
         </fieldset>
       </form>

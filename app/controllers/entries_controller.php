@@ -21,7 +21,7 @@ class Entries_controller extends AppController{
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		
-		$targetpage = $this->path.'admin/index/';
+		$targetpage = $this->path.'entries/index/';
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		
 		//preparing views
@@ -38,7 +38,7 @@ class Entries_controller extends AppController{
 		if ($this->data) {
 			$P = new post();
 			if(isset($this->data['cancelar'])) {
-				$this->redirect("admin/");
+				$this->redirect("entries");
 			}
 			
 			if (isset($this->data['borrador'])) {
@@ -49,7 +49,7 @@ class Entries_controller extends AppController{
 				$this->data['status'] = 'publish';
 				unset($this->data['publicar']);
 			} else {
-				$this->redirect("admin/");
+				$this->redirect("entries");
 			}
 			
 			if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
@@ -67,7 +67,7 @@ class Entries_controller extends AppController{
 			$post_id = $P->db->lastId();
 			$P->updateTags($post_id,$tags);
 			
-			$this->redirect("admin/");
+			$this->redirect("entries");
 		} else {
 			$this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
 			$this->view->setLayout("admin");
@@ -80,10 +80,12 @@ class Entries_controller extends AppController{
 		
 	}
 
-	public function update(){
+	public function update($id = null){
 		$id = (int) $id;
-		if(!$id)$this->redirect('admin');
-		
+		if($id <= 0){
+			$this->redirect("entries");
+		}
+
 		$statuses = array(
 			"publish",
 			"draft"
@@ -91,7 +93,7 @@ class Entries_controller extends AppController{
 		
 		if ($this->data) {
 			if(isset($this->data['cancelar'])){
-				$this->redirect("admin/");
+				$this->redirect("entries");
 			}else{
 				$P = new post();
 				$P->find($id); 
@@ -115,7 +117,7 @@ class Entries_controller extends AppController{
 				
 				$this->session->flash('Información guardada correctamente.');
 				
-				$this->redirect("admin/edit/$id");
+				$this->redirect("entries/update/$id");
 			}
 		}
 		
@@ -141,7 +143,7 @@ class Entries_controller extends AppController{
 		$P->find($id);
 		$P->delete();
 
-		$this->redirect("admin/");
+		$this->redirect("entries");
 	}
 	
 }

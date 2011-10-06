@@ -8,8 +8,8 @@
             <li class="dropdown active">
               <?php echo $this->html->linkTo("Entries","#"," class='dropdown-toggle'"); ?>
               <ul class="dropdown-menu">
-                <li><?php echo $this->html->linkTo("Last entries","admin"); ?></li>
-                <li><?php echo $this->html->linkTo("Add entry","admin/add"); ?></li>
+                <li><?php echo $this->html->linkTo("Last entries","entries"); ?></li>
+                <li><?php echo $this->html->linkTo("Add entry","entries/create"); ?></li>
               </ul>
             </li>
             <li class="dropdown">
