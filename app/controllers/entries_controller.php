@@ -138,11 +138,16 @@ class Entries_controller extends AppController{
 		$this->render();
 	}
 
-	public function delete(){
+	public function delete($id = null){
+		$id = (int) $id;
+		if($id <= 0){
+			$this->redirect("entries");
+		}
+
 		$P = new post();
 		$P->find($id);
 		$P->delete();
-
+		
 		$this->redirect("entries");
 	}
 	
