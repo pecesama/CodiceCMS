@@ -1,18 +1,11 @@
 <?php
 
-class User_lib{
+class User_lib extends singleton{
 
 	private $session;
 
 	public function __construct(){
 		$this->session = session::getInstance();
-	}
-
-	//Validates if is logged, if not, redirects to login.
-	public function validateLogin(){
-		if($this->session->check("logged") == false) {
-			$this->redirect("login/nosession/");
-		}
 	}
 
 	//Returns TRUE if is logged or FALSE if not.
