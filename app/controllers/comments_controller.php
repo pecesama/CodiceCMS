@@ -49,7 +49,7 @@ class comments_controller extends appcontroller{
 		$this->render();
 	}
 	
-	public function edit($id = NULL) {
+	public function update($id = NULL) {
 		$id = (int) $id;
 		if(!$id)$this->redirect('comments');
 
@@ -87,7 +87,7 @@ class comments_controller extends appcontroller{
 				$comment->prepareFromArray($_POST);
 
 				$comment->save();
-				$this->redirect("comments/edit/$id");
+				$this->redirect("comments/update/$id");
 			}
 		} else {
 			$this->view->setLayout("admin");
@@ -96,7 +96,7 @@ class comments_controller extends appcontroller{
 		}
 	}
 	
-	public function remove($id){
+	public function delete($id){
 		$comment = new comment();
 		$comment->find($id);
 		$comment->delete();
@@ -108,6 +108,7 @@ class comments_controller extends appcontroller{
 		}
 	}
 	
+	//A kind of update()
 	public function approve($id){
 		$Comment = new comment();
 		$Comment->find($id);

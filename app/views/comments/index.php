@@ -13,8 +13,8 @@
 			<tr id="row<?php echo $comment["ID"];?>">
 				<td><?php echo $comment["content"]; ?></td>
 				<td><?php echo $comment["status"]; ?></td>
-				<td><?php echo $this->html->linkTo("Edit","comments/edit/{$comment["ID"]}"," class='btn primary' rel='twipsy' title='Modify the content of this comment before publishing it.'"); ?></td>
-				<td><?php echo $this->html->linkTo("Remove","comments/remove/{$comment["ID"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
+				<td><?php echo $this->html->linkTo("Edit","comments/update/{$comment["ID"]}"," class='btn primary' rel='twipsy' title='Modify the content of this comment before publishing it.'"); ?></td>
+				<td><?php echo $this->html->linkTo("Remove","comments/delete/{$comment["ID"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
 				<td><?php echo $this->html->linkTo("Approve","comments/approve/{$comment["ID"]}"," class='btn success' rel='twipsy' title='Approve this comment.'"); ?></td>
 			</tr>
 		<?php } ?>

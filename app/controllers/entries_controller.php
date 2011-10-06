@@ -147,7 +147,6 @@ class Entries_controller extends AppController{
 		$P = new post();
 		$P->find($id);
 		$P->delete();
-		
 		$this->redirect("entries");
 	}
 	
