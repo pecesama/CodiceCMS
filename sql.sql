@@ -78,7 +78,16 @@ CREATE TABLE IF NOT EXISTS `tags` (
 -- Dumping data for table `tags`
 --
 
-INSERT INTO `tags` (`tag_id`, `tag`, `urlfriendly`) VALUES
+CREATE  TABLE `codice`.`tags` (
+  `idTag` INT NOT NULL AUTO_INCREMENT COMMENT 'identificador unico de la etiqueta' ,
+  `tag` VARCHAR(255) NOT NULL COMMENT 'descripcion de la etiqueta' ,
+  `urlfriendly` VARCHAR(255) NOT NULL COMMENT 'texto unico para busqueda de post por etiqueta' ,
+  PRIMARY KEY (`idTag`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES
 (1, 'general', 'general'),
 (7, 'humor', 'humor'),
 (11, 'web 2.0', 'web-20'),
@@ -107,21 +116,13 @@ INSERT INTO `tags` (`tag_id`, `tag`, `urlfriendly`) VALUES
 (51, 'html', 'html'),
 (52, ' ', '');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `tags_rel`
---
-
-CREATE TABLE IF NOT EXISTS `tags_rel` (
-  `tag_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tags_rel`
-
--- --------------------------------------------------------
+CREATE  TABLE `codice`.`rel_tags` (
+  `idTag` INT NOT NULL COMMENT 'Relacion de la etiqueta' ,
+  `idPost` INT NOT NULL COMMENT 'Relacion del post\n' ,
+  PRIMARY KEY (`idTag`, `idPost`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
 
 --
 -- Table structure for table `users`
