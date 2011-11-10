@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
-CREATE  TABLE `codice`.`configurations` (
+CREATE  TABLE `configurations` (
   `idConfiguration` INT NOT NULL AUTO_INCREMENT ,
   `idUser` INT NOT NULL ,
   `name` VARCHAR(100) NULL COMMENT 'Nombre de la configuracion.\n' ,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   FULLTEXT KEY `content` (`post`,`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-CREATE  TABLE `codice`.`tags` (
+CREATE  TABLE `tags` (
   `idTag` INT NOT NULL AUTO_INCREMENT COMMENT 'identificador unico de la etiqueta' ,
   `tag` VARCHAR(255) NOT NULL COMMENT 'descripcion de la etiqueta' ,
   `urlfriendly` VARCHAR(255) NOT NULL COMMENT 'texto unico para busqueda de post por etiqueta' ,
@@ -97,7 +97,7 @@ INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES
 (51, 'html', 'html'),
 (52, ' ', '');
 
-CREATE  TABLE `codice`.`rel_tags` (
+CREATE  TABLE `rel_tags` (
   `idTag` INT NOT NULL COMMENT 'Relacion de la etiqueta' ,
   `idPost` INT NOT NULL COMMENT 'Relacion del post\n' ,
   PRIMARY KEY (`idTag`, `idPost`) )
@@ -127,10 +127,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_user`, `name`, `login`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
+INSERT INTO `users` (`idUser`, `firstName`, `login`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Victor De la Rocha', 'admin', md5('admin'), 'contacto@mis-algoritmos.com', 'http://www.codice-cms.org/', 'Programador PHP.', NULL, NULL);
 
-CREATE  TABLE `codice`.`status` (
+CREATE  TABLE `status` (
   `idStatus` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(100) NOT NULL COMMENT 'Nombre del estatus que serían utilizados por (posts, comments)' ,
   PRIMARY KEY (`idStatus`) )
@@ -138,7 +138,7 @@ ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
-CREATE  TABLE `codice`.`files` (
+CREATE  TABLE `files` (
   `idFile` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(150) NOT NULL COMMENT 'Nombre del archivo.\n' ,
   `downloadCounter` INT NULL COMMENT 'Contador de descargas.\n' ,
@@ -151,7 +151,7 @@ ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
-CREATE  TABLE `codice`.`links` (
+CREATE  TABLE `links` (
   `idLink` INT NOT NULL AUTO_INCREMENT COMMENT 'Campo autonumerico identificador del registro\n' ,
   `name` VARCHAR(255) NULL COMMENT 'nombre del link\n' ,
   `link` VARCHAR(255) NULL COMMENT 'direccion url\n' ,
@@ -191,7 +191,7 @@ INSERT INTO `links` (`name`, `link`, `type`, `created`, `modified`, `idLink`) VA
 ('pmsilva.com', 'http://pmsilva.com/', 'external', NULL, NULL, 57),
 ('Victor De la Rocha', 'http://victordelarocha.com', 'external', '2009-07-25 13:14:15', '2009-07-25 13:14:15', 62);
 
-CREATE  TABLE `codice`.`plugins` (
+CREATE  TABLE `plugins` (
   `idPlugin` INT NOT NULL AUTO_INCREMENT ,
   `plugin` VARCHAR(255) NULL ,
   `description` TEXT NULL ,
