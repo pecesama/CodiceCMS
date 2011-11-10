@@ -1,3 +1,4 @@
+--
 
 CREATE TABLE IF NOT EXISTS `comments` (
   `suscribe` varchar(255) DEFAULT NULL,
