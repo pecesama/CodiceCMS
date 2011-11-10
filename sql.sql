@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id_user`, `firstName`, `lastName`, `user`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
+INSERT INTO `users` (`idUser`, `firstName`, `lastName`, `user`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Administrador', 'De Codice', 'admin', md5('admin'), 'contacto@codicecms.com', 'http://www.codicecms.com/', 'Administrador de Codice CMS.', NOW(), NOW());
 
 CREATE  TABLE `status` (
