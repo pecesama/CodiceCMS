@@ -17,23 +17,20 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49477 ;
 
---
--- Table structure for table `configurations`
---
 
-CREATE TABLE IF NOT EXISTS `configurations` (
-  `name` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  `id_user` int(11) NOT NULL,
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+CREATE  TABLE `codice`.`configurations` (
+  `idConfiguration` INT NOT NULL AUTO_INCREMENT ,
+  `idUser` INT NOT NULL ,
+  `name` VARCHAR(100) NULL COMMENT 'Nombre de la configuracion.\n' ,
+  `value` VARCHAR(255) NULL COMMENT 'Valor de la configuracion.\n' ,
+  `created` DATETIME NULL COMMENT 'Fecha de creacion del registro.\n' ,
+  `modified` DATETIME NULL COMMENT 'Fecha de última modificacion del registro.' ,
+  PRIMARY KEY (`idConfiguration`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
 
---
--- Dumping data for table `configurations`
---
-
-INSERT INTO `configurations` (`name`, `value`, `id_user`, `id`) VALUES
+INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALUES
 ('blog_name', 'Blog Name', 1, 1),
 ('blog_description', 'Blog description', 1, 2),
 ('blog_siteurl', 'http://localhost/codice', 1, 3),
