@@ -1,10 +1,10 @@
 <?php
 $host = "localhost";
 $user = "root";
-$pass = "pass";
+$pass = "";
 
-$db = "cms";
-$prefix = '';
-$db_source = "misalgor";
-$siteurl = "http://localhost/cms";
+$db = "engineer";
+$prefix = 'engineer';
+$db_source = "";
+$siteurl = "http://localhost/engineer-stories";
 ?>
