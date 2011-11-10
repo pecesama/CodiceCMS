@@ -47,31 +47,6 @@ INSERT INTO `configurations` (`name`, `value`, `id_user`, `id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files`
---
-
-CREATE TABLE IF NOT EXISTS `files` (
-  `id_file` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `created` datetime NOT NULL,
-  `hotlink` int(1) NOT NULL,
-  `last_access` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `count` int(11) NOT NULL DEFAULT '0',
-  `stats` int(1) NOT NULL,
-  `url` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  PRIMARY KEY (`id_file`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
-
---
--- Dumping data for table `files`
---
-
-INSERT INTO `files` (`id_file`, `name`, `created`, `hotlink`, `last_access`, `count`, `stats`, `url`, `password`, `type`) VALUES
-(3, 'Visita_al_restaurant.png', '2009-05-21 19:30:08', 1, '0000-00-00 00:00:00', 0, 0, '964090f6cb2d620d6a458945d063f607', '', 'image/png');
-
---
 -- Table structure for table `posts`
 --
 
@@ -171,6 +146,19 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id_user`, `name`, `login`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Victor De la Rocha', 'admin', md5('admin'), 'contacto@mis-algoritmos.com', 'http://www.codice-cms.org/', 'Programador PHP.', NULL, NULL);
+
+CREATE  TABLE `codice`.`files` (
+  `idFile` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(150) NOT NULL COMMENT 'Nombre del archivo.\n' ,
+  `downloadCounter` INT NULL COMMENT 'Contador de descargas.\n' ,
+  `password` VARCHAR(32) NULL COMMENT 'clave secreta para permitir descarga de archivo encriptada en md5.\n' ,
+  `mimeType` VARCHAR(100) NULL COMMENT 'Mime type del archivo, por ejemplo: image/png.\n' ,
+  `created` DATETIME NULL COMMENT 'Fecha de creacion del registro' ,
+  `modified` DATETIME NULL COMMENT 'Fecha de actualizacion del registro\n' ,
+  PRIMARY KEY (`idFile`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
 
 CREATE  TABLE `codice`.`links` (
   `idLink` INT NOT NULL AUTO_INCREMENT COMMENT 'Campo autonumerico identificador del registro\n' ,
