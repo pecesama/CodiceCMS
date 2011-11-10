@@ -147,6 +147,14 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id_user`, `name`, `login`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Victor De la Rocha', 'admin', md5('admin'), 'contacto@mis-algoritmos.com', 'http://www.codice-cms.org/', 'Programador PHP.', NULL, NULL);
 
+CREATE  TABLE `codice`.`status` (
+  `idStatus` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(100) NOT NULL COMMENT 'Nombre del estatus que serían utilizados por (posts, comments)' ,
+  PRIMARY KEY (`idStatus`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
 CREATE  TABLE `codice`.`files` (
   `idFile` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(150) NOT NULL COMMENT 'Nombre del archivo.\n' ,
