@@ -1,21 +1,21 @@
 --
 
 CREATE TABLE IF NOT EXISTS `comments` (
-  `suscribe` varchar(255) DEFAULT NULL,
-  `user_id` varchar(255) DEFAULT NULL,
-  `type` varchar(255) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
-  `content` text,
-  `IP` varchar(255) DEFAULT NULL,
-  `url` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `author` varchar(255) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `ID_post` int(10) unsigned NOT NULL,
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49477 ;
+  `idComment` int(11) NOT NULL AUTO_INCREMENT,
+  `idCommentParent` int(11) NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `idStatus` int(11) NOT NULL,
+  `idPost` int(11) NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `ip` varchar(100) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `author` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `type` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`idComment`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
 CREATE  TABLE `codice`.`configurations` (
@@ -48,17 +48,16 @@ INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALU
 --
 
 CREATE TABLE IF NOT EXISTS `posts` (
-  `urlfriendly` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `content` text,
-  `status` varchar(50) DEFAULT NULL,
-  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_user` int(11) NOT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  FULLTEXT KEY `title` (`title`,`content`,`urlfriendly`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=201 ;
+  `idPost` int(11) NOT NULL AUTO_INCREMENT,
+  `post` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `idUser` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  PRIMARY KEY (`idPost`),
+  FULLTEXT KEY `content` (`post`,`title`,`content`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE  TABLE `codice`.`tags` (
   `idTag` INT NOT NULL AUTO_INCREMENT COMMENT 'identificador unico de la etiqueta' ,
