@@ -221,3 +221,19 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id_user`, `name`, `login`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Victor De la Rocha', 'admin', md5('admin'), 'contacto@mis-algoritmos.com', 'http://www.codice-cms.org/', 'Programador PHP.', NULL, NULL);
+
+CREATE  TABLE `codice`.`plugins` (
+  `idPlugin` INT NOT NULL AUTO_INCREMENT ,
+  `plugin` VARCHAR(255) NULL ,
+  `description` TEXT NULL ,
+  `url` VARCHAR(255) NULL COMMENT 'página web del plugin\n' ,
+  `urlVersion` VARCHAR(255) NULL COMMENT 'url para consultar versión de plugin y verificar si es necesario actualizar\n' ,
+  `urlDownload` VARCHAR(255) NULL COMMENT 'url para descargar version de plugin nueva (en caso de urlVersion ser mayor que fila version)' ,
+  `active` INT NULL COMMENT '¿activado o desactivado?' ,
+  `version` DOUBLE NULL COMMENT 'version del plugin\n' ,
+  `created` DATETIME NULL COMMENT 'Fecha de creación del registro' ,
+  `modified` DATETIME NULL COMMENT 'Fecha de actualizacion del registro\n' ,
+  PRIMARY KEY (`idPlugin`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
