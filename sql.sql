@@ -202,17 +202,18 @@ CREATE TABLE IF NOT EXISTS `tags_rel` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `id_user` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) DEFAULT NULL,
-  `login` varchar(100) NOT NULL DEFAULT '',
-  `password` varchar(64) NOT NULL DEFAULT '',
-  `email` varchar(100) DEFAULT NULL,
-  `website` varchar(150) DEFAULT NULL,
-  `about` text,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+  `idUser` int(11) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(100) COLLATE utf8_bin NOT NULL,
+  `lastName` varchar(100) COLLATE utf8_bin NOT NULL,
+  `user` varchar(100) COLLATE utf8_bin NOT NULL,
+  `password` varchar(64) COLLATE utf8_bin NOT NULL,
+  `email` varchar(150) COLLATE utf8_bin NOT NULL,
+  `website` varchar(150) COLLATE utf8_bin NOT NULL,
+  `about` text COLLATE utf8_bin NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`idUser`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `users`
