@@ -3,20 +3,23 @@
 class post extends models{
 
 	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
-		$sql = "SELECT \n";
-			$sql .= "\tcount(*) as total \n";
-		$sql .= "FROM posts as p\n";
-			$sql .= $extra['tag']?"\tinner join tags_rel as tr on tr.post_id = p.ID \n":null;
-			$sql .= $extra['tag']?"\tinner join tags as t on t.tag_id = tr.tag_id \n":null;
-		$sql .= "WHERE 1=1 \n";
-			$sql .= $extra['status']?"\tAND status='".$extra['status']."' \n":null;
-			$sql .= $extra['tag']?"\tAND t.urlfriendly='".$this->sql_escape($extra['tag'])."' \n":null;
+		$sql = "select count(*) as total from posts as p";
+		//status
+		  $sql .= $extra['status']?"inner join status as s on s.idStatus = p.idStatus":null;
+		//tags
+		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost":null;
+		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag":null;
+		$sql .= "where 1=1";
+		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])."'":null;
+		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])."'":null;
 
 		$valid = $this->findBySql($sql);
 		
-		if(empty($valid) == false)
+		if(empty($valid) == false){
 			return $valid['total'];
-		return 0;
+		}else{
+			return 0;			
+		}
 	}
 
 	public function busqueda($q){
