@@ -49,7 +49,7 @@ INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALU
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `idPost` int(11) NOT NULL AUTO_INCREMENT,
-  `post` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `urlfriendly` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `idUser` int(11) NOT NULL,
