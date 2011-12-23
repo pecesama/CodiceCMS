@@ -207,3 +207,33 @@ CREATE  TABLE `plugins` (
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
+
+
+
+--------------
+--
+--
+--
+-- PARA HACER PRUEBAS
+--
+--
+--
+--------------
+
+INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (1, 'Publish');
+INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (2, 'Draft');
+INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (3, 'Waiting');
+
+INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('uno', 'uno', 'uno', 1, 1);
+INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('dos', 'dos', 'dos', 1, 2);
+INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('tres', 'tres', 'tres', 1, 3);
+
+INSERT INTO `codice`.`tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
+INSERT INTO `codice`.`tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
+
+INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (1, 1);
+INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (2, 1);
+INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (3, 1);
+INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (2, 2);
+INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (4, 2);
+
