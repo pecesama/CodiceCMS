@@ -2,8 +2,8 @@
 class configuration extends models{
 	
 	public function getBlogConfiguration(){
-		$sql = "SELECT * FROM configurations WHERE name LIKE 'blog_%' AND id_user = 1";
-		
+		$sql = "SELECT * FROM configurations WHERE name LIKE 'blog_%' AND idUser = 1";
+
 		$rows = $this->findAllBySql($sql);
 		
 		$configuration = array();
@@ -15,7 +15,7 @@ class configuration extends models{
 	}
 	
 	public function getUserConfiguration($id = 1){
-		$sql = "SELECT * FROM configurations WHERE name NOT LIKE 'blog_%' and id_user = $id";
+		$sql = "SELECT * FROM configurations WHERE name NOT LIKE 'blog_%' and idUser = $id";
 		
 		$rows = $this->findAllBySql($sql);
 		

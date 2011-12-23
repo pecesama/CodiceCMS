@@ -16,10 +16,6 @@ abstract class appcontroller extends controller {
 		$this->User = User_lib::getInstance();
 
 		//loads configuration of the logged user and blog.
-		$this->load_configuration();
-	}
-
-	public function load_configuration(){
 		$C = new configuration();
 		$this->config = array(
 			"user" => $C->getUserConfiguration(1),
