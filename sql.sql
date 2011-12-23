@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `idUser` int(11) NOT NULL,
+  `idStatus` int(11) NOT NULL,
   `created` datetime NOT NULL,
   `updated` datetime NOT NULL,
   PRIMARY KEY (`idPost`),
