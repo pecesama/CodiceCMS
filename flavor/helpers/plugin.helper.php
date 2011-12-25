@@ -18,7 +18,10 @@ class plugin extends singleton{
 	}
 
 	function init_plugins(){
-		if ($gestor = opendir(Absolute_Path.'/app/plugins')){
+            
+            // Validate the folder of pligins exist
+            if(file_exists(Absolute_Path.'app/plugins')){
+                if ($gestor = opendir(Absolute_Path.'app/plugins')){
 			$plugins = array();
 			while (false !== ($archivo = readdir($gestor))) {
 				if(preg_match('/^([\w]+)\.plugin\.php$/',$archivo,$out)){
@@ -28,6 +31,8 @@ class plugin extends singleton{
 			$this->registry->modify('plugins',array('plugins'=>$plugins));
 		}
 		closedir($gestor);
+            }
+		
 	
 		$plugins = $this->registry->plugins['plugins'];
 		
