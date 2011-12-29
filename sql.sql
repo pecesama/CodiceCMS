@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS `comments` (
   `idComment` int(11) NOT NULL AUTO_INCREMENT,
   `idCommentParent` int(11) NOT NULL,
-  `idUser` int(11) NOT NULL,
+  `idUser` int(11), -- puede ser NULL
   `idStatus` int(11) NOT NULL,
   `idPost` int(11) NOT NULL,
   `content` text CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
@@ -227,6 +227,14 @@ INSERT INTO `statuses` (`idStatus`, `name`) VALUES (3, 'Waiting');
 INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (1, 'uno', 'uno', 'uno', 1, 1, '2011-12-29 14:13:29');
 INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (2, 'dos', 'dos', 'dos', 1, 2, '2011-12-20 18:35:37');
 INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (3, 'tres', 'tres', 'tres', 1, 3, '2011-12-10 9:58:12');
+
+-- comentario de un admin, solo tiene el idUser.
+INSERT INTO `codice`.`comments` (`idComment`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (5, 1, 1, 2, 'cinco', '192.168.1.2', '', 0, '2011-12-30 14:13:29');
+-- comentarios de lectores del blog.
+INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (1, 1, 1, 1, 1, 'uno', '192.168.1.2', 'autor1@gmail.com', 0, '2011-12-30 14:15:29');
+INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (2, 2, null, 3, 1, 'respuesta a uno', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:16:29');
+INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (3, 1, null, 1, 1, 'tres', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:18:29');
+INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (4, 1, null, 1, 1, 'cuatro', '192.168.1.2', 'autor3@gmail.com', 0, '2011-12-30 14:25:29');
 
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
