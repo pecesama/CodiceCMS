@@ -2,7 +2,7 @@
 
 class post extends models{
 
-	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
+	public function countPosts($extra = array('status'=>'Publish','tag'=>null)){
 		$sql = "select count(*) as total from posts as p ";
 		//status
 		  $sql .= $extra['status']?"inner join statuses as s on s.idStatus = p.idStatus ":null;
@@ -31,7 +31,7 @@ class post extends models{
 			"urlfriendly,title,match(title, content, urlfriendly) against('$q') as score",
 			"score DESC",
 			20,
-			"WHERE status='publish' AND match(title, content, urlfriendly) against('$q')"
+			"WHERE status='Publish' AND match(title, content, urlfriendly) against('$q')"
 		);
 		
 		return $rows;
@@ -40,8 +40,6 @@ class post extends models{
 	public function getPosts($status = null, $limitQuery = null){
 		$P = new post();
 		$posts = array();
-
-$status = array("Publish", "Draft");
 
 		if(is_null($status) === true){//1. Si no hay status
 			$posts = $P->findAllBySql("SELECT 
@@ -85,7 +83,8 @@ $status = array("Publish", "Draft");
 			$posts[$k]['title'] = htmlspecialchars($posts[$k]['title']);
 			$posts[$k]['tags'] = $this->getTags($posts[$k]['idPost']);
 			
-			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['idPost'],"publish");
+			//TODO: if it's admin logged, include too comments with "Waiting" status (waiting to be approved).
+			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['idPost'],"Publish");
 			
 			$U = new user();
 			if($posts[$k]['idUser'] < 2){
@@ -94,8 +93,6 @@ $status = array("Publish", "Draft");
 				$posts[$k]['autor'] = $U->find($posts[$k]['idUser']);
 			}
 		}
-
-		utils::pre($posts);
 
 		return $posts;
 	}
@@ -126,8 +123,8 @@ $status = array("Publish", "Draft");
 			$post['tags'] = $this->getTags($post['ID']);
 			
 			$C = new comment();
-			$post["comments_count"] = $C->countCommentsByPost($post['ID'],"publish");
-			$post["comments"] = $C->getAll($post['ID'],"publish");
+			$post["comments_count"] = $C->countCommentsByPost($post['ID'],"Publish");
+			$post["comments"] = $C->getAll($post['ID'],"Publish");
 		}
 		
 		return $post;
@@ -275,7 +272,7 @@ $status = array("Publish", "Draft");
 			$sql .= "\tinner join tags_rel as tr on tr.post_id = p.ID \n";
 			$sql .= "\tinner join tags as t on t.tag_id = tr.tag_id \n";
 		$sql .= "WHERE \n";
-			$sql .= "\tp.status='publish' and t.urlfriendly='$tag' \n";
+			$sql .= "\tp.status='Publish' and t.urlfriendly='$tag' \n";
 		$sql .= "ORDER BY \n";
 			$sql .= "\tID DESC\n";
 		$sql .= "LIMIT \n";
