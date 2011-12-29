@@ -5,13 +5,13 @@ class post extends models{
 	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
 		$sql = "select count(*) as total from posts as p ";
 		//status
-		  $sql .= $extra['status']?" inner join statuses as s on s.idStatus = p.idStatus":null;
+		  $sql .= $extra['status']?"inner join statuses as s on s.idStatus = p.idStatus ":null;
 		//tags
 		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost ":null;
 		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag ":null;
 		$sql .= "where 1=1 ";
-		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])."' ":null;
-		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])."' ":null;
+		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])." ' ":null;
+		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])." ' ":null;
 
 		$valid = $this->findBySql($sql);
 		
@@ -41,6 +41,8 @@ class post extends models{
 		$P = new post();
 		$posts = array();
 
+$status = array("Publish", "Draft");
+
 		if(is_null($status) === true){//1. Si no hay status
 			$posts = $P->findAllBySql("SELECT 
 			  p.idPost,p.idUser,p.urlfriendly,p.title,
@@ -55,7 +57,7 @@ class post extends models{
 			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
 			  p.created
 			FROM posts as p
-			INNER JOIN status as s on s.idStatus = p.idStatus
+			INNER JOIN statuses as s on s.idStatus = p.idStatus
 			WHERE
 			  s.name='$status'
 			ORDER BY p.idPost DESC LIMIT $limitQuery");
@@ -72,12 +74,12 @@ class post extends models{
 			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
 			  p.created
 			FROM posts as p
-			INNER JOIN status as s on s.idStatus = p.idStatus
+			INNER JOIN statuses as s on s.idStatus = p.idStatus
 			WHERE
 			  ($status_sql)
 			ORDER BY p.idPost DESC LIMIT $limitQuery");
 		}
-		
+
 		$C = new comment();
 		foreach($posts as $k=>$p){
 			$posts[$k]['title'] = htmlspecialchars($posts[$k]['title']);
@@ -92,7 +94,9 @@ class post extends models{
 				$posts[$k]['autor'] = $U->find($posts[$k]['idUser']);
 			}
 		}
-		
+
+		utils::pre($posts);
+
 		return $posts;
 	}
 	
