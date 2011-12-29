@@ -110,14 +110,16 @@ class comment extends models {
 		$idPost = $this->db->sql_escape($idPost);
 		$status = $this->db->sql_escape($status);
 
-		$sql = "SELECT count(*) as total FROM comments as c
-		INNER JOIN statuses as s on s.idStatus = c.idStatus
-		WHERE 1 = 1 ";
-		$sql .= (is_null($status))?"":"AND s.name = '$status' ";
-		$sql .= (is_null($idPost))?"":"AND c.idPost = $idPost ";
+		$sql = "select count(*) as total from comments as c
+		inner join posts as p on p.idPost = c.idPost
+		inner join statuses as s on s.idStatus = c.idStatus
+		where 1=1 ";
 
-		$valid = $this->findBySql($sql);	
-	
+		$sql .= (is_null($status))?"":"AND s.name = '$status' ";
+		$sql .= (is_null($idPost))?"":"AND p.idPost = $idPost ";
+  		
+		$valid = $this->findBySql($sql);
+
 		if($valid){				
 			return $valid['total'];
 		}
