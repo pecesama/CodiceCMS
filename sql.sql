@@ -224,9 +224,9 @@ INSERT INTO `statuses` (`idStatus`, `name`) VALUES (1, 'Publish');
 INSERT INTO `statuses` (`idStatus`, `name`) VALUES (2, 'Draft');
 INSERT INTO `statuses` (`idStatus`, `name`) VALUES (3, 'Waiting');
 
-INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('uno', 'uno', 'uno', 1, 1);
-INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('dos', 'dos', 'dos', 1, 2);
-INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('tres', 'tres', 'tres', 1, 3);
+INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (1, 'uno', 'uno', 'uno', 1, 1, '2011-12-29 14:13:29');
+INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (2, 'dos', 'dos', 'dos', 1, 2, '2011-12-20 18:35:37');
+INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (3, 'tres', 'tres', 'tres', 1, 3, '2011-12-10 9:58:12');
 
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
