@@ -32,7 +32,7 @@ class comment extends models {
 					array('trueOrFalse')
 				)
 			)
-		);	
+		);
 	
 		$this->validate = array(
 			'author' => array(
@@ -105,15 +105,19 @@ class comment extends models {
 		}		
 		return $valid;
 	}
-	
+
 	public function countCommentsByPost($idPost = null,$status = null){
-	
-		$sql = "SELECT count(*) as total FROM `comments` WHERE 1 = 1 ";
-		$sql.= !is_null($status)?" AND status = '$status'":'';
-		$sql .= !is_null($idPost)?" AND id_post = $idPost":'';
-		
+		$idPost = $this->db->sql_escape($idPost);
+		$status = $this->db->sql_escape($status);
+
+		$sql = "SELECT count(*) as total FROM comments as c
+		INNER JOIN statuses as s on s.idStatus = c.idStatus
+		WHERE 1 = 1 ";
+		$sql .= (is_null($status))?"":"AND s.name = '$status' ";
+		$sql .= (is_null($idPost))?"":"AND c.idPost = $idPost ";
+
 		$valid = $this->findBySql($sql);	
-		
+	
 		if($valid){				
 			return $valid['total'];
 		}
@@ -123,7 +127,7 @@ class comment extends models {
 	
 	public function getAll($ID_post, $status = null){
 		$C = new comment();
-		
+
 		$rows = array();
 		if(is_null($status) === true){
 			$rows = $C->findAll(
