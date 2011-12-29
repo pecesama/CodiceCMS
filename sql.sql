@@ -210,7 +210,7 @@ COLLATE = utf8_bin;
 
 
 
---------------
+-- ------------
 --
 --
 --
@@ -218,7 +218,7 @@ COLLATE = utf8_bin;
 --
 --
 --
---------------
+-- ------------
 
 INSERT INTO `statuses` (`idStatus`, `name`) VALUES (1, 'Publish');
 INSERT INTO `statuses` (`idStatus`, `name`) VALUES (2, 'Draft');
