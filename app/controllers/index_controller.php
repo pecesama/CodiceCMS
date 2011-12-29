@@ -52,7 +52,7 @@ class index_controller extends appcontroller {
 		$this->registry->single = $single;
 		
 		if($urlfriendly){
-			$post = $P->getPost($urlfriendly,'publish');
+			$post = $P->getPost($urlfriendly,'Publish');
 			$posts = null;
 			
 			if($P->isNew() === false){
@@ -77,7 +77,7 @@ class index_controller extends appcontroller {
 			$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 			
 			$post = null;
-			$posts = $P->getPosts("publish",$limitQuery);
+			$posts = $P->getPosts("Publish",$limitQuery);
 		}
 		
 		//Creamos los tags <meta> que van dentro del layout.
@@ -155,7 +155,7 @@ class index_controller extends appcontroller {
 			
 			if($this->cookie->check('id_user')){
 				$this->data['user_id'] = $this->cookie->id_user;
-				$this->data['status'] = 'publish';
+				$this->data['status'] = 'Publish';
 			}else{
 				$this->data['user_id'] = 0;
 				$this->data['status'] = 'waiting';
