@@ -9,7 +9,7 @@ class Login_controller extends AppController {
 
 	public function index($msg = null){
 		if($this->session->check("logged") == true) {
-			$this->redirect("entries");
+			$this->redirect("posts");
 		}
 
 		//FIXME: utilizar librería para mensajes.

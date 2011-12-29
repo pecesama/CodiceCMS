@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span12">
-      <?php echo $this->html->form("entries/update/".$id."/"); ?>
+      <?php echo $this->html->form("posts/update/".$id."/"); ?>
 
         <fieldset>
           <legend>Updating entry <strong><?php echo $post["title"]; ?></strong></legend>
@@ -24,7 +24,7 @@
           <div class="clearfix">
           	<label for="status">Publishing status</label>
           	<div class="input">
-				<?php echo $this->html->select("status", $statuses, $post["status"]); ?>
+				<?php echo $this->html->selectFromModel("status", $statuses, $post["idStatus"], "name", "idStatus"); ?>
         <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about Publishing status.'"); ?>
 			</div>
           </div>
@@ -55,5 +55,3 @@
       </form>
     </div>
   </div><!-- /row -->
-
-<?php echo $this->renderElement("admin_footer"); ?>

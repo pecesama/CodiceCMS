@@ -48,5 +48,3 @@
       </form>
     </div>
   </div><!-- /row -->
-
-<?php echo $this->renderElement("admin_footer"); ?>

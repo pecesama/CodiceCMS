@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `created` datetime NOT NULL,
   `updated` datetime NOT NULL,
   PRIMARY KEY (`idPost`),
-  FULLTEXT KEY `content` (`post`,`title`,`content`)
+  FULLTEXT KEY `content` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE  TABLE `tags` (
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`idUser`, `firstName`, `lastName`, `user`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
 (1, 'Administrador', 'De Codice', 'admin', md5('admin'), 'contacto@codicecms.com', 'http://www.codicecms.com/', 'Administrador de Codice CMS.', NOW(), NOW());
 
-CREATE  TABLE `status` (
+CREATE  TABLE `statuses` (
   `idStatus` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(100) NOT NULL COMMENT 'Nombre del estatus que serían utilizados por (posts, comments)' ,
   PRIMARY KEY (`idStatus`) )
@@ -220,20 +220,19 @@ COLLATE = utf8_bin;
 --
 --------------
 
-INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (1, 'Publish');
-INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (2, 'Draft');
-INSERT INTO `codice`.`status` (`idStatus`, `name`) VALUES (3, 'Waiting');
+INSERT INTO `statuses` (`idStatus`, `name`) VALUES (1, 'Publish');
+INSERT INTO `statuses` (`idStatus`, `name`) VALUES (2, 'Draft');
+INSERT INTO `statuses` (`idStatus`, `name`) VALUES (3, 'Waiting');
 
-INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('uno', 'uno', 'uno', 1, 1);
-INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('dos', 'dos', 'dos', 1, 2);
-INSERT INTO `codice`.`posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('tres', 'tres', 'tres', 1, 3);
+INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('uno', 'uno', 'uno', 1, 1);
+INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('dos', 'dos', 'dos', 1, 2);
+INSERT INTO `posts` (`urlfriendly`, `title`, `content`, `idUser`, `idStatus`) VALUES ('tres', 'tres', 'tres', 1, 3);
 
-INSERT INTO `codice`.`tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
-INSERT INTO `codice`.`tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
+INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
+INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
 
-INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (1, 1);
-INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (2, 1);
-INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (3, 1);
-INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (2, 2);
-INSERT INTO `codice`.`rel_tags` (`idTag`, `idPost`) VALUES (4, 2);
-
+INSERT INTO `rel_tags` (`idTag`, `idPost`) VALUES (1, 1);
+INSERT INTO `rel_tags` (`idTag`, `idPost`) VALUES (2, 1);
+INSERT INTO `rel_tags` (`idTag`, `idPost`) VALUES (3, 1);
+INSERT INTO `rel_tags` (`idTag`, `idPost`) VALUES (2, 2);
+INSERT INTO `rel_tags` (`idTag`, `idPost`) VALUES (4, 2);

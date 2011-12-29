@@ -1,6 +1,6 @@
 <?php
 
-class Entries_controller extends AppController{
+class Posts_controller extends AppController{
 	
 	public function __construct(){
 		parent::__construct();
@@ -25,12 +25,10 @@ class Entries_controller extends AppController{
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		
 		//preparing views
-		$this->title_for_layout("Control panel - Codice CMS");
-		
 		$this->view->pagination = $pagination;
-		$this->view->posts = $P->findAll(NULL, "ID DESC", $limitQuery, NULL);
-
-		$this->view->setLayout("admin");
+		$this->view->posts = $P->findAll(NULL, "IdPost DESC", $limitQuery, NULL);
+                
+                $this->title_for_layout("Control panel - Codice CMS");
 		$this->render();
 	}
 
@@ -70,7 +68,7 @@ class Entries_controller extends AppController{
 			$this->redirect("entries");
 		} else {
 			$this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
-			$this->view->setLayout("admin");
+			
 
 			$this->render();
 		}
@@ -85,11 +83,10 @@ class Entries_controller extends AppController{
 		if($id <= 0){
 			$this->redirect("entries");
 		}
-
-		$statuses = array(
-			"publish",
-			"draft"
-		);
+                
+                // Get status for posts
+                $status = new status();
+		$statuses = $status->findAll();
 		
 		if ($this->data) {
 			if(isset($this->data['cancelar'])){
@@ -134,7 +131,6 @@ class Entries_controller extends AppController{
 		$this->view->post = $post;
 		$this->view->statuses = $statuses;
 		
-		$this->view->setLayout("admin");
 		$this->render();
 	}
 

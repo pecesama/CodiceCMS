@@ -5,7 +5,7 @@ class post extends models{
 	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
 		$sql = "select count(*) as total from posts as p ";
 		//status
-		  $sql .= $extra['status']?"inner join status as s on s.idStatus = p.idStatus ":null;
+		  $sql .= $extra['status']?" inner join statuses as s on s.idStatus = p.idStatus":null;
 		//tags
 		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost ":null;
 		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag ":null;
@@ -178,9 +178,9 @@ class post extends models{
 
 		$sql = "SELECT t.tag,t.urlfriendly \n";
 		$sql .= "FROM tags as t \n";
-			$sql .= "\tinner join tags_rel as tr on tr.tag_id = t.tag_id \n";
-			$sql .= "\tinner join posts as p on p.ID = tr.post_id \n";
-		$sql .= "WHERE p.ID = $post_id \n";
+			$sql .= "\tinner join rel_tags as tr on tr.idTag = t.idTag \n";
+			$sql .= "\tinner join posts as p on p.idPost = tr.idPost \n";
+		$sql .= "WHERE p.idPost = $post_id \n";
 		$sql .= "ORDER BY t.tag";
 
 		$this->db->query($sql);

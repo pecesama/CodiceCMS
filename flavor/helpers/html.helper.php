@@ -96,7 +96,7 @@ class html extends singleton {
 		return $html;
 	}
 
-	/* Esta función es para ser utilizada por validateError($field){...} */
+	/* Esta funciï¿½n es para ser utilizada por validateError($field){...} */
 	private function unsetError($field){
 		if(is_array($_SESSION["flavor_php_session"]["validateErrors"])){
 			foreach($_SESSION["flavor_php_session"]["validateErrors"] as $k => $v){
@@ -228,4 +228,25 @@ class html extends singleton {
 		$html .= "</select>\n";
 		return $html;
 	}
+        
+        // Function to create a html select component from a model result.
+        public function selectFromModel($name, $items, $selected="", $descriptionKey=NULL, $valueKey=NULL){
+            $html = "<select name=\"".$name."\">\n";
+            foreach ($items as $key => $item){
+                $html .= "\t<option";
+
+                // Set value 
+                $value = $valueKey == NULL ? $key : ( isset($item[$valueKey])? $item[$valueKey] : $key );
+                $html .= " value=\"$value\"";
+                if($selected == $value){
+                        $html .= " selected=\"selected\"";
+                }
+                
+                // Set description
+                $description = $descriptionKey == NULL ? $item : ( isset($item[$descriptionKey])? $item[$descriptionKey] : $item ); ;
+                $html .= ">$description</option>\n";
+            }
+            $html .= "</select>\n";
+            return $html;
+        }
 }
