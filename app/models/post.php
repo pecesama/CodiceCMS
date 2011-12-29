@@ -3,15 +3,15 @@
 class post extends models{
 
 	public function countPosts($extra = array('status'=>'publish','tag'=>null)){
-		$sql = "select count(*) as total from posts as p";
+		$sql = "select count(*) as total from posts as p ";
 		//status
-		  $sql .= $extra['status']?"inner join status as s on s.idStatus = p.idStatus":null;
+		  $sql .= $extra['status']?"inner join status as s on s.idStatus = p.idStatus ":null;
 		//tags
-		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost":null;
-		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag":null;
-		$sql .= "where 1=1";
-		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])."'":null;
-		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])."'":null;
+		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost ":null;
+		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag ":null;
+		$sql .= "where 1=1 ";
+		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])."' ":null;
+		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])."' ":null;
 
 		$valid = $this->findBySql($sql);
 		
@@ -40,47 +40,56 @@ class post extends models{
 	public function getPosts($status = null, $limitQuery = null){
 		$P = new post();
 		$posts = array();
-		if(is_null($status) === true){
-			$posts = $P->findAll(
-				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
-				'ID DESC',
-				$limitQuery,
-				null
-			);
-		}else if(is_array($status) === false){
-			$posts = $P->findAll(
-				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
-				'ID DESC',
-				$limitQuery,
-				"WHERE status='$status'"
-			);
-		}else{
+
+		if(is_null($status) === true){//1. Si no hay status
+			$posts = $P->findAllBySql("SELECT 
+			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
+			  p.created
+			FROM posts as p
+			ORDER BY p.idPost DESC LIMIT $limitQuery");
+
+		}else if(is_array($status) === false){//2. Si hay un status (String).
+			$posts = $P->findAllBySql("SELECT 
+			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
+			  p.created
+			FROM posts as p
+			INNER JOIN status as s on s.idStatus = p.idStatus
+			WHERE
+			  s.name='$status'
+			ORDER BY p.idPost DESC LIMIT $limitQuery");
+
+		}else{//3. Si hay más de 1 status (debe ser un Array)
 			$status_sql = "";
 			foreach($status as $st){
-				$status_sql .= "status ='$st' OR ";
+				$status_sql .= "s.name ='$st' OR ";
 			}
 			$status_sql = substr($status_sql,0,-3);
 			
-			$posts = $P->findAll(
-				"ID,id_user,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created",
-				'ID DESC',
-				$limitQuery,
-				"WHERE ($status_sql)"
-			);
+			$posts = $P->findAllBySql("SELECT 
+			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
+			  p.created
+			FROM posts as p
+			INNER JOIN status as s on s.idStatus = p.idStatus
+			WHERE
+			  ($status_sql)
+			ORDER BY p.idPost DESC LIMIT $limitQuery");
 		}
 		
 		$C = new comment();
 		foreach($posts as $k=>$p){
 			$posts[$k]['title'] = htmlspecialchars($posts[$k]['title']);
-			$posts[$k]['tags'] = $this->getTags($posts[$k]['ID']);
+			$posts[$k]['tags'] = $this->getTags($posts[$k]['idPost']);
 			
-			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['ID'],"publish");
+			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['idPost'],"publish");
 			
 			$U = new user();
-			if($posts[$k]['id_user'] < 2){
+			if($posts[$k]['idUser'] < 2){
 				$posts[$k]['autor'] = $U->find(1);
 			}else{
-				$posts[$k]['autor'] = $U->find($posts[$k]['id_user']);
+				$posts[$k]['autor'] = $U->find($posts[$k]['idUser']);
 			}
 		}
 		
@@ -249,6 +258,13 @@ class post extends models{
 	
 	public function getPostsByTag($tag,$limitQuery){
 		$tag = $this->sql_escape($tag);
+
+
+
+
+
+
+
 		$sql = "SELECT \n";
 			$sql .= "\tp.ID,p.id_user,p.urlfriendly,p.title,IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content, created \n";
 		$sql .= "FROM posts as p\n";
