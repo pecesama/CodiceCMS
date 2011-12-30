@@ -6,7 +6,7 @@
 			<?php echo $post["content"]; ?>
 			
 			<div class="row">
-				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
+				<div class="span">Escrito por <?php echo $post["autor"]["firstName"]; ?> <?php echo $post["autor"]["lastName"]; ?> el <?php echo $post["created"]?></div>
 				<div class="span">
 					<?php if($post["tags"]){ ?>
 						<?php foreach($post["tags"] as $tag){ ?>
