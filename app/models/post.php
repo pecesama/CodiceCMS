@@ -101,6 +101,8 @@ class post extends models{
 		$urlfriendy = rawurlencode($this->sql_escape($urlfriendly));
 		$post = array();
 		
+		exit( __FILE__ . " -> LINE: " . __LINE__ );
+
 		if(is_null($status) === true){
 			$post = $this->findBy(
 				'urlfriendly',
@@ -112,6 +114,8 @@ class post extends models{
 				array($urlfriendly,$status)
 			);
 		}
+
+		exit;
 
 		if($this->isNew() === false){
 			if($post['title']){
