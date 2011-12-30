@@ -17,38 +17,38 @@ class tag_controller extends appcontroller {
 	}
 	
 	public function index($id=NULL, $page=1){
-		if(is_null($id) or is_numeric($id))
+		if(is_null($id) or !preg_match("/^[a-z\-\_]]$/i",$id)){
 			$this->redirect($this->config["blog"]['blog_siteurl']);
+		}
 		
 		$tag = $id;
 		
-		$post = new post();
-		$link = new link();
-		$comment = new comment();
+		$Post = new post();
+		$Link = new link();
+		$Comment = new comment();
 
 		$this->html->useTheme($this->config["blog"]['blog_current_theme']);
 
-		$info = array();
-		$info["isAdmin"] = false;
-		if($this->cookie->check("logged") and $this->cookie->id_user == 1){
-			$info["isAdmin"] = true;
+		$isAdmin = false;
+		if($this->cookie->check("logged") and $this->cookie->id_user == 1){//is Admin logged?
+			$isAdmin = true;
 		}
 
-		$this->themes->info = $info;
+		$this->views->isAdmin = $isAdmin;
 
 		$includes['charset'] = $this->html->charsetTag("UTF-8");
 		$includes['rssFeed'] = $this->html->includeRSS();
 
 		if($page>1){
-			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($post->sql_escape($id))."/$page\" />";
+			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($tag)."/$page\" />";
 		}else{
-			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($post->sql_escape($id))."\" />";
+			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($tag)."\" />";
 		}
 
+utils::pre($includes);
 		$this->registry->includes = $includes;
 		$this->plugin->call('index_includes');
 
-		$includes = null;
 		foreach($this->registry->includes as $include){
 			$includes .= $include;
 		}
