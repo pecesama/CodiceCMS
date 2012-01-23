@@ -25,6 +25,8 @@
                   e.preventDefault()
                 });
               $(".topbar").dropdown();
+              
+              $(".alert-message").alert();
             });
           </script>
 
@@ -43,7 +45,10 @@
 	<body> 
 
 <?php echo $this->renderElement("admin_topbar"); ?>
-
+<?php 
+    // elemento que muestra los mensajes del sistema al usuario
+    $this->renderElement('messages'); 
+?>
   <div class="container">    
     <div class="content">
       <?php echo $content_for_layout ?>
