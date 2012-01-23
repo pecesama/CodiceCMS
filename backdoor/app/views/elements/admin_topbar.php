@@ -19,7 +19,7 @@
                 <li><?php echo $this->html->linkTo("Waiting for approval","comments/waiting"); ?></li>
               </ul>
             </li>
-            <li><a href="index/about">About</a></li>
+            <li><?php echo $this->html->linkTo("About","index/about"); ?></li>
           </ul>
 
           <form action="">
