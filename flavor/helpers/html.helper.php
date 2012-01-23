@@ -144,8 +144,8 @@ class html extends singleton {
 		return $html;
 	}
 
-	public function linkToConfirm($text, $url=""){
-		$html = $this->linkTo($text, $url, "onclick=\"return confirm('Are you sure?');\"");
+	public function linkToConfirm($text, $url="", $html_attributes=""){
+		$html = $this->linkTo($text, $url, "$html_attributes onclick=\"return confirm('Are you sure?');\"");
 		return $html;
 	}
 
@@ -182,8 +182,8 @@ class html extends singleton {
 		return $html;
 	}
 	
-	public function textField($name, $html_attributes=""){
-		$html = "<input type=\"text\" name=\"".$name."\" id=\"".$name."\" ";
+	public function textField($name, $value="", $html_attributes=""){
+		$html = "<input type=\"text\" name=\"".$name."\" id=\"".$name."\" value=\"$value\" ";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;
@@ -230,8 +230,8 @@ class html extends singleton {
 	}
         
         // Function to create a html select component from a model result.
-        public function selectFromModel($name, $items, $selected="", $descriptionKey=NULL, $valueKey=NULL){
-            $html = "<select name=\"".$name."\">\n";
+        public function selectFromModel($name, $items, $selected="", $descriptionKey=NULL, $valueKey=NULL, $htmlAttributs = ""){
+            $html = "<select name=\"".$name."\" $htmlAttributs>\n";
             foreach ($items as $key => $item){
                 $html .= "\t<option";
 
