@@ -24,11 +24,11 @@ class comments_controller extends appcontroller{
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		$this->view->pagination = $pagination;
 
-		$comments = $comment->findAll(NULL, "ID DESC", $limitQuery, NULL);
+		$comments = $comment->findAll(NULL, "idComment DESC", $limitQuery, NULL);
 		
 		foreach($comments as $key => $value){
 			$Post = new post();
-			$post = $Post->findBy('ID',$value['ID_post']);
+			$post = $Post->findBy('idComment',$value['ID_post']);
 
 			$value['post'] = array(
 				'urlfriendly' => $post['urlfriendly'],
@@ -129,4 +129,9 @@ class comments_controller extends appcontroller{
 			$this->redirect("comments");
 		}
 	}
+        
+        public function waiting(){
+            
+            $this->render();
+        }
 }
