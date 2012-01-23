@@ -36,8 +36,6 @@ class activeRecord implements ArrayAccess {
 		if(empty($this->keyField)) {
 		    throw new Exception( "Primary Column not found for Table: '".$this->table."'");
 		}
-		
-
 	}
 	
 	public function __set($key, $value){
@@ -74,8 +72,8 @@ class activeRecord implements ArrayAccess {
 	}	
 	
 	public function prepareFromArray($array){
-		foreach ($array as $key => $var) {
-			$this->record[$key] = $var;
+		foreach ($array as $key => $val) {
+                    $this->$key = $val;
 		}		
 	}
 	
@@ -244,7 +242,7 @@ class activeRecord implements ArrayAccess {
 			$this->multipleRecords = false;
 		}else{
 			$this->isNew = true;
-			$this->record = false;
+//			$this->record = array();
 			$this->multipleRecords = false;
 		}
 		
