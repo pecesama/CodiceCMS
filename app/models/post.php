@@ -153,7 +153,7 @@ class post extends models{
 				 * id se utilizar para evitar compare con el mismo registro y agregue _2 al final.
 				 */
 				if($id)
-				$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out".($c>1?"_$c":'')."' and id<>$id");
+				$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out".($c>1?"_$c":'')."' and idPost<>$id");
 					else
 				$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out".($c>1?"_$c":'')."'");
 			}while($this->db->fetchRow());
@@ -221,13 +221,13 @@ class post extends models{
 				$tag_id = $this->tagExists($tag);
 				if($tag_id){
 					#1.- Si no existe la relacion agregarla
-					$this->db->query("select * from tags_rel where post_id=$post_id and tag_id=$tag_id");
+					$this->db->query("select * from rel_tags where idPost=$post_id and idTag=$tag_id");
 					$row = $this->db->fetchRow();
 					if(!$row)
-						$this->db->query("insert into tags_rel(post_id,tag_id) values($post_id,$tag_id)");
+						$this->db->query("insert into rel_tags(idPost,idTag) values($post_id,$tag_id)");
 				}else{
 					$tag_id = $this->addTag($tag);
-					$this->db->query("insert into tags_rel(post_id,tag_id) values($post_id,$tag_id)");
+					$this->db->query("insert into rel_tags(idPost,idTag) values($post_id,$tag_id)");
 				}
 			}
 		}
@@ -237,7 +237,7 @@ class post extends models{
 		$tag = $this->sql_escape($tag);
 		$this->db->query("select * from tags as t where t.urlfriendly = '".$this->buildUrl($tag,null,false)."'"); 
 		if($row = $this->db->fetchRow())
-			return $row['tag_id'];
+			return $row['idTag'];
 		return false;
 	}
 	
