@@ -1,2 +1,2 @@
-<h1>Administraci&oacute;n</h1>
+<h1>Administration</h1>
 
