@@ -11,67 +11,70 @@ class Posts_controller extends AppController{
 	}
 
 	public function index($page = null){
-		$P = new post();
-		
-		$total_rows = $P->countPosts();
-		
-		//preparing pagination.
-		$page = (is_null($page)) ? 1 : $page ;
-		$limit = $this->config["user"]["posts_per_page"];
-		$offset = (($page-1) * $limit);
-		$limitQuery = $offset.",".$limit;
-		
-		$targetpage = $this->path.'entries/index/';
-		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
-		
-		//preparing views
-		$this->view->pagination = $pagination;
-		$this->view->posts = $P->findAll(NULL, "IdPost DESC", $limitQuery, NULL);
-                
-                $this->title_for_layout("Control panel - Codice CMS");
-		$this->render();
+            $post = new post();
+
+            $total_rows = $post->countPosts();
+
+            //preparing pagination.
+            $page = (is_null($page)) ? 1 : $page ;
+            $limit = $this->config["user"]["posts_per_page"];
+            $offset = (($page-1) * $limit);
+            $limitQuery = $offset.",".$limit;
+
+            $targetpage = $this->path.'posts/index/';
+            $pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
+
+            //preparing views
+            $this->view->pagination = $pagination;
+            $this->view->posts = $post->findAll(NULL, "idPost DESC", $limitQuery, "LEFT JOIN statuses ON posts.idStatus = statuses.idStatus");
+
+            $this->title_for_layout("Control panel - Codice CMS");
+            $this->render();
 	}
 
 	public function create(){
-		if ($this->data) {
-			$P = new post();
-			if(isset($this->data['cancelar'])) {
-				$this->redirect("entries");
-			}
-			
-			if (isset($this->data['borrador'])) {
-				$this->data['status'] = 'draft';
-				unset($this->data['borrador']);
-				
-			} elseif (isset($this->data['publicar'])) {
-				$this->data['status'] = 'publish';
-				unset($this->data['publicar']);
-			} else {
-				$this->redirect("entries");
-			}
-			
-			if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
-				$this->data['title'] = "Untitled";
-			}
-			
-			$this->data['urlfriendly'] = $P->buildUrl($this->data['title']);
-			
-			$tags = $this->data['tags'];
-			unset($this->data['tags']);
-			
-			$P->prepareFromArray($this->data);
-			$P->save();
-			
-			$post_id = $P->db->lastId();
-			$P->updateTags($post_id,$tags);
-			
-			$this->redirect("entries");
-		} else {
-			$this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
-			
+            
+            $post = new post();
+            
+            if ($this->data) {
+                
+                // Get button value
+                $btns = array_keys($this->data['btn']);
+                
+                
+                // Get status id
+                $status = new status();
+                $status->findBy('name', $btns[0]);
 
-			$this->render();
-		}
+                $post['idStatus'] = $status['idStatus'] != FALSE?$status['idStatus']:2;
+
+                if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
+                    $this->data['title'] = "Untitled";
+                }
+                
+                // FIXME: Porque se pide el campo urlfiendly
+                $this->data['urlfriendly'] = $post->buildUrl($this->data['title']);
+
+                $post->prepareFromArray($this->data);
+                if($post->save()){
+                    // TODO: Validar que se agregar las tags
+                    $post->updateTags($post['idPost'], $this->data['tags']);
+                    
+                    $this->messages->addMessage(Message::SUCCESS, "New posts saved.");
+                    $this->redirect("posts/");
+                } else {
+                    $this->messages->addMessage(Message::ERROR, "We can't save the post.");
+                    $postView = $this->data;
+                }
+                
+            } else {
+                $postView = $post->find(0);
+                $postView['tags'] = "";
+            }
+            
+            $this->view->post = $postView;
+            $this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
+            $this->render();
 	}
 
 	public function read(){
@@ -81,7 +84,7 @@ class Posts_controller extends AppController{
 	public function update($id = null){
 		$id = (int) $id;
 		if($id <= 0){
-			$this->redirect("entries");
+                    $this->redirect("posts/");
 		}
                 
                 // Get status for posts
@@ -114,7 +117,7 @@ class Posts_controller extends AppController{
 				
 				$this->session->flash('Información guardada correctamente.');
 				
-				$this->redirect("entries/update/$id");
+				$this->redirect("posts/update/$id");
 			}
 		}
 		
@@ -135,15 +138,22 @@ class Posts_controller extends AppController{
 	}
 
 	public function delete($id = null){
-		$id = (int) $id;
-		if($id <= 0){
-			$this->redirect("entries");
-		}
+            $id = (int) $id;
+            $post = new post();
+            $post->find($id);
 
-		$P = new post();
-		$P->find($id);
-		$P->delete();
-		$this->redirect("entries");
+            if($id <= 0 || $post->isNew()){
+                $this->messages->addMessage(Message::WARNING, "No se encontro el post.");
+                $this->redirect("posts/");
+            }
+
+            if($post->delete()){
+                $this->messages->addMessage(Message::SUCCESS, "Registro eliminado.");
+            } else {
+                $this->messages->addMessage(Message::ERROR, "No se elimino el post.");
+            }
+
+            $this->redirect("posts/");
 	}
 	
 }
