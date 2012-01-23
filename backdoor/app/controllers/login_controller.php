@@ -41,8 +41,8 @@ class Login_controller extends AppController {
 		}
 	}
 
-	function logout() {
-		$this->session->destroy("id_user");
+	public function logout() {
+		$this->session->destroy("user");
 		$this->session->destroy("logged");
 		$this->redirect("login/index/logout/");
 	}
