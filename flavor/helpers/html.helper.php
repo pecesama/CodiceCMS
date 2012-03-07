@@ -198,15 +198,15 @@ class html extends singleton {
 		return $html;
 	}
 	
-	public function hiddenField($name, $html_attributes=""){
-		$html = "<input type=\"hidden\" name=\"".$name."\"";
+	public function hiddenField($name, $value= "", $html_attributes=""){
+		$html = "<input type=\"hidden\" name=\"".$name."\" value=\"$value\"";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;
 	}
 	
-	public function passwordField($name, $html_attributes=""){
-		$html = "<input type=\"password\" name=\"".$name."\" ";
+	public function passwordField($name, $value, $html_attributes=""){
+		$html = "<input type=\"password\" name=\"".$name."\" value=\"$value\" ";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;

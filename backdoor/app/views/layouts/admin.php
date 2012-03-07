@@ -36,19 +36,15 @@
     <!-- Le styles -->
     <style type="text/css">
       body {
-        padding-top: 60px;
+        padding-top: 20px;
       }
     </style>
 	</head> 
 	<body> 
-
-<?php echo $this->renderElement("admin_topbar"); ?>
-
-  <div class="container">    
-    <div class="content">
-      <?php echo $content_for_layout ?>
-    </div>
-  </div>
-
+          <div class="container">    
+            <div class="content">
+              <?php echo $content_for_layout ?>
+            </div>
+          </div>
 	</body>
 </html>

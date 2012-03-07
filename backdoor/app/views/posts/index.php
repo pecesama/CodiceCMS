@@ -1,5 +1,6 @@
 <h1>Last entries</h1>
-
+<?php echo $this->html->linkTo("Add Entry", "posts/create", 'class="btn"'); ?>
+<hr />
 <table class="zebra-striped">
 	<thead>
 		<tr>

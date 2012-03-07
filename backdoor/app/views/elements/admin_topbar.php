@@ -30,7 +30,7 @@
             <li><?php echo $this->html->linkTo("Logout","login/logout"); ?></li>
           </ul>
 
-          <p class="pull-right">Logged in as <a href="#">username</a></p>
+          <p class="pull-right">Logged in as <a href="#"><?php echo $this->session->user['user']; ?></a></p>
         </div>
       </div>
     </div>

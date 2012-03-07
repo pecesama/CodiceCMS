@@ -17,7 +17,7 @@
 
     	  <div class="actions">
             <input type="submit" name="update" class="btn success" value="Update entry">
-            <?php echo $this->html->linkTo("Cancel","entries","class='btn'"); ?>
+            <?php echo $this->html->linkTo("Cancel","posts","class='btn'"); ?>
           </div>
         </fieldset>
         

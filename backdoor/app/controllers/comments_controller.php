@@ -10,7 +10,7 @@ class comments_controller extends appcontroller{
 	}
 	
 	public function index($id = NULL){
-		$this->view->setLayout("admin");
+		
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
 
 		$comment = new comment();
@@ -90,7 +90,7 @@ class comments_controller extends appcontroller{
 				$this->redirect("comments/update/$id");
 			}
 		} else {
-			$this->view->setLayout("admin");
+			
 			$this->title_for_layout($this->l10n->__("Editar comentario - Codice CMS"));
 			$this->render();
 		}
