@@ -15,25 +15,57 @@ if(!version_compare(PHP_VERSION, '5.2.0', '>=' ) ) {
 }
 
 define('DIRSEP', DIRECTORY_SEPARATOR);
-define('Absolute_Path', dirname(__FILE__).DIRSEP);
+define('Flavor_Path', dirname(__FILE__).DIRSEP);
 define('APPDIR','app');
 
-$configFile = Absolute_Path.'config.php';
+$configFile = Flavor_Path.'config.php';
 
-if (!file_exists($configFile)) {
-	die('Installation required');
+if (file_exists($configFile)) {
+	define("Absolute_Path",Flavor_Path);
+	header("content-type: text/plain");
+	echo file_get_contents($configFile);
+	unlink($configFile);
+	//require_once($configFile);
 } else {
-    require_once($configFile);
-	if(!defined('Absolute2Flavor')){
-		define('Absolute2Flavor',Absolute_Path);
-	}
+	define('Absolute_Path', Flavor_Path."flavor".DIRSEP."setup".DIRSEP);
+	//require views flavor class
+    require_once(Flavor_Path.DIRSEP.'flavor'.DIRSEP.'classes'.DIRSEP.'views.class.php');
+
+    $config_file_content = "<?php
+define('requiresBD', true);
+define('DB_Engine', 'mysqli');
+define('DB_Server', '');
+define('DB_User', '');
+define('DB_Password', '');
+define('DB_name', '');
+define('DB_Port', false);
+define('Path', '...');
+?>";
+
+    // try to install
+    $fh = fopen(Flavor_Path.'config.php','w+');
+    fwrite($fh,$config_file_content);
+
+exit;
+
+    // views
+	$Views = new views();
+
+	$flavor_path_permissions = substr(sprintf('%o', fileperms(Flavor_Path)), -4);
+	$flavor_path_owner = posix_getpwuid(fileowner(Flavor_Path));
+
+	$Views->flavor_path_permissions = $flavor_path_permissions;
+	$Views->flavor_path_owner = $flavor_path_owner;
+	echo $Views->fetch("setup.config");
+	exit;
 }
 
+exit;
 function __autoload($className) {
 	$directories = array(
-		Absolute2Flavor.'flavor'.DIRSEP.'classes'.DIRSEP.$className.'.class.php', // Flavor classes
-		Absolute2Flavor.'flavor'.DIRSEP.'interfaces'.DIRSEP.$className.'.interface.php', // maybe we want an interface
-		Absolute2Flavor.'flavor'.DIRSEP.'helpers'.DIRSEP.$className.'.helper.php', // maybe we want a helper
+		Flavor_Path.'flavor'.DIRSEP.'classes'.DIRSEP.$className.'.class.php', // Flavor classes
+		Flavor_Path.'flavor'.DIRSEP.'interfaces'.DIRSEP.$className.'.interface.php', // maybe we want an interface
+		Flavor_Path.'flavor'.DIRSEP.'helpers'.DIRSEP.$className.'.helper.php', // maybe we want a helper
 		Absolute_Path.APPDIR.DIRSEP.$className.'.php', // maybe we want appcontroller or appviews
 		Absolute_Path.APPDIR.DIRSEP."controllers".DIRSEP.$className.'.php', // maybe we want a controller
 		Absolute_Path.APPDIR.DIRSEP.'models'.DIRSEP.$className.'.php', // maybe we want a model
