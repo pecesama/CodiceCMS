@@ -31,22 +31,44 @@ if (file_exists($configFile)) {
 	//require views flavor class
     require_once(Flavor_Path.DIRSEP.'flavor'.DIRSEP.'classes'.DIRSEP.'views.class.php');
 
-    $config_file_content = "<?php
-define('requiresBD', true);
-define('DB_Engine', 'mysqli');
-define('DB_Server', '');
-define('DB_User', '');
-define('DB_Password', '');
-define('DB_name', '');
-define('DB_Port', false);
-define('Path', '...');
-?>";
+    $databases_list = null;
 
-    // try to install
-    $fh = fopen(Flavor_Path.'config.php','w+');
-    fwrite($fh,$config_file_content);
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		$data = $_POST;
+		echo "<pre>";
+		print_r($data);
+		echo "</pre>";
+		
+		$port = (is_numeric($data['database']['port']) and $data['database']['port']>0)?$data['database']['port']:null;
+		$name = is_numeric($data['database']['name'])?$data['database']['name']:null;
+		
+		$MySql = new mysqli($data['database']['server'],$data['database']['user'],$data['database']['password'],$port,$name);
+		$Result = $MySql->query("SHOW DATABASES;");
+		while($row = $Result->fetch_assoc()){
+			$databases_list[] = $row;
+		}
 
-exit;
+/*
+		exit;
+
+		$config_file_content = "<?php
+		define('requiresBD', true);
+		define('DB_Engine', 'mysqli');
+		define('DB_Server', '');
+		define('DB_User', '');
+		define('DB_Password', '');
+		define('DB_name', '');
+		define('DB_Port', false);
+		define('Path', '...');
+		?>";
+
+		    // try to install
+		    $fh = fopen(Flavor_Path.'config.php','w+');
+		    fwrite($fh,$config_file_content);
+
+		exit;
+*/
+	}
 
     // views
 	$Views = new views();
@@ -54,10 +76,18 @@ exit;
 	$flavor_path_permissions = substr(sprintf('%o', fileperms(Flavor_Path)), -4);
 	$flavor_path_owner = posix_getpwuid(fileowner(Flavor_Path));
 
+	$Views->step = $step;
+	$Views->databases_list = $databases_list;
 	$Views->flavor_path_permissions = $flavor_path_permissions;
 	$Views->flavor_path_owner = $flavor_path_owner;
-	echo $Views->fetch("setup.config");
-	exit;
+
+	if(is_null($databases_list) = FALSE){
+		echo $Views->fetch('setup.step2');		
+	}else{
+		echo $Views->fetch('setup.step1');
+	}
+
+	exit("END");
 }
 
 exit;
