@@ -6,7 +6,7 @@ class appviews extends views {
 
 	public function __construct() {
 		parent::__construct();
-		$this->User = User_lib::getInstance();
+		$this->User = User_Lib::getInstance();
 	}
 	
 }
