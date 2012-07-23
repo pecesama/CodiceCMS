@@ -19,7 +19,7 @@
                 <li><?php echo $this->html->linkTo("Waiting for approval","comments/waiting"); ?></li>
               </ul>
             </li>
-            <li><a href="index/about">About</a></li>
+            <li><?php echo $this->html->linkTo("About","index/about"); ?></li>
           </ul>
 
           <form action="">
@@ -30,7 +30,7 @@
             <li><?php echo $this->html->linkTo("Logout","login/logout"); ?></li>
           </ul>
 
-          <p class="pull-right">Logged in as <a href="#">username</a></p>
+          <p class="pull-right">Logged in as <a href="#"><?php echo $this->session->user['user']; ?></a></p>
         </div>
       </div>
     </div>

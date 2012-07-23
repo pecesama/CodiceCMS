@@ -10,7 +10,7 @@ class comments_controller extends appcontroller{
 	}
 	
 	public function index($id = NULL){
-		$this->view->setLayout("admin");
+		
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
 
 		$comment = new comment();
@@ -24,11 +24,11 @@ class comments_controller extends appcontroller{
 		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		$this->view->pagination = $pagination;
 
-		$comments = $comment->findAll(NULL, "ID DESC", $limitQuery, NULL);
+		$comments = $comment->findAll(NULL, "idComment DESC", $limitQuery, NULL);
 		
 		foreach($comments as $key => $value){
 			$Post = new post();
-			$post = $Post->findBy('ID',$value['ID_post']);
+			$post = $Post->findBy('idComment',$value['ID_post']);
 
 			$value['post'] = array(
 				'urlfriendly' => $post['urlfriendly'],
@@ -90,7 +90,7 @@ class comments_controller extends appcontroller{
 				$this->redirect("comments/update/$id");
 			}
 		} else {
-			$this->view->setLayout("admin");
+			
 			$this->title_for_layout($this->l10n->__("Editar comentario - Codice CMS"));
 			$this->render();
 		}
@@ -129,4 +129,9 @@ class comments_controller extends appcontroller{
 			$this->redirect("comments");
 		}
 	}
+        
+        public function waiting(){
+            
+            $this->render();
+        }
 }

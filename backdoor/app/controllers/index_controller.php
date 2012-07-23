@@ -18,6 +18,11 @@ class index_controller extends appcontroller{
         
         $this->render();
     }
+    
+    public function about(){
+        
+        $this->render();
+    }
 }
 
 ?>

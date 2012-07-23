@@ -6,9 +6,13 @@ abstract class appcontroller extends controller {
 	protected $plugin;
 	protected $User;
 	protected $config;
+        protected $messages;
 
 	public function __construct(){
 		parent::__construct();
+                
+                $this->messages = Message::getInstance();
+                
 		$this->registry = registry::getInstance();
 		
 		$this->html = html::getInstance();

@@ -1,3 +1,4 @@
+<h1>Codice - CMS</h1>
 <div class="row">
 	<div class="span12">
 		<?php echo $this->html->form("login"); ?>
@@ -13,14 +14,14 @@
 				<div class="clearfix">
 					<label for="login">User</label>
 					<div class="input">
-						<?php echo $this->html->textField("login", " class=\"short\" "); ?>
+						<?php echo $this->html->textField("login", "", "class=\"short\" "); ?>
 					</div>
 				</div>
 				
 				<div class="clearfix">
 					<label for="password">Password</label> 
 					<div class="input">
-						<?php echo $this->html->passwordField("password", " class=\"short\" "); ?>
+						<?php echo $this->html->passwordField("password", "", " class=\"short\" "); ?>
 					</div>
 				</div>
 							
