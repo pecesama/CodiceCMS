@@ -9,15 +9,21 @@
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach ($comments as $comment) { ?>
+		<?php if(count($comments) > 0): ?>
+		<?php foreach ($comments as $comment) : ?>
 			<tr id="row<?php echo $comment["ID"];?>">
 				<td><?php echo $comment["content"]; ?></td>
 				<td><?php echo $comment["status"]; ?></td>
-				<td><?php echo $this->html->linkTo("Edit","comments/update/{$comment["ID"]}"," class='btn primary' rel='twipsy' title='Modify the content of this comment before publishing it.'"); ?></td>
-				<td><?php echo $this->html->linkTo("Remove","comments/delete/{$comment["ID"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
-				<td><?php echo $this->html->linkTo("Approve","comments/approve/{$comment["ID"]}"," class='btn success' rel='twipsy' title='Approve this comment.'"); ?></td>
+				<td><?php echo $this->html->linkTo("Edit","comments/update/{$comment["idComment"]}"," class='btn primary' rel='twipsy' title='Modify the content of this comment before publishing it.'"); ?></td>
+				<td><?php echo $this->html->linkTo("Remove","comments/delete/{$comment["idComment"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
+				<td><?php echo $this->html->linkTo("Approve","comments/approve/{$comment["idComment"]}"," class='btn success' rel='twipsy' title='Approve this comment.'"); ?></td>
 			</tr>
-		<?php } ?>
+		<?php endforeach; ?>
+		<?php else: ?>
+			<tr>
+				<td colspan="5">No comment to show.</td>
+			</tr>
+		<?php endif; ?>
 	</tbody>
 </table>
 

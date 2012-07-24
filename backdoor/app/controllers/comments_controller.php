@@ -9,6 +9,10 @@ class comments_controller extends appcontroller{
 		}
 	}
 	
+	public function beforeRender(){
+		$this->view->active = array('comments' => 'active');
+	}
+	
 	public function index($id = NULL){
 		
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
@@ -28,7 +32,7 @@ class comments_controller extends appcontroller{
 		
 		foreach($comments as $key => $value){
 			$Post = new post();
-			$post = $Post->findBy('idComment',$value['ID_post']);
+			$post = $Post->find($value['idPost']);
 
 			$value['post'] = array(
 				'urlfriendly' => $post['urlfriendly'],
@@ -37,7 +41,12 @@ class comments_controller extends appcontroller{
 
 			$value["content"] = utils::htmlentities($value["content"]);
 			$value["content"] = utils::nl2br($value["content"]);
-
+			
+			// status
+			$status = new status();
+			$status->find($value['idStatus']);
+			$value['status'] = $status['name'];
+			
 			$comments[$key] = $value;
 		}
 		
@@ -59,41 +68,28 @@ class comments_controller extends appcontroller{
 		$comment['content'] = utils::convert2HTML($comment['content']);
 
 		$Post = new post();
-		$post = $Post->findBy('ID',$comment['ID_post']);
+		$this->view->post = $Post->findBy('idPost',$comment['idPost']);
 
-		$comment['post'] = array(
-			'urlfriendly' => $post['urlfriendly'],
-			'title' => $post['title']
-		);
+		
+		if ($this->data && $Comment->isNew() == FALSE) {
+			$Comment->prepareFromArray($this->data);
 
-		$this->view->comment = $comment;
-		$this->view->id = $id;
-
-		$statuses = array("publish", "waiting");
-
-		$this->view->statuses = $statuses;
-		if ($_SERVER["REQUEST_METHOD"]=="POST") {
-			if(isset($_POST['cancelar'])){
-				$this->redirect("comments");
+			if($Comment->save()){
+				$this->session->flash("Comment updated.");
+				$this->redirect("comments/");
 			} else {
-				###########
-				# Las siguientes dos lineas no deberian estar pero algo anda mal con el ActiveRecord que no deja las variables
-				# de las consultas que se realizan directamente desde dentro de algun metodo en el model con $this->db->query e interfiere
-				# con el actualizar por que podria haber campos que no se requieren en la actualizacion.
-				###########
-				$comment = new comment();#######
-				$comment->find($id);####### 
-
-				$comment->prepareFromArray($_POST);
-
-				$comment->save();
-				$this->redirect("comments/update/$id");
+				$comment = $this->data;
 			}
-		} else {
-			
-			$this->title_for_layout($this->l10n->__("Editar comentario - Codice CMS"));
-			$this->render();
 		}
+		
+		// Find status
+		$status = new status();
+		$statuses = $status->findAll(null, null, null, "WHERE idStatus = 1 or idStatus = 3");
+		$this->view->statuses = $statuses;
+		
+		$this->view->comment = $comment;
+		$this->title_for_layout($this->l10n->__("Edit comment - Codice CMS"));
+		$this->render();
 	}
 	
 	public function delete($id){
@@ -117,7 +113,8 @@ class comments_controller extends appcontroller{
 			$Comment->setPingback();
 		}
 		
-		$Comment['status'] = 'publish';
+		// Set status tu Publish
+		$Comment['idStatus'] = 1; //'publish';
 		$Comment->save();
 
 		$this->registry->lastCommentID = $id;
@@ -130,8 +127,36 @@ class comments_controller extends appcontroller{
 		}
 	}
         
-        public function waiting(){
-            
-            $this->render();
-        }
+    public function waiting(){
+        $this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
+
+		$comment = new comment();
+		// Find comments waiting for approval
+		$comments = $comment->findAll(NULL, "idComment ASC", null, "WHERE idStatus = 3");
+        foreach($comments as $key => $value){
+			$Post = new post();
+			$post = $Post->find($value['idPost']);
+
+			$value['post'] = array(
+				'urlfriendly' => $post['urlfriendly'],
+				'title' => $post['title']
+			);
+
+			$value["content"] = utils::htmlentities($value["content"]);
+			$value["content"] = utils::nl2br($value["content"]);
+			
+			// status
+			$status = new status();
+			$status->find($value['idStatus']);
+			$value['status'] = $status['name'];
+			
+			$comments[$key] = $value;
+		}
+		
+//		$this->registry->comments = $comments;
+		
+//		$this->plugin->call("comments_comment_content");
+		$this->view->comments = $comments;
+        $this->render();
+    }
 }

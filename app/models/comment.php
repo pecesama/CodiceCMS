@@ -110,13 +110,13 @@ class comment extends models {
 		$idPost = $this->db->sql_escape($idPost);
 		$status = $this->db->sql_escape($status);
 
-		$sql = "select count(*) as total from comments as c
-		inner join posts as p on p.idPost = c.idPost
-		inner join statuses as s on s.idStatus = c.idStatus
-		where 1=1 ";
+		$sql = "SELECT COUNT(*) AS total FROM comments AS c
+		INNER JOIN posts AS p ON p.idPost = c.idPost
+		INNER JOIN statuses AS s on s.idStatus = c.idStatus
+		WHERE ";
 
-		$sql .= (is_null($status))?"":"AND s.name = '$status' ";
-		$sql .= (is_null($idPost))?"":"AND p.idPost = $idPost ";
+		$sql .= (is_null($status))?"":"s.name = '$status' ";
+		$sql .= (is_null($idPost))?"":"AND p.idPost = '$idPost' ";
   		
 		$valid = $this->findBySql($sql);
 
@@ -127,21 +127,21 @@ class comment extends models {
 		return 0;
 	}
 	
-	public function getAll($ID_post, $status = null){
+	public function getAll($idPost, $idStatus = null){
 		$C = new comment();
 
 		$rows = array();
-		if(is_null($status) === true){
+		if(is_null($idStatus) === true){
 			$rows = $C->findAll(
 				'comments.*, md5(comments.email) as md5_email',
 				'created ASC',
 				null,
-				"WHERE ID_post={$ID_post}"
+				"WHERE idPost={$idPost}"
 			);
-		}else if(is_array($status)){
+		}else if(is_array($idStatus)){
 			$status_sql = "";
-			foreach($status as $st){
-				$status_sql .= "status = '$st' OR ";
+			foreach($idStatus as $st){
+				$status_sql .= "idStatus = '$st' OR ";
 			}
 			$status_sql = substr($status_sql,0,-4);
 			
@@ -149,14 +149,14 @@ class comment extends models {
 				'comments.*, md5(comments.email) as md5_email',
 				'created ASC',
 				null,
-				"WHERE ID_post={$ID_post} AND ($status_sql)"
+				"WHERE idPost={$idPost} AND ($status_sql)"
 			);
 		}else{
 			$rows = $C->findAll(
 				'comments.*, md5(comments.email) as md5_email',
 				'created ASC',
 				null,
-				"WHERE ID_post={$ID_post} AND status='$status'"
+				"WHERE idPost={$idPost} AND idStatus='$idStatus'"
 			);
 		}
 		
