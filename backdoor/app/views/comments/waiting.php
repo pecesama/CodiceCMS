@@ -17,7 +17,7 @@
 				<td><?php echo $comment["status"]; ?></td>
 				<td><?php echo date("D d-m-Y H:i:s", strtotime($comment["created"]) ); ?></td>
 				<td><?php echo $this->html->linkTo("Edit","comments/update/{$comment["idComment"]}"," class='btn primary' rel='twipsy' title='Modify the content of this comment before publishing it.'"); ?></td>
-				<td><?php echo $this->html->linkTo("Remove","comments/delete/{$comment["idComment"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
+				<td><?php echo $this->html->linkToConfirm("Remove","comments/delete/{$comment["idComment"]}"," class='btn danger' rel='twipsy' title='Remove this comment.'"); ?></td>
 				<td><?php echo $this->html->linkTo("Approve","comments/approve/{$comment["idComment"]}"," class='btn success' rel='twipsy' title='Approve this comment.'"); ?></td>
 			</tr>
 		<?php endforeach; ?>
