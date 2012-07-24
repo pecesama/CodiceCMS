@@ -1,6 +1,6 @@
 <?php
 
-class Posts_controller extends AppController{
+class Posts_controller extends appcontroller{
 	
 	public function __construct(){
 		parent::__construct();
@@ -8,6 +8,10 @@ class Posts_controller extends AppController{
 		if($this->User->isLogged() === FALSE){
 			$this->redirect("login");
 		}
+	}
+	
+	public function beforeRender(){
+		$this->view->active = array('entries' => 'active');
 	}
 
 	public function index($page = null){
@@ -41,7 +45,6 @@ class Posts_controller extends AppController{
                 // Get button value
                 $btns = array_keys($this->data['btn']);
                 
-                
                 // Get status id
                 $status = new status();
                 $status->findBy('name', $btns[0]);
@@ -52,12 +55,14 @@ class Posts_controller extends AppController{
                     $this->data['title'] = "Untitled";
                 }
                 
-                // FIXME: Porque se pide el campo urlfiendly
+                // Generate urlfriendly
                 $this->data['urlfriendly'] = $post->buildUrl($this->data['title']);
 
                 $post->prepareFromArray($this->data);
+                $post->idUser = $this->session->user['idUser'];
+                
                 if($post->save()){
-                    // TODO: Validar que se agregar las tags
+                    // TODO: Validate if every tag is saved
                     $post->updateTags($post['idPost'], $this->data['tags']);
                     
                     $this->messages->addMessage(Message::SUCCESS, "New posts saved.");
@@ -77,48 +82,83 @@ class Posts_controller extends AppController{
             $this->render();
 	}
 
-	public function read(){
+	public function view($urlFriendly = null){
+	
+		// Find post
+		$post = new post();
+		$this->view->post = $post->findBy('urlfriendly', $urlFriendly);
 		
+		// if id is null or post is new
+		if( is_null($urlFriendly) || $post->isNew() ){	
+			$this->redirect("posts/");
+		}
+		
+		// find author, it's a user
+		$user = new user();
+		$this->view->user = $user->find($post['idUser']);
+		
+		// find post status
+		$status = new status();
+		$this->view->status = $status->find($post['idStatus']);
+		
+		// find comments
+		$comment = new comment();
+		$comments = $comment->findAllBy('idPost', $post['idPost']);
+		
+		// FIXME: make a sql join
+		foreach($comments as $k => $comment){
+			$status = new status();
+			$status->find($comment['idStatus']);
+			$comments[$k]['status'] = $status['name'];
+		}
+		// endfixme
+		$this->view->comments = $comments;
+		
+		$this->title_for_layout("Entry - {$post['title']}");
+		$this->render();
 	}
 
 	public function update($id = null){
 		$id = (int) $id;
 		if($id <= 0){
-                    $this->redirect("posts/");
+			$this->redirect("posts/");
 		}
                 
-                // Get status for posts
-                $status = new status();
+        // Get status for posts
+        $status = new status();
 		$statuses = $status->findAll();
 		
-		if ($this->data) {
-			if(isset($this->data['cancelar'])){
-				$this->redirect("entries");
-			}else{
-				$P = new post();
-				$P->find($id); 
-				
-				if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
-					$this->data['title'] = "Untitled";
-				}
-				
-				if(!preg_match("/\S+/",$this->data['urlfriendly']) OR $this->data['urlfriendly'] == ""){
-					$this->data['urlfriendly'] = $this->data['title'];
-				}
-				
-				$this->data['urlfriendly'] = $P->buildUrl($this->data['urlfriendly'], $id);
-				
-	 			$P->updateTags($id,$this->data['tags']);
-				unset($this->data['tags']);
-				
-				$P->prepareFromArray($this->data);
-				
-				$P->save();
-				
-				$this->session->flash('Información guardada correctamente.');
-				
-				$this->redirect("posts/update/$id");
+		// Find post to edit
+		$P = new post();
+		$P->find($id); 
+		
+		// if request is post and post isn't new
+		if ($this->data && $P->isNew() == FALSE) {
+			
+			if(!preg_match("/\S+/",$this->data['title']) OR $this->data['title'] == ""){
+				$this->data['title'] = "Untitled";
 			}
+			/*
+			if(!preg_match("/\S+/",$this->data['urlfriendly']) OR $this->data['urlfriendly'] == ""){
+				$this->data['urlfriendly'] = $this->data['title'];
+			}
+			*/
+			if($P['title'] != $this->data['title']){
+				$this->data['urlfriendly'] = $P->buildUrl($this->data['title'], $id);
+			}
+			
+			// update tags registry and relations
+ 			$P->updateTags($id,$this->data['tags']);
+			
+			$P->prepareFromArray($this->data);
+			
+			if($P->save()){
+				$this->session->flash('Información guardada correctamente.');
+				$this->redirect("posts/view/{$P['urlfriendly']}");
+			} else {
+				
+			}
+			
 		}
 		
 		$P = new post();
@@ -128,7 +168,7 @@ class Posts_controller extends AppController{
 		$post['content'] = utils::convert2HTML($P['content']);
 		$post['tags'] = $P->getTags($id,'string');
 		
-		$this->title_for_layout($this->l10n->__("Editar post - Codice CMS"));
+		$this->title_for_layout($this->l10n->__("Update entry - Codice CMS"));
 		
 		$this->view->id = $id;
 		$this->view->post = $post;

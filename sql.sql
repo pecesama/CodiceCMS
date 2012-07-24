@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `idUser` int(11) NOT NULL,
   `idStatus` int(11) NOT NULL,
   `created` datetime NOT NULL,
-  `updated` datetime NOT NULL,
+  `modified` datetime NOT NULL,
   PRIMARY KEY (`idPost`),
   FULLTEXT KEY `content` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
