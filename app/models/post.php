@@ -97,25 +97,29 @@ class post extends models{
 		return $posts;
 	}
 	
-	public function getPost($urlfriendly, $status = null){
+	public function getPost($urlfriendly, $statusName = null){
 		$urlfriendy = rawurlencode($this->sql_escape($urlfriendly));
 		$post = array();
 		
-		exit( __FILE__ . " -> LINE: " . __LINE__ );
+//		exit( __FILE__ . " -> LINE: " . __LINE__ );
 
-		if(is_null($status) === true){
+		if(is_null($statusName) === true){
 			$post = $this->findBy(
 				'urlfriendly',
 				$urlfriendly
 			);
 		}else{
+			
+			//
+			$status = new status();
+			$status->findBy('name', $statusName);
 			$post = $this->findBy(
-				array('urlfriendly','status'),
-				array($urlfriendly,$status)
+				array('urlfriendly', 'idStatus'),
+				array($urlfriendly, $status['idStatus'])
 			);
 		}
 
-		exit;
+//		exit;
 
 		if($this->isNew() === false){
 			if($post['title']){
@@ -124,11 +128,11 @@ class post extends models{
 				$post['title'] = "Untitled";
 			}
 			
-			$post['tags'] = $this->getTags($post['ID']);
+			$post['tags'] = $this->getTags($post['idPost']);
 			
 			$C = new comment();
-			$post["comments_count"] = $C->countCommentsByPost($post['ID'],"Publish");
-			$post["comments"] = $C->getAll($post['ID'],"Publish");
+			$post["comments_count"] = $C->countCommentsByPost($post['idPost'], $status['idStatus']);
+			$post["comments"] = $C->getAll($post['idPost'], $status['idStatus']);
 		}
 		
 		return $post;
