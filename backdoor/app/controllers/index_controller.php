@@ -12,6 +12,8 @@ class index_controller extends appcontroller{
         if($this->User->isLogged() === FALSE){
                 $this->redirect("login");
         }
+        
+        $this->title_for_layout("Codice CMS");
     }
     
     public function index($id = NULL) {
