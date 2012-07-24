@@ -1,6 +1,6 @@
 <?php
 
-class Login_controller extends AppController {
+class Login_controller extends appcontroller {
 	public function __construct() {
 		parent::__construct();
 		

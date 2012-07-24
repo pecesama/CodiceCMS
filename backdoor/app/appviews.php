@@ -8,7 +8,7 @@ class appviews extends views {
 	public function __construct() {
             parent::__construct();
             $this->messages = Message::getInstance();
-            $this->User = User_lib::getInstance();
+            $this->User = User_Lib::getInstance();
 	}
 	
 }
