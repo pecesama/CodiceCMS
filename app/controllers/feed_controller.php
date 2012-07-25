@@ -23,13 +23,6 @@ class feed_controller extends appcontroller {
 			$temp[$a_post['idPost']]['tags'] = $post->getTags($a_post['idPost'],'string');
 		}
 		$this->view->posts = $temp;
-		
-		// Get configuration
-/*		$configuration = new configuration();
-		$this->view->conf = $configuration->findAll();
-	*/
-
-		
 		$this->render("rss");
 	}
 }
