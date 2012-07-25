@@ -30,17 +30,6 @@ ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
-INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALUES
-('blog_name', 'Blog Name', 1, 1),
-('blog_description', 'Blog description', 1, 2),
-('blog_siteurl', 'http://localhost/codice', 1, 3),
-('blog_current_theme', 'misalgoritmos', 1, 4),
-('blog_posts_per_page', '3', 1, 5),
-('posts_per_page', '15', 1, 6),
-('blog_feedburner_rssLink', 'http://feeds2.feedburner.com/misalgoritmos', 1, 7),
-('blog_upload_folder', 'uploads', 1, 8),
-('cancelar', 'Cancel', 1, 9);
-
 -- --------------------------------------------------------
 
 --
@@ -55,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `idUser` int(11) NOT NULL,
   `idStatus` int(11) NOT NULL,
   `created` datetime NOT NULL,
-  `modified` datetime NOT NULL,
+  `updated` datetime NOT NULL,
   PRIMARY KEY (`idPost`),
   FULLTEXT KEY `content` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -68,35 +57,6 @@ CREATE  TABLE `tags` (
 ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
-
-INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES
-(1, 'general', 'general'),
-(7, 'humor', 'humor'),
-(11, 'web 2.0', 'web-20'),
-(8, 'wordpress', 'wordpress'),
-(14, 'ensamblador', 'ensamblador'),
-(12, 'firefox', 'firefox'),
-(3, 'pascal', 'pascal'),
-(5, 'algoritmos', 'algoritmos'),
-(15, 'css', 'css'),
-(19, 'seguridad', 'seguridad'),
-(35, 'programacion', 'programacion'),
-(37, 'TengoEstaDuda', 'tengoestaduda'),
-(38, '"web', 'web'),
-(39, '2.0"', '2-0'),
-(40, ' css humor ', 'css-humor'),
-(41, '2.0web', '2-0web'),
-(42, 'Colima', 'Colima'),
-(43, 'MÃ©xico', 'Mexico'),
-(44, 'Offtopic', 'Offtopic'),
-(45, 'FlavorPHP', 'FlavorPHP'),
-(46, 'PHP', 'PHP'),
-(47, 'Diagramas de Flujo', 'Diagramas-de-Flujo'),
-(48, 'Flujogramas', 'Flujogramas'),
-(49, 'FotografÃ­a', 'Fotografia'),
-(50, 'jquery', 'jquery'),
-(51, 'html', 'html'),
-(52, ' ', '');
 
 CREATE  TABLE `rel_tags` (
   `idTag` INT NOT NULL COMMENT 'Relacion de la etiqueta' ,
@@ -128,8 +88,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`idUser`, `firstName`, `lastName`, `user`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
-(1, 'Administrador', 'De Codice', 'admin', md5('admin'), 'contacto@codicecms.com', 'http://www.codicecms.com/', 'Administrador de Codice CMS.', NOW(), NOW());
 
 CREATE  TABLE `statuses` (
   `idStatus` INT NOT NULL AUTO_INCREMENT ,
@@ -164,6 +122,68 @@ ENGINE = MyISAM
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 
+
+CREATE  TABLE `plugins` (
+  `idPlugin` INT NOT NULL AUTO_INCREMENT ,
+  `plugin` VARCHAR(255) NULL ,
+  `description` TEXT NULL ,
+  `url` VARCHAR(255) NULL COMMENT 'página web del plugin\n' ,
+  `urlVersion` VARCHAR(255) NULL COMMENT 'url para consultar versión de plugin y verificar si es necesario actualizar\n' ,
+  `urlDownload` VARCHAR(255) NULL COMMENT 'url para descargar version de plugin nueva (en caso de urlVersion ser mayor que fila version)' ,
+  `active` INT NULL COMMENT '¿activado o desactivado?' ,
+  `version` DOUBLE NULL COMMENT 'version del plugin\n' ,
+  `created` DATETIME NULL COMMENT 'Fecha de creación del registro' ,
+  `modified` DATETIME NULL COMMENT 'Fecha de actualizacion del registro\n' ,
+  PRIMARY KEY (`idPlugin`) )
+ENGINE = MyISAM
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_bin;
+
+
+
+INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALUES
+('blog_name', 'Blog Name', 1, 1),
+('blog_description', 'Blog description', 1, 2),
+('blog_siteurl', 'http://localhost/codice', 1, 3),
+('blog_current_theme', 'misalgoritmos', 1, 4),
+('blog_posts_per_page', '3', 1, 5),
+('posts_per_page', '15', 1, 6),
+('blog_feedburner_rssLink', 'http://feeds2.feedburner.com/misalgoritmos', 1, 7),
+('blog_upload_folder', 'uploads', 1, 8),
+('cancelar', 'Cancel', 1, 9);
+
+INSERT INTO `users` (`idUser`, `firstName`, `lastName`, `user`, `password`, `email`, `website`, `about`, `created`, `modified`) VALUES
+(1, 'Administrador', 'De Codice', 'admin', md5('admin'), 'contacto@codicecms.com', 'http://www.codicecms.com/', 'Administrador de Codice CMS.', NOW(), NOW());
+
+INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES
+(1, 'general', 'general'),
+(7, 'humor', 'humor'),
+(11, 'web 2.0', 'web-20'),
+(8, 'wordpress', 'wordpress'),
+(14, 'ensamblador', 'ensamblador'),
+(12, 'firefox', 'firefox'),
+(3, 'pascal', 'pascal'),
+(5, 'algoritmos', 'algoritmos'),
+(15, 'css', 'css'),
+(19, 'seguridad', 'seguridad'),
+(35, 'programacion', 'programacion'),
+(37, 'TengoEstaDuda', 'tengoestaduda'),
+(38, '"web', 'web'),
+(39, '2.0"', '2-0'),
+(40, ' css humor ', 'css-humor'),
+(41, '2.0web', '2-0web'),
+(42, 'Colima', 'Colima'),
+(43, 'MÃ©xico', 'Mexico'),
+(44, 'Offtopic', 'Offtopic'),
+(45, 'FlavorPHP', 'FlavorPHP'),
+(46, 'PHP', 'PHP'),
+(47, 'Diagramas de Flujo', 'Diagramas-de-Flujo'),
+(48, 'Flujogramas', 'Flujogramas'),
+(49, 'FotografÃ­a', 'Fotografia'),
+(50, 'jquery', 'jquery'),
+(51, 'html', 'html'),
+(52, ' ', '');
+
 INSERT INTO `links` (`name`, `link`, `type`, `created`, `modified`, `idLink`) VALUES
 ('sabrosus', 'http://www.mis-algoritmos.com/sabrosus', 'external', NULL, NULL, 8),
 ('Pedro Santana', 'http://www.pecesama.net/', 'external', NULL, NULL, 10),
@@ -192,24 +212,6 @@ INSERT INTO `links` (`name`, `link`, `type`, `created`, `modified`, `idLink`) VA
 ('pmsilva.com', 'http://pmsilva.com/', 'external', NULL, NULL, 57),
 ('Victor De la Rocha', 'http://victordelarocha.com', 'external', '2009-07-25 13:14:15', '2009-07-25 13:14:15', 62);
 
-CREATE  TABLE `plugins` (
-  `idPlugin` INT NOT NULL AUTO_INCREMENT ,
-  `plugin` VARCHAR(255) NULL ,
-  `description` TEXT NULL ,
-  `url` VARCHAR(255) NULL COMMENT 'página web del plugin\n' ,
-  `urlVersion` VARCHAR(255) NULL COMMENT 'url para consultar versión de plugin y verificar si es necesario actualizar\n' ,
-  `urlDownload` VARCHAR(255) NULL COMMENT 'url para descargar version de plugin nueva (en caso de urlVersion ser mayor que fila version)' ,
-  `active` INT NULL COMMENT '¿activado o desactivado?' ,
-  `version` DOUBLE NULL COMMENT 'version del plugin\n' ,
-  `created` DATETIME NULL COMMENT 'Fecha de creación del registro' ,
-  `modified` DATETIME NULL COMMENT 'Fecha de actualizacion del registro\n' ,
-  PRIMARY KEY (`idPlugin`) )
-ENGINE = MyISAM
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_bin;
-
-
-
 -- ------------
 --
 --
@@ -229,12 +231,12 @@ INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idS
 INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (3, 'tres', 'tres', 'tres', 1, 3, '2011-12-10 9:58:12');
 
 -- comentario de un admin, solo tiene el idUser.
-INSERT INTO `codice`.`comments` (`idComment`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (5, 1, 1, 2, 'cinco', '192.168.1.2', '', 0, '2011-12-30 14:13:29');
+INSERT INTO `comments` (`idComment`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (5, 1, 1, 2, 'cinco', '192.168.1.2', '', 0, '2011-12-30 14:13:29');
 -- comentarios de lectores del blog.
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (1, 1, 1, 1, 1, 'uno', '192.168.1.2', 'autor1@gmail.com', 0, '2011-12-30 14:15:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (2, 2, null, 3, 1, 'respuesta a uno', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:16:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (3, 1, null, 1, 1, 'tres', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:18:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (4, 1, null, 1, 1, 'cuatro', '192.168.1.2', 'autor3@gmail.com', 0, '2011-12-30 14:25:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (1, 1, 1, 1, 1, 'uno', '192.168.1.2', 'autor1@gmail.com', 0, '2011-12-30 14:15:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (2, 2, null, 3, 1, 'respuesta a uno', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:16:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (3, 1, null, 1, 1, 'tres', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:18:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (4, 1, null, 1, 1, 'cuatro', '192.168.1.2', 'autor3@gmail.com', 0, '2011-12-30 14:25:29');
 
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
