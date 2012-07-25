@@ -6,6 +6,7 @@
     </div>
 </div>
 
+<?php /*
 <div class="clearfix">
     <label for="urlfriendly">URl friendly</label>
     <div class="input">
@@ -13,11 +14,11 @@
         <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about URL friendly.'"); ?>
     </div>
 </div>
-
+*/ ?>
 <div class="clearfix">
     <label for="content">Content for the entry</label>
     <div class="input">
-        <?php echo $this->html->textArea("content", $post['content'], ' rows="3" class="xxlarge" placeholder="content"'); ?>
+        <?php echo $this->html->textArea("content", $post['content'], ' rows="3" class="xxlarge ckeditor" placeholder="content"'); ?>
     </div>
 </div>
 
@@ -30,3 +31,5 @@
         <?php echo $this->html->linkTo("?","#",' rel="popover" title="Title" data-content="Description about Labels or Tags." '); ?>
     </div>
 </div>
+
+<?php echo $this->html->includeJs("ckeditor_3.6.4/ckeditor"); ?>

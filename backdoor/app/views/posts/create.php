@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="span12">
+    <div class="span16">
       <?php echo $this->html->form("posts/create/"); ?>
         <fieldset>
           <legend>Add entry</legend>
