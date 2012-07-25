@@ -31,14 +31,14 @@
     <!-- Le styles -->
     <style type="text/css">
       body {
-        padding-top: 60px;
+        /*padding-top: 60px;*/
       }
     </style>
 	<?php echo $includes; ?>
 </head>
 <body>
 	
-	<?php echo $this->renderElement("admin_topbar"); ?>
+	<?php //echo $this->renderElement("admin_topbar"); ?>
 
 	<div class="container">
 		<div class="row">
@@ -48,26 +48,19 @@
 			<?php echo $this->renderElement("index_tabs"); ?>
 		</div>
 		<div class="row">
+			<div class="span10">
+				<?php if($this->session->issetFlash()): ?>
+					<div class="alert-message fade in">
+						<a class="close" href="#">×</a>
+						<?php echo $this->session->getFlash(); ?>
+					</div>
+				<?php endif; ?>
+				<?php echo $content_for_layout; ?>
+			</div>
 			<div class="span4">
 				<?php echo $this->renderElement("index_sidebar"); ?>
 			</div>
-			<div class="span12">
-				<?php echo $content_for_layout; ?>
-			</div>
 		</div>
 	</div>
-	
-	<div id="fb-root"></div>
-	<script src="http://connect.facebook.net/en_US/all.js"></script>
-	<script>FB.init({appId  : '127934697222671',status : true,cookie : true,xfbml  : true});</script>
-	<script type="text/javascript">
-	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-	</script>
-	<script type="text/javascript">
-	try {
-	var pageTracker = _gat._getTracker("UA-256387-1");
-	pageTracker._trackPageview();
-	} catch(err) {}</script>
 </body>
 </html>
