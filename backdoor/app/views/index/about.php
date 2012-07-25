@@ -1,7 +1,7 @@
 <h1>CodiceCMS</h1>
 
 <p>
-    Es ... version 1.0
+    Version 1.0 (Beta)
 </p>
 
 <p>

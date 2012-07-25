@@ -5,14 +5,14 @@
           <?php echo $this->html->linkTo("Codice CMS","index","class='brand'");?>
           
           <ul class="nav">
-            <li class="dropdown active">
+            <li class="dropdown <?php echo isset($active['entries'])? $active['entries'] : ""; ?>">
               <?php echo $this->html->linkTo("Entries","#"," class='dropdown-toggle'"); ?>
               <ul class="dropdown-menu">
                 <li><?php echo $this->html->linkTo("Last entries","posts"); ?></li>
                 <li><?php echo $this->html->linkTo("Add entry","posts/create"); ?></li>
               </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown <?php echo isset($active['comments'])? $active['comments'] : ""; ?>">
               <?php echo $this->html->linkTo("Comments","#"," class='dropdown-toggle'"); ?>
               <ul class="dropdown-menu">
                 <li><?php echo $this->html->linkTo("Last comments","comments"); ?></li>
