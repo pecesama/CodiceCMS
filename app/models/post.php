@@ -2,6 +2,10 @@
 
 class post extends models{
 
+	/***
+	 *  FIXME
+	 *
+	 */
 	public function countPosts($extra = array('status'=>'Publish','tag'=>null)){
 		$sql = "select count(*) as total from posts as p ";
 		//status
@@ -31,7 +35,7 @@ class post extends models{
 			"urlfriendly,title,match(title, content, urlfriendly) against('$q') as score",
 			"score DESC",
 			20,
-			"WHERE status='Publish' AND match(title, content, urlfriendly) against('$q')"
+			"WHERE idStatus=1 AND match(title, content, urlfriendly) against('$q')"
 		);
 		
 		return $rows;
@@ -268,31 +272,19 @@ class post extends models{
 	public function getPostsByTag($tag,$limitQuery){
 		$tag = $this->sql_escape($tag);
 
-
-
-
-
-
-
-		$sql = "SELECT \n";
-			$sql .= "\tp.ID,p.id_user,p.urlfriendly,p.title,IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content, created \n";
-		$sql .= "FROM posts as p\n";
-			$sql .= "\tinner join tags_rel as tr on tr.post_id = p.ID \n";
-			$sql .= "\tinner join tags as t on t.tag_id = tr.tag_id \n";
-		$sql .= "WHERE \n";
-			$sql .= "\tp.status='Publish' and t.urlfriendly='$tag' \n";
-		$sql .= "ORDER BY \n";
-			$sql .= "\tID DESC\n";
-		$sql .= "LIMIT \n";
+			$sql = "SELECT \n";
+			$sql .= "\tp.idPost,p.idUser,p.urlfriendly,p.title,IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content, created \n";
+			$sql .= "FROM posts as p\n";
+			$sql .= "\tinner join rel_tags as tr on tr.idPost = p.idPost \n";
+			$sql .= "\tinner join tags as t on t.idTag = tr.idTag \n";
+			$sql .= "WHERE \n";
+			$sql .= "\tp.idStatus=1 and t.urlfriendly='$tag' \n";
+			$sql .= "ORDER BY \n";
+			$sql .= "\tp.idPost DESC\n";
+			$sql .= "LIMIT \n";
 			$sql .= "\t$limitQuery";
-		
-		$this->db->query($sql);
-
-		$rows = array();
-		while($row = $this->db->fetchRow()){
-			$rows[] = $row;
-		}
-		return $rows;
+			
+		return $this->findAllBySql($sql);
 	}
 	
 }

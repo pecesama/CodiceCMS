@@ -8,6 +8,7 @@ class tag_controller extends appcontroller {
 		$this->plugin->call('codice_init');
 	}
 	
+	
 	public function __call($method, $args){
 		$page = (int) (isset($args[0])?$args[0]:1);
 		if($page)
@@ -16,25 +17,31 @@ class tag_controller extends appcontroller {
 			$this->redirect($this->config["blog"]['blog_siteurl']);
 	}
 	
-	public function index($id=NULL, $page=1){
-		if(is_null($id) or !preg_match("/^[a-z\-\_]]$/i",$id)){
+	public function beforeRender(){
+		
+		$link = new link();
+		$this->view->links = $link->findAllBy("type","external");//links para el sidebar
+	}
+	
+	
+	public function index($tag=NULL, $page=1){
+		if(is_null($tag)/* or !preg_match("/^[a-z\-\_]]$/i",$tag) */){
+			die('redirect');
 			$this->redirect($this->config["blog"]['blog_siteurl']);
 		}
 		
-		$tag = $id;
-		
-		$Post = new post();
-		$Link = new link();
-		$Comment = new comment();
+		$post = new post();
+		$link = new link();
+		$comment = new comment();
 
-		$this->html->useTheme($this->config["blog"]['blog_current_theme']);
+//		$this->html->useTheme($this->config["blog"]['blog_current_theme']);
 
-		$isAdmin = false;
-		if($this->cookie->check("logged") and $this->cookie->id_user == 1){//is Admin logged?
+//		$isAdmin = false;
+/*		if($this->cookie->check("logged") and $this->cookie->id_user == 1){//is Admin logged?
 			$isAdmin = true;
 		}
-
-		$this->views->isAdmin = $isAdmin;
+*/
+//		$this->views->isAdmin = $isAdmin;
 
 		$includes['charset'] = $this->html->charsetTag("UTF-8");
 		$includes['rssFeed'] = $this->html->includeRSS();
@@ -45,18 +52,20 @@ class tag_controller extends appcontroller {
 			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($tag)."\" />";
 		}
 
-utils::pre($includes);
-		$this->registry->includes = $includes;
-		$this->plugin->call('index_includes');
 
-		foreach($this->registry->includes as $include){
-			$includes .= $include;
+//		$this->registry->includes = $includes;
+//		$this->plugin->call('index_includes');
+
+		$strIncludes = "";
+		foreach($includes as $include){
+			echo $include;
+			$strIncludes .= $include;
 		}
-		$this->themes->includes = $includes;
-
-		$this->themes->links = $link->findAll();
-		$this->themes->single = false;
-		$total_rows = $post->countPosts(array('status'=>'publish','tag'=>$tag));
+		$this->view->includes = $strIncludes;
+		
+//		$this->themes->links = $link->findAll();
+//		$this->themes->single = false;
+		$total_rows = $post->countPosts(array('status'=>'Publish','tag'=>$tag));
 
 		$page = (int) (is_null($page)) ? 1 : $page;
 		$limit = $this->config["blog"]['blog_posts_per_page'];
@@ -64,29 +73,32 @@ utils::pre($includes);
 		$limitQuery = $offset.",".$limit;
 		$targetpage = $this->path."tag/$tag/";
 
-		$this->themes->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
+		$this->view->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
+		
 
 		$posts = $post->getPostsByTag($tag,$limitQuery);
 
 		foreach($posts as $k=>$p){
 			$posts[$k]['title'] = htmlspecialchars($p['title']);
-			$posts[$k]['tags'] = $post->getTags($p['ID']);
-			$posts[$k]['comments_count'] = $comment->countCommentsByPost($posts[$k]['ID']);
+			$posts[$k]['tags'] = $post->getTags($p['idPost']);
+			$posts[$k]['comments_count'] = $comment->countCommentsByPost($posts[$k]['idPost']);
 
 			$user = new user();
-			if($posts[$k]['id_user']<2){
+			if($posts[$k]['idUser']<2){
 				$posts[$k]['autor'] = $user->find(1);
 			}else{
 				$posts[$k]['autor'] = $user->find($posts[$k]['id_user']);
 			}
 		}
 
-		$this->registry->posts = $posts;
-		$this->plugin->call("index_post_content");
-		$this->themes->posts = $this->registry->posts;
+		$this->view->posts = $posts;
+		$this->view->tag = $tag;
+//		$this->plugin->call("index_post_content");
+//		$this->themes->posts = $this->registry->posts;
 
-		$this->themes->title_for_layout = "{$this->config["blog"]['blog_name']} - $tag";
-
-		$this->render();
+		$this->title_for_layout("{$this->config["blog"]['blog_name']} - $tag");
+	
+		$this->view->setLayout("codice");
+		$this->render('index');
 	}
 }
