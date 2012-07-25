@@ -80,4 +80,14 @@ class Users_Controller extends appcontroller{
 
 		$this->render();		
 	}
+
+	public function remove($idUser = null){
+
+		$U = new user();
+		$user = $U->find($idUser);
+		$U->delete($idUser);
+
+		$this->session->flash("The user \"" . htmlentities($user['user']) . "\" has been deleted." );
+		$this->redirect("users");
+	}
 }
