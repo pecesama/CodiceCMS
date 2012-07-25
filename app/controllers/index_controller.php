@@ -46,7 +46,7 @@ class index_controller extends appcontroller {
 		
 		$title_for_layout = $this->config["blog"]['blog_name'];
 		
-		$links = $L->findAllBy("type","internal");//links para el sidebar
+		$links = $L->findAllBy("type","external");//links para el sidebar
 		
 		$single = ($urlfriendly) ? true : false;
 		$this->registry->single = $single;
@@ -128,16 +128,27 @@ class index_controller extends appcontroller {
 		$this->render("index");
 	}
 	
+	/**
+	 * Add a comment 
+	 */
 	public function addComment($urlfriendly = null){
+	
+		// if request is post
 		if($this->data){
+			
+			// if is null urlfrindly
 			if(is_null($urlfriendly) === true){
+				// redirect to index of blog
 				$this->redirect($this->config["blog"]['blog_siteurl'], true);
 			}
-		
+			
+			// find the post
 			$P = new post();
 			$post = $P->findBy('urlfriendly',$urlfriendly);
-
+			
+			// if post don't found
 			if($P->isNew() === true){
+				// redirect to index of blog
 				$this->redirect($this->config["blog"]['blog_siteurl'], true);
 			}
 			
@@ -154,37 +165,40 @@ class index_controller extends appcontroller {
 			}
 			
 			if($this->cookie->check('id_user')){
-				$this->data['user_id'] = $this->cookie->id_user;
-				$this->data['status'] = 'Publish';
+				$this->data['idUser'] = $this->cookie->id_user;
+				$this->data['idStatus'] = 1; //'Publish';
 			}else{
-				$this->data['user_id'] = 0;
-				$this->data['status'] = 'waiting';
+				$this->data['idUser'] = 0;
+				$this->data['idStatus'] = 3; // 'waiting';
 			}
 
 			$this->data['type'] = '';//'pingback', 'trackback', ''
 
-			$this->data['IP'] = utils::getIP();
-			$this->data['ID_post'] = $post["ID"];
+			$this->data['ip'] = utils::getIP();
+			$this->data['idPost'] = $post["idPost"];
 
 			$this->cookie->author = $this->data['author'];
 			$this->cookie->email = $this->data['email'];
 			$this->cookie->url = $this->data['url'];
-
+			
+			// Set values at comment and save
 			$C = new comment();
 			$C->prepareFromArray($this->data);
 			$valid = $C->save();
-			
+
 			if($valid){
 				$this->registry->lastCommentID = $valid;
-				$this->registry->postID = $post["ID"];
+				$this->registry->postID = $post["idPost"];
 				$this->plugin->call("index_comment_added");
 			}
 			
 			if($valid and $this->isAjax()){
 				echo $valid;
 			}else if($valid){
+				$this->session->flash('Gracias por tu commentario, será revisado para su aprobación.');
 				$this->redirect("{$post['urlfriendly']}#comment-{$valid}");
 			}else{
+				$this->session->flash('ERROR! Tu commentario no fue guardado.');
 				$this->redirect("{$post['urlfriendly']}");
 			}
 		}
