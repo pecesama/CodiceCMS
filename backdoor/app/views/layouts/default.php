@@ -56,7 +56,5 @@
 
         <?php echo $this->renderElement("admin_footer"); ?>
     </div>
-            
-    
     </body>
 </html>
