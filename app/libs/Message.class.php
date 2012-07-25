@@ -4,7 +4,7 @@
  *
  * Implementes messages for describe the system status
  * 
- * @author Administrador
+ * @author Aaron Munguia
  */
 class Message extends singleton implements ArrayAccess{
     

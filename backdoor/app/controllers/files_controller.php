@@ -4,8 +4,8 @@ class files_controller extends appcontroller{
 	public function __construct(){
 		parent::__construct();
 		
-		if($this->session->check("logged") == false) {
-			$this->redirect("admin/login/nosession/");
+		if($this->User->isLogged() === FALSE){
+			$this->redirect("login");
 		}
 	}
 	

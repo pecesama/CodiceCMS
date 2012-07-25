@@ -10,7 +10,8 @@ abstract class appcontroller extends controller {
 
 	public function __construct(){
 		parent::__construct();
-                $this->messages = Message::getInstance();
+       	
+       	$this->messages = Message::getInstance();
                 
 		$this->registry = registry::getInstance();
 		
