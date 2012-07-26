@@ -13,4 +13,10 @@ class user extends models{
 		return false;
 	}
 
+
+	public function countUsers(){
+		$result = $this->findBySql("SELECT count(*) as total FROM users");
+
+		return $result['total'];
+	}
 }

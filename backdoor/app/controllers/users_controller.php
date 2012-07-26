@@ -12,12 +12,18 @@ class Users_Controller extends appcontroller{
 	public function index($page = 1){
 		$U = new user();
 
-		$users = $U->findAll();
+		$total_rows = $U->countUsers();
+		$page = (is_null($page)) ? 1 : $page ;
+		$limit = $this->config["user"]['posts_per_page'];
+		$offset = (($page-1) * $limit);
+		$limitQuery = $offset.",".$limit;
+		$targetpage = $this->path.'users/';
+		$pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
+		$this->view->pagination = $pagination;
+
+		$users = $U->findAll(null, "idUser DESC", $limitQuery, null);
 
 		$this->view->users = $users;
-
-		//TODO: To  make pagination works.
-		$this->view->pagination = null;
 
 		$this->render();
 	}
