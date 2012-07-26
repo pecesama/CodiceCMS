@@ -46,12 +46,12 @@ class Users_Controller extends appcontroller{
 			$saved = $U->save();
 
 			if($saved){
-				$this->session->flash("The user was updated succesfully.");
+				$this->messages->addMessage(Message::SUCCESS, "The user \"".htmlentities($user['user'])."\" was updated succesfully.");
 			}else{
-				$this->session->flash("There was an error while saving the data of the user. Just try again.");
+				$this->messages->addMessage(Message::ERROR, "There was an error while saving the data of the user. Just try again.");
 			}
 
-			$this->redirect("users/update/$idUser");
+			$this->redirect("users");
 		}
 
 		if(is_null($idUser) === true){
@@ -76,9 +76,9 @@ class Users_Controller extends appcontroller{
 			$action = $U->save();
 
 			if($action){
-				$this->session->flash("The user has added succesfully");
+				$this->messages->addMessage(Message::SUCCESS, "The user has added succesfully");
 			}else{
-				$this->session->flash("There was an error while trying to save. Just try again.");
+				$this->messages->addMessage(Message::ERROR, "There was an error while trying to save. Just try again.");
 			}
 
 			$this->redirect("users");
@@ -93,7 +93,7 @@ class Users_Controller extends appcontroller{
 		$user = $U->find($idUser);
 		$U->delete($idUser);
 
-		$this->session->flash("The user \"" . htmlentities($user['user']) . "\" has been deleted." );
+		$this->messages->addMessage(Message::SUCCESS, "The user \"" . htmlentities($user['user']) . "\" has been deleted." );
 		$this->redirect("users");
 	}
 }
