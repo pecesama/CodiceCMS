@@ -19,7 +19,13 @@
                 <li><?php echo $this->html->linkTo("Waiting for approval","comments/waiting"); ?></li>
               </ul>
             </li>
-            <li><?php echo $this->html->linkTo("About","index/about"); ?></li>
+            <li class="dropdown <?php echo isset($active['settings'])? $active['settings'] : ""; ?>">
+              <?php echo $this->html->linkTo("Settings","#"," class='dropdown-toggle'"); ?>
+              <ul class="dropdown-menu">
+                <li><?php echo $this->html->linkTo("Configuration","config"); ?></li>
+                <li><?php echo $this->html->linkTo("About","index/about"); ?></li>
+              </ul>
+            </li>
           </ul>
 
           <form action="">

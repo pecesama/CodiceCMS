@@ -16,7 +16,7 @@ class feed_controller extends appcontroller {
 		$post = new post();
 
 		$this->view->setLayout("feed");
-		$posts = $post->findAll("idPost,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created", "idPost DESC", $this->config["blog"]['blog_posts_per_page'], "WHERE idStatus = '1'");
+		$posts = $post->findAll("idPost,urlfriendly,title,IF(POSITION('<!--more-->' IN content)>0,MID(content,1,POSITION('<!--more-->' IN content)-1),content) as content, created", "idPost DESC", null, "WHERE idStatus = '1'");
 		$temp = array();
 		foreach($posts as $a_post){
 			$temp[$a_post['idPost']] = $a_post;

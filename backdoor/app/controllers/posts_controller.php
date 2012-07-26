@@ -21,7 +21,7 @@ class Posts_controller extends appcontroller{
 
             //preparing pagination.
             $page = (is_null($page)) ? 1 : $page ;
-            $limit = $this->config["user"]["posts_per_page"];
+            $limit = $this->config["postsPerPageAdmin"];
             $offset = (($page-1) * $limit);
             $limitQuery = $offset.",".$limit;
 

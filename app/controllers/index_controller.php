@@ -44,7 +44,7 @@ class index_controller extends appcontroller {
 		
 		$urlfriendly = rawurlencode($P->sql_escape($urlfriendly));//Sanitize
 		
-		$title_for_layout = $this->config["blog"]['blog_name'];
+		$title_for_layout = $this->config['blogName'];
 		
 		$links = $L->findAllBy("type","external");//links para el sidebar
 		
@@ -68,7 +68,7 @@ class index_controller extends appcontroller {
 			}
 		}else{
 			$total_rows = $P->countPosts();
-			$limit = $this->config["blog"]['blog_posts_per_page'];
+			$limit = $this->config['postsPerPage'];
 			$offset = (($page-1) * $limit);
 			$limitQuery = $offset.",".$limit;
 			$targetpage = $this->path.'index/page/';
@@ -139,7 +139,7 @@ class index_controller extends appcontroller {
 			// if is null urlfrindly
 			if(is_null($urlfriendly) === true){
 				// redirect to index of blog
-				$this->redirect($this->config["blog"]['blog_siteurl'], true);
+				$this->redirect('', true);
 			}
 			
 			// find the post
@@ -149,7 +149,7 @@ class index_controller extends appcontroller {
 			// if post don't found
 			if($P->isNew() === true){
 				// redirect to index of blog
-				$this->redirect($this->config["blog"]['blog_siteurl'], true);
+				$this->redirect('', true);
 			}
 			
 			if(isset($this->data["resultado"]) === true){

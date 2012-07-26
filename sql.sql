@@ -18,28 +18,37 @@ CREATE TABLE IF NOT EXISTS `comments` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
-CREATE  TABLE `configurations` (
-  `idConfiguration` INT NOT NULL AUTO_INCREMENT ,
-  `idUser` INT NOT NULL ,
-  `name` VARCHAR(100) NULL COMMENT 'Nombre de la configuracion.\n' ,
-  `value` VARCHAR(255) NULL COMMENT 'Valor de la configuracion.\n' ,
-  `created` DATETIME NULL COMMENT 'Fecha de creacion del registro.\n' ,
-  `modified` DATETIME NULL COMMENT 'Fecha de última modificacion del registro.' ,
-  PRIMARY KEY (`idConfiguration`) )
-ENGINE = MyISAM
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_bin;
+--
+-- Estructura de tabla para la tabla `configurations`
+--
 
-INSERT INTO `configurations` (`name`, `value`, `idUser`, `idConfiguration`) VALUES
-('blog_name', 'Blog Name', 1, 1),
-('blog_description', 'Blog description', 1, 2),
-('blog_siteurl', 'http://localhost/codice', 1, 3),
-('blog_current_theme', 'misalgoritmos', 1, 4),
-('blog_posts_per_page', '3', 1, 5),
-('posts_per_page', '15', 1, 6),
-('blog_feedburner_rssLink', 'http://feeds2.feedburner.com/misalgoritmos', 1, 7),
-('blog_upload_folder', 'uploads', 1, 8),
-('cancelar', 'Cancel', 1, 9);
+CREATE TABLE IF NOT EXISTS `configurations` (
+  `idConfiguration` int(11) NOT NULL AUTO_INCREMENT,
+  `blogName` varchar(150) COLLATE utf8_bin NOT NULL,
+  `description` varchar(255) COLLATE utf8_bin NOT NULL,
+  `postsPerPage` int(11) NOT NULL DEFAULT '10',
+  `postsPerPageAdmin` int(11) NOT NULL DEFAULT '10',
+  `uploadFolder` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT 'uploads',
+  `idUser` int(11) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
+  PRIMARY KEY (`idConfiguration`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+INSERT INTO `configurations` (
+`idConfiguration` ,
+`blogName` ,
+`description` ,
+`postPerPage` ,
+`postPerPageAdmin` ,
+`uploadFolder` ,
+`idUser` ,
+`created` ,
+`modified`
+)
+VALUES (
+NULL , 'Codice CMS blog', 'Description of your blog', '10', '10', 'uploads', '1', '2012-07-25 00:00:00', '2012-07-25 00:00:00'
+);
 
 -- --------------------------------------------------------
 
