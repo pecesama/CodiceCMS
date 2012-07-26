@@ -1,8 +1,8 @@
 <?php header("Content-type: text/xml; charset=utf-8"); ?><rss version="2.0">
 	<channel>
-		<title><?php echo htmlspecialchars($config["blog"]["blog_name"]); ?></title>
-		<link><?php echo $config["blog"]["blog_siteurl"];?></link>
-		<description><?php echo htmlspecialchars($config["blog"]["blog_description"]);?></description>
+		<title><?php echo htmlspecialchars($config["blogName"]); ?></title>
+		<link><?php echo Path; ?></link>
+		<description><?php echo htmlspecialchars($config["description"]);?></description>
 		<generator>CMS</generator>
 		<?php foreach ($posts as $post) { ?>
 		<item>

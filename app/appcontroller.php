@@ -6,7 +6,7 @@ abstract class appcontroller extends controller {
 	protected $plugin;
 	protected $User;
 	protected $config;
-        protected $messages;
+    protected $messages;
 
 	public function __construct(){
 		parent::__construct();
@@ -21,10 +21,7 @@ abstract class appcontroller extends controller {
 
 		//loads configuration of the logged user and blog.
 		$C = new configuration();
-		$this->config = array(
-			"user" => $C->getUserConfiguration(1),
-			"blog" => $C->getBlogConfiguration()
-		);
+		$this->config = $C->findLast();
 
 		$this->view->config = $this->config;
 	}

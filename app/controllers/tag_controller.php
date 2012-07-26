@@ -14,7 +14,7 @@ class tag_controller extends appcontroller {
 		if($page)
 			$this->index($method, $page);
 		else
-			$this->redirect($this->config["blog"]['blog_siteurl']);
+			$this->redirect('');
 	}
 	
 	public function beforeRender(){
@@ -27,7 +27,7 @@ class tag_controller extends appcontroller {
 	public function index($tag=NULL, $page=1){
 		if(is_null($tag)/* or !preg_match("/^[a-z\-\_]]$/i",$tag) */){
 			die('redirect');
-			$this->redirect($this->config["blog"]['blog_siteurl']);
+			$this->redirect('');
 		}
 		
 		$post = new post();
@@ -47,9 +47,9 @@ class tag_controller extends appcontroller {
 		$includes['rssFeed'] = $this->html->includeRSS();
 
 		if($page>1){
-			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($tag)."/$page\" />";
+			$includes['canonical'] = "<link rel=\"canonical\" href=\"".Path."/tag/".rawurlencode($tag)."/$page\" />";
 		}else{
-			$includes['canonical'] = "<link rel=\"canonical\" href=\"{$this->config["blog"]['blog_siteurl']}/tag/".rawurlencode($tag)."\" />";
+			$includes['canonical'] = "<link rel=\"canonical\" href=\"".Path."/tag/".rawurlencode($tag)."\" />";
 		}
 
 
@@ -68,7 +68,7 @@ class tag_controller extends appcontroller {
 		$total_rows = $post->countPosts(array('status'=>'Publish','tag'=>$tag));
 
 		$page = (int) (is_null($page)) ? 1 : $page;
-		$limit = $this->config["blog"]['blog_posts_per_page'];
+		$limit = $this->config['postsPerPage'];
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		$targetpage = $this->path."tag/$tag/";
@@ -96,7 +96,7 @@ class tag_controller extends appcontroller {
 //		$this->plugin->call("index_post_content");
 //		$this->themes->posts = $this->registry->posts;
 
-		$this->title_for_layout("{$this->config["blog"]['blog_name']} - $tag");
+		$this->title_for_layout("{$this->config['blogName']} - $tag");
 	
 		$this->view->setLayout("codice");
 		$this->render('index');

@@ -42,8 +42,8 @@
 
 	<div class="container">
 		<div class="row">
-			<h1><?php echo $this->html->linkTo($config["blog"]["blog_name"]); ?></h1>
-			<h2><?php echo $config["blog"]["blog_description"]; ?></h2>
+			<h1><?php echo $this->html->linkTo($config["blogName"]); ?></h1>
+			<h2><?php echo $config["description"]; ?></h2>
 
 			<?php echo $this->renderElement("index_tabs"); ?>
 		</div>

@@ -21,7 +21,7 @@ class comments_controller extends appcontroller{
 		$total_rows = $comment->countCommentsByPost();
 		$page = $id;
 		$page = (is_null($page)) ? 1 : $page ;
-		$limit = $this->config["user"]['posts_per_page'];
+		$limit = $this->config['postsPerPageAdmin'];
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		$targetpage = $this->path.'comments/';
