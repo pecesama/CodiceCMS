@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span16">
-      <?php echo $this->html->form("posts/create/"); ?>
+      <?php echo $this->html->formFiles("posts/create/"); ?>
         <fieldset>
           <legend>Add entry</legend>
           
