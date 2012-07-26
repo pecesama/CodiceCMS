@@ -6,15 +6,15 @@
     </div>
 </div>
 
-<?php /*
+
 <div class="clearfix">
-    <label for="urlfriendly">URl friendly</label>
+    <label for="urlfriendly">Main image</label>
     <div class="input">
-        <?php echo $this->html->textField("urlfriendly", $post['urlfriendly'], ' class="xlarge" placeholder="url friendly" ');?>
-        <?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about URL friendly.'"); ?>
+        <input type="file" name="mainImage" value="" />
+        <?php //echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about URL friendly.'"); ?>
     </div>
 </div>
-*/ ?>
+
 <div class="clearfix">
     <label for="content">Content for the entry</label>
     <div class="input">
