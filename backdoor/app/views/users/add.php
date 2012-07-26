@@ -1,8 +1,9 @@
 <div class="row">
 	<div class="span12">
 
-		<?php if(isset($idUser)){ ?>
+		<?php if(isset($user['idUser'])){ ?>
 			<?php echo $this->html->form("users/update/{$user['idUser']}"); ?>
+			<?php echo $this->html->hiddenField("user[idUser]", $user['idUser']); ?>
 		<?php }else{ ?>
 			<?php echo $this->html->form("users/add/"); ?>
 		<?php }	?>
