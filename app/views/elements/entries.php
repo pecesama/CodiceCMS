@@ -4,7 +4,7 @@
 			<h3><?php echo $this->html->linkTo($post["title"],$post["urlfriendly"],'rel="bookmark" title="Enlace a '.$post["title"].'"'); ?></h3>
 			
 			<div class="row">
-				<div class="span">Escrito por <?php echo $post["autor"]["firstName"]; ?> <?php echo $post["autor"]["lastName"]; ?> el <?php echo date("D d-m-Y h:i:s a", strtotime($post["created"])); ?></div>
+				<div class="span">Escrito por <?php echo $post["author"]["firstName"]; ?> <?php echo $post["author"]["lastName"]; ?> el <?php echo date("D d-m-Y h:i:s a", strtotime($post["created"])); ?></div>
 				<div class="span">
 					<?php if($post["tags"]){ ?>
 						<?php foreach($post["tags"] as $tag){ ?>

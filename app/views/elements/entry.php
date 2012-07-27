@@ -1,7 +1,7 @@
 <div>
 	<h3><?php echo $post['title']; ?></h3>
 				<div class="row">
-				<div class="span">Escrito por <?php echo $post["autor"]["name"]; ?> el <?php echo $post["created"]?></div>
+				<div class="span">Escrito por <?php echo $post["author"]["firstName"]." ".$post["author"]["lastName"]; ?> el <?php echo date("D d-m-Y h:i:s a", strtotime($post["created"])); ?></div>
 				<div class="span">
 					<?php if($post["tags"]){ ?>
 						<?php foreach($post["tags"] as $tag){ ?>

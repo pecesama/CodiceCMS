@@ -83,19 +83,23 @@ class post extends models{
 		}
 
 		$C = new comment();
-		foreach($posts as $k=>$p){
-			$posts[$k]['title'] = htmlspecialchars($posts[$k]['title']);
-			$posts[$k]['tags'] = $this->getTags($posts[$k]['idPost']);
+		foreach($posts as $k => $post){
+			$posts[$k]['title'] = htmlspecialchars($post['title']);
+			$posts[$k]['tags'] = $this->getTags($post['idPost']);
 			
 			//TODO: if it's admin logged, include too comments with "Waiting" status (waiting to be approved).
-			$posts[$k]['comments_count'] = $C->countCommentsByPost($posts[$k]['idPost'],"Publish");
+			$posts[$k]['comments_count'] = $C->countCommentsByPost($post['idPost'],"Publish");
 			
-			$U = new user();
-			if($posts[$k]['idUser'] < 2){
-				$posts[$k]['autor'] = $U->find(1);
-			}else{
-				$posts[$k]['autor'] = $U->find($posts[$k]['idUser']);
+			// Get autor
+			$user = new user();
+			$author = $user->find($post['idUser']);
+			if($user->isNew() == TRUE){
+				$author = array(
+						'firstName' => "No",
+						'lastName' => "Author"
+					);
 			}
+			$posts[$k]['author'] = $author;
 		}
 
 		return $posts;
@@ -135,14 +139,19 @@ class post extends models{
 			$post['tags'] = $this->getTags($post['idPost']);
 			
 			$C = new comment();
-			$post["comments_count"] = $C->countCommentsByPost($post['idPost'], $status['idStatus']);
+			$post["comments_count"] = $C->countCommentsByPost($post['idPost'], 'Publish');
 			$post["comments"] = $C->getAll($post['idPost'], $status['idStatus']);
 
 			// Get autor
 			$user = new user();
-			$user->find($post['idUser']);
-			$username = "{$user['fistName']} {$user['lastName']}";
-			$post['autor']['name'] = ($username) ? $username : "Administrator";
+			$author = $user->find($post['idUser']);
+			if($user->isNew() == TRUE){
+				$author = array(
+						'firstName' => "No",
+						'lastName' => "Author"
+					);
+			}
+			$post['author'] = $author;
 		}
 		
 		return $post;
