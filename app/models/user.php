@@ -1,8 +1,23 @@
 <?php
 
 class user extends models{
+
+	protected $validate;
+
 	public function __construct(){
 		parent::__construct();
+
+		$this->validate = array(
+			'user' => array(
+				'required' => true,
+				'rules' => array(
+					array(
+						'rule' => VALID_NOT_EMPTY,
+						'message' => 'Por favor introduce tu Nombre.',
+					)
+				)
+			),
+		);
 	}
 	
 	public function validateLogin($data){
