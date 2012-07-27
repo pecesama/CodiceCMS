@@ -137,6 +137,12 @@ class post extends models{
 			$C = new comment();
 			$post["comments_count"] = $C->countCommentsByPost($post['idPost'], $status['idStatus']);
 			$post["comments"] = $C->getAll($post['idPost'], $status['idStatus']);
+
+			// Get autor
+			$user = new user();
+			$user->find($post['idUser']);
+			$username = "{$user['fistName']} {$user['lastName']}";
+			$post['autor']['name'] = ($username) ? $username : "Administrator";
 		}
 		
 		return $post;

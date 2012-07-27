@@ -1,6 +1,3 @@
-<?php
-$post["autor"]["name"] = "Temporal";
-?>
 <div>
 	<h3><?php echo $post['title']; ?></h3>
 				<div class="row">
