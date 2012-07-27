@@ -240,12 +240,12 @@ INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idS
 INSERT INTO `posts` (`idPost`, `urlfriendly`, `title`, `content`, `idUser`, `idStatus`, `created`) VALUES (3, 'tres', 'tres', 'tres', 1, 3, '2011-12-10 9:58:12');
 
 -- comentario de un admin, solo tiene el idUser.
-INSERT INTO `codice`.`comments` (`idComment`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (5, 1, 1, 2, 'cinco', '192.168.1.2', '', 0, '2011-12-30 14:13:29');
+INSERT INTO `comments` (`idComment`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (5, 1, 1, 2, 'cinco', '192.168.1.2', '', 0, '2011-12-30 14:13:29');
 -- comentarios de lectores del blog.
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (1, 1, 1, 1, 1, 'uno', '192.168.1.2', 'autor1@gmail.com', 0, '2011-12-30 14:15:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (2, 2, null, 3, 1, 'respuesta a uno', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:16:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (3, 1, null, 1, 1, 'tres', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:18:29');
-INSERT INTO `codice`.`comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (4, 1, null, 1, 1, 'cuatro', '192.168.1.2', 'autor3@gmail.com', 0, '2011-12-30 14:25:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (1, 1, 1, 1, 1, 'uno', '192.168.1.2', 'autor1@gmail.com', 0, '2011-12-30 14:15:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (2, 2, null, 3, 1, 'respuesta a uno', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:16:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (3, 1, null, 1, 1, 'tres', '192.168.1.2', 'autor2@gmail.com', 0, '2011-12-30 14:18:29');
+INSERT INTO `comments` (`idComment`, `idCommentParent`, `idUser`, `idStatus`, `idPost`, `content`, `ip`, `email`, `type`, `created`) VALUES (4, 1, null, 1, 1, 'cuatro', '192.168.1.2', 'autor3@gmail.com', 0, '2011-12-30 14:25:29');
 
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (2, 'El Dos', 'el-dos');
 INSERT INTO `tags` (`idTag`, `tag`, `urlfriendly`) VALUES (4, 'Cuatro 4', 'cuatro');
