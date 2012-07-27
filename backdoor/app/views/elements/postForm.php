@@ -11,7 +11,7 @@
     <label for="urlfriendly">Main image</label>
     <div class="input">
         <input type="file" name="mainImage" value="" />
-        <?php //echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Description about URL friendly.'"); ?>
+        <span class="help-block">image before: <?php echo $post['mainImage']?$post['mainImage']:$this->l10n->__("no image"); ?></span>
     </div>
 </div>
 

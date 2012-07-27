@@ -16,6 +16,9 @@ $post["autor"]["name"] = "Temporal";
 <?php /*				<div class="span facebook"><fb:like href="http://mis-algoritmos.com/<?php echo $post['urlfriendly']; ?>" layout="button_count"></fb:like></div> */ ?>
 			</div>
 			
+	<?php if($post['mainImage'] != ""): ?>
+		<img clas="mainImage" src="<?php echo Path."/{$config['uploadFolder']}/{$post['mainImage']}"; ?>" />
+	<?php endif; ?>
 	<?php echo $post['content']; ?>
 
 <?php /*

@@ -1,6 +1,6 @@
 <div class="row">
     <div class="span16">
-      <?php echo $this->html->form("posts/update/{$post['idPost']}/"); ?>
+      <?php echo $this->html->formFiles("posts/update/{$post['idPost']}/"); ?>
 
         <fieldset>
           <legend>Updating entry <strong><?php echo $post["title"]; ?></strong></legend>

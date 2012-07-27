@@ -1,5 +1,4 @@
 <?php
-
 class Posts_controller extends appcontroller{
 	
 	public function __construct(){
@@ -60,11 +59,37 @@ class Posts_controller extends appcontroller{
 
                 $post->prepareFromArray($this->data);
                 $post->idUser = $this->session->user['idUser'];
-                
+
                 if($post->save()){
                     // TODO: Validate if every tag is saved
                     $post->updateTags($post['idPost'], $this->data['tags']);
                     
+                    // upload main image
+					// FIXME: use a library for validate image
+					if($_FILES['mainImage']['name'] != "" && 
+						( // check if is image
+							exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_GIF ||
+							exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_JPEG ||
+							exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_PNG ||
+							exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_BMP
+						)){
+						try{
+							// create filename
+							$post['mainImage'] = md5($post['idPost']);
+
+							// if don't upload
+							if(move_uploaded_file($_FILES['mainImage']['tmp_name'], Absolute_Path."..".DIRSEP.$this->config['uploadFolder'].DIRSEP.$post['mainImage']) == FALSE){
+								$post['mainImage'] = "";
+								$this->messages->addMessage(Message::WARNING, $this->l10n->__("Image don't uploated"));
+							}
+
+							// save changes
+							$post->save();
+						} catch (Exeption $e){
+							$this->messages->addMessage(Message::WARNING, $e->getText());
+						}
+					}
+
                     $this->messages->addMessage(Message::SUCCESS, "New posts saved.");
                     $this->redirect("posts/");
                 } else {
@@ -81,7 +106,7 @@ class Posts_controller extends appcontroller{
             $this->title_for_layout($this->l10n->__("Add entry - Codice CMS"));
             $this->render();
 	}
-
+	
 	public function view($urlFriendly = null){
 	
 		// Find post
@@ -153,7 +178,35 @@ class Posts_controller extends appcontroller{
 			$P->prepareFromArray($this->data);
 			
 			if($P->save()){
+
 				$this->session->flash('Información guardada correctamente.');
+
+				// upload main image
+				// FIXME: use a library for validate image
+				if($_FILES['mainImage']['name'] != "" && 
+					( // check if is image
+						exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_GIF ||
+						exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_JPEG ||
+						exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_PNG ||
+						exif_imagetype($_FILES['mainImage']['tmp_name']) == IMAGETYPE_BMP
+					)){
+					try{
+						// create filename
+						$P['mainImage'] = md5($P['idPost']);
+						//die(Absolute_Path."..".DIRSEP.$this->config['uploadFolder'].DIRSEP.$P['mainImage']);
+						// if don't upload
+						if(move_uploaded_file($_FILES['mainImage']['tmp_name'], Absolute_Path."..".DIRSEP.$this->config['uploadFolder'].DIRSEP.$P['mainImage']) == FALSE){
+							$P['mainImage'] = "";
+							$this->messages->addMessage(Message::WARNING, $this->l10n->__("Image don't uploated"));
+						}
+
+						// save changes
+						$P->save();
+					} catch (Exeption $e){
+						$this->messages->addMessage(Message::WARNING, $e->getText());
+					}
+				}				
+
 				$this->redirect("posts/view/{$P['urlfriendly']}");
 			} else {
 				

@@ -47,7 +47,7 @@ class post extends models{
 
 		if(is_null($status) === true){//1. Si no hay status
 			$posts = $P->findAllBySql("SELECT 
-			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  p.idPost,p.idUser,p.urlfriendly,p.title,p.mainImage,
 			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
 			  p.created
 			FROM posts as p
@@ -55,7 +55,7 @@ class post extends models{
 
 		}else if(is_array($status) === false){//2. Si hay un status (String).
 			$posts = $P->findAllBySql("SELECT 
-			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  p.idPost,p.idUser,p.urlfriendly,p.title,p.mainImage,
 			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
 			  p.created
 			FROM posts as p
@@ -72,7 +72,7 @@ class post extends models{
 			$status_sql = substr($status_sql,0,-3);
 			
 			$posts = $P->findAllBySql("SELECT 
-			  p.idPost,p.idUser,p.urlfriendly,p.title,
+			  p.idPost,p.idUser,p.urlfriendly,p.title,p.mainImage,
 			  IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content,
 			  p.created
 			FROM posts as p
@@ -273,7 +273,7 @@ class post extends models{
 		$tag = $this->sql_escape($tag);
 
 			$sql = "SELECT \n";
-			$sql .= "\tp.idPost,p.idUser,p.urlfriendly,p.title,IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content, created \n";
+			$sql .= "\tp.idPost,p.idUser,p.urlfriendly,p.title,p.mainImage,IF(POSITION('<!--more-->' IN p.content)>0,MID(p.content,1,POSITION('<!--more-->' IN p.content)-1),p.content) as content, created \n";
 			$sql .= "FROM posts as p\n";
 			$sql .= "\tinner join rel_tags as tr on tr.idPost = p.idPost \n";
 			$sql .= "\tinner join tags as t on t.idTag = tr.idTag \n";

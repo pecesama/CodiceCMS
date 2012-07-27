@@ -9,8 +9,7 @@
 		<br />
 		<span>status: <?php echo $status['name']; ?></span>
 		<div>
-			Imagen: <img src="<?php echo Path."/../{$config['uploadFolder']}/".$post['mainImage']; ?>" />
-			<?php echo $post['mainImage']; ?>
+			<img class="mainImage" src="<?php echo Path."/../{$config['uploadFolder']}/{$post['mainImage']}"; ?>" />
 		</div>
 		<div class="post-content">
 			<?php echo $post['content']; ?>

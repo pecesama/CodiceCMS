@@ -15,6 +15,10 @@
 				<div class="span"><?php echo $this->html->linkTo($post["comments_count"] . " Comments","{$post["urlfriendly"]}#comments",'rel="bookmark" title="Comentarios de '.$post["title"].'"'); ?> &#187;</div>
 			</div>
 			
+			<?php if($post['mainImage'] != ""): ?>
+				<img class="mainImage" src="<?php echo Path."/{$config['uploadFolder']}/{$post['mainImage']}"; ?>" />
+			<?php endif; ?>
+
 			<?php echo $post["content"]; ?>
 		</div>
 		<hr />
