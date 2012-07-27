@@ -13,10 +13,29 @@ class user extends models{
 				'rules' => array(
 					array(
 						'rule' => VALID_NOT_EMPTY,
-						'message' => 'Por favor introduce tu Nombre.',
+						'message' => 'Fill the user field.'
 					)
 				)
 			),
+			'password' => array(
+				'required' => true,
+				'rules' => array(
+					array(
+						'rule' => VALID_NOT_EMPTY,
+						'message' => 'Fill the password field.'
+					)
+				)
+			),
+			'email' => array(
+				'required' => true,
+				'rules' => array(
+					array(
+						'rule' => VALID_EMAIL,
+						'message' => 'Fill the email field with a valid email.'
+					)
+				)
+			),
+			
 		);
 	}
 	
