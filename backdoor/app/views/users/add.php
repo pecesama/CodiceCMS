@@ -32,28 +32,28 @@
 			</div>
 
 			<div class="clearfix">
-				<label for="status">User</label>
+				<label for="status">* User</label>
 				<div class="input">
 					<?php echo $this->html->textField("user[user]", isset($user['user'])?$user['user']:''); ?>
-					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='The user represents the identifier that user will use to login in.'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='User' data-content='The user represents the identifier that user will use to login in.'"); ?>
 					<?php echo $this->html->validateError("user"); ?>
 				</div>
 			</div>
 
 			<div class="clearfix">
-				<label for="status">Password</label>
+				<label for="status">* Password</label>
 				<div class="input">
 					<?php echo $this->html->passwordField("user[password]", null); ?>
-					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='The password that user will user to login in.'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Password' data-content='The password that user will user to login in.'"); ?>
 					<?php echo $this->html->validateError("password"); ?>
 				</div>
 			</div>
 
 			<div class="clearfix">
-				<label for="status">Email</label>
+				<label for="status">* Email</label>
 				<div class="input">
 					<?php echo $this->html->textField("user[email]", isset($user['email'])?$user['email']:''); ?>
-					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='The email get in touch with user.'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Email' data-content='The email get in touch with user.'"); ?>
 					<?php echo $this->html->validateError("email"); ?>
 				</div>
 			</div>
@@ -62,7 +62,7 @@
 				<label for="status">Website</label>
 				<div class="input">
 					<?php echo $this->html->textField("user[website]", isset($user['website'])?$user['website']:''); ?>
-					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='Website of the user, if he/she has one.'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Website' data-content='Website of the user, if he/she has one.'"); ?>
 					<?php echo $this->html->validateError("website"); ?>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				<label for="status">About</label>
 				<div class="input">
 					<?php echo $this->html->textArea("user[about]", isset($user['about'])?$user['about']:''); ?>
-					<?php echo $this->html->linkTo("?","#"," rel='popover' title='Title' data-content='A small biography or description of the user.'"); ?>
+					<?php echo $this->html->linkTo("?","#"," rel='popover' title='About' data-content='A small biography or description of the user.'"); ?>
 					<?php echo $this->html->validateError("about"); ?>
 				</div>
 			</div>
