@@ -4,6 +4,10 @@ class Users_Controller extends appcontroller{
 
 	public function __construct(){
 		parent::__construct();
+
+		if($this->User->isLogged() === FALSE){
+			$this->redirect("login");
+		}
 	}
 
 	/*
@@ -25,6 +29,7 @@ class Users_Controller extends appcontroller{
 
 		$this->view->users = $users;
 
+		$this->title_for_layout("Users management");
 		$this->render();
 	}
 
@@ -64,6 +69,8 @@ class Users_Controller extends appcontroller{
 		$user = array_map("htmlentities", $user);
 
 		$this->view->user = $user;
+
+		$this->title_for_layout("User " . htmlentities($user['user']));
 		$this->render("add");
 	}
 
@@ -84,6 +91,7 @@ class Users_Controller extends appcontroller{
 			}
 		}
 
+		$this->title_for_layout("New user");
 		$this->render();		
 	}
 
