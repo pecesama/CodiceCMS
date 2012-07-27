@@ -4,6 +4,7 @@ class user extends models{
 
 	protected $validate;
 
+
 	public function __construct(){
 		parent::__construct();
 
@@ -35,7 +36,15 @@ class user extends models{
 					)
 				)
 			),
-			
+			'website' => array(
+				'required' => false,
+				'rules' => array(
+					'rule' => array(
+						'rule' => VALID_URL,
+						'message' => 'The url is not valid. Enter a valid url.'
+					)
+				) 
+			),
 		);
 	}
 	
