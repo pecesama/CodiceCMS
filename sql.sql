@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   FULLTEXT KEY `content` (`title`,`content`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `posts` ADD `mainImage` VARCHAR( 255 ) NOT NULL AFTER `content` 
+ALTER TABLE `posts` ADD `mainImage` VARCHAR( 255 ) NOT NULL AFTER `content`;
 
 CREATE  TABLE `tags` (
   `idTag` INT NOT NULL AUTO_INCREMENT COMMENT 'identificador unico de la etiqueta' ,
