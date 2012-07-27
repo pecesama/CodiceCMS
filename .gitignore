@@ -1,2 +1,4 @@
 config.php
 .DS_Store
+.svn
+uploads/*
