@@ -16,7 +16,7 @@ class files_controller extends appcontroller{
 		$this->view->files = $f->findAll();
 		//Comprobamos que el directorio destino exista
 		if(!is_dir('app/'.$this->config["blog"]['blog_upload_folder'])){
-			$this->message->addMessage($this->l10n->__("To upload files you must exist and have the appropriate access permissions to the directory").$this->config["blog"]['blog_upload_folder']);
+			$this->messages->addMessage($this->l10n->__("To upload files you must exist and have the appropriate access permissions to the directory").$this->config["blog"]['blog_upload_folder']);
 			$this->view->disableUploadForm = true;
 		}else{
 			$this->view->disableUploadForm = false;
@@ -42,9 +42,9 @@ class files_controller extends appcontroller{
 		$file->delete();
 		try{
 			unlink('app/'.$this->config["blog"]['blog_upload_folder'].'/'.$file->name);
-			$this->message->addMessage($this->l10n->__("Deleted"));
+			$this->messages->addMessage($this->l10n->__("Deleted"));
 		}catch(Exception $e){
-			$this->message->addMessage($this->l10n->__("Could not delete the file, check directory permissions"));
+			$this->messages->addMessage($this->l10n->__("Could not delete the file, check directory permissions"));
 		}
 		$this->redirect("files");
 	}
@@ -56,7 +56,7 @@ class files_controller extends appcontroller{
 			$password = (isset($_POST['file_'.$file->id_file.'psw']))? $_POST['file_'.$file->id_file.'psw']: '';
 			if($password != $file->password){
 				if(isset($_POST['file_'.$file->id_file.'psw'])){
-					$this->message->addMessage('Invalid password');
+					$this->messages->addMessage('Invalid password');
 				}
 				$this->redirect('files/password/'.$file->id_file.'/'.$file->name);
 				exit();
@@ -121,12 +121,12 @@ class files_controller extends appcontroller{
 			$file->password = $_POST['password'];
 			$file->type = $_FILES['new_file']['type'];
 			if (!$error && $file->isDuplicated()) {
-				$this->message->addMessage("Duplicate file");
+				$this->messages->addMessage("Duplicate file");
 				$error = true;
 			}
 			if(!$error && move_uploaded_file($_FILES['new_file']['tmp_name'],'app/'.$this->config["blog"]['blog_upload_folder'].'/'.$_FILES['new_file']['name'])){
 				$file->save();
-				$this->message->addMessage('Added');
+				$this->messages->addMessage('Added');
 			}else{
 				//Error raro
 			}
@@ -158,7 +158,7 @@ class files_controller extends appcontroller{
 			$file->find($id);
 			$file->password = $_POST['new_password'];
 			$file->save();
-			$this->message->addMessage($this->l10n->__("The password has been changed"));
+			$this->messages->addMessage($this->l10n->__("The password has been changed"));
 			$this->redirect("files");
 		}
 	}

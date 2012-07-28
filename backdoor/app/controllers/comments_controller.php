@@ -75,7 +75,7 @@ class comments_controller extends appcontroller{
 			$Comment->prepareFromArray($this->data);
 
 			if($Comment->save()){
-				$this->message->addMessage("Comment updated.");
+				$this->messages->addMessage("Comment updated.");
 				$this->redirect("comments/");
 			} else {
 				$comment = $this->data;

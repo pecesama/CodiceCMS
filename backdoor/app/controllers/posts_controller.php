@@ -153,7 +153,7 @@ class Posts_controller extends appcontroller{
 			$P->prepareFromArray($this->data);
 			
 			if($P->save()){
-				$this->message->addMessage('Information saved successfully.');
+				$this->messages->addMessage('Information saved successfully.');
 				$this->redirect("posts/view/{$P['urlfriendly']}");
 			} else {
 				
