@@ -12,13 +12,17 @@ class user extends models{
 				'required' => true,
 				'rules' => array(
 					array(
+						'rule' => VALID_NOT_EMPTY,
+						'message' => 'Fill the user field.'
+					),
+					array(
+						'rule' => array('validate_user_characters'),
+						'message' => '- User must contains only: a-z . or 0-9 <br /> - Must not start with Numbers or _ <br /> - Must not starts or end with . <br /> - And must be at least 6 characters'
+					),
+					array(
 						'rule' => array('validate_user_exists'),
 						'message' => 'User already exists. Please choose a different one.'
 					),
-					array(
-						'rule' => VALID_NOT_EMPTY,
-						'message' => 'Fill the user field.'
-					)
 				)
 			),
 			'password' => array(
@@ -75,7 +79,7 @@ class user extends models{
 		if(isset($datos['idUser'])){ //1. Dealing with a record update...
 			$U = new user();
 			$user = $U->find($datos['idUser']);
-			
+
 			if($user['user'] == $datos['user']){
 				return true; //It's ok, user is using same 'user' name.
 			}else{ //User is trying to change it's 'user' name...
@@ -98,6 +102,29 @@ class user extends models{
 				return true; //The 'user' doesn't exist.
 			}
 		}
+	}
+
+	/*
+	 * Validates that user has at least 6 characters, and must be only a-z '_' and '.'.
+	 */
+	public function validate_user_characters($user){
+		$valid = preg_match('/^[a-z\_\.0-9]{6,}$/i', $user); //User must be only contain: a-z . or 0-9
+
+		if($valid){
+			if(preg_match('/^[0-9_]/', $user)){ //Must not start with numbers or _
+				return false;
+			}else if(strpos($user, '..') !== false){ //Must not have .. or more
+				return false;
+			}else if(preg_match('/^\.+/', $user)){ //Must not start with . 
+				return false;
+			}else if(preg_match('/\.+$/', $user)){ //Must not end with . 
+				return false;
+			}
+		}else{
+			return false;
+		}
+
+		return $valid;
 	}
 
 }
