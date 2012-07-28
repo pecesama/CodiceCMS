@@ -12,8 +12,8 @@ class user extends models{
 				'required' => true,
 				'rules' => array(
 					array(
-						'rule' => array('user_exists'),
-						'message' => 'The user already exists. Please choose a differente one.'
+						'rule' => array('validate_user_exists'),
+						'message' => 'User already exists. Please choose a different one.'
 					),
 					array(
 						'rule' => VALID_NOT_EMPTY,
@@ -66,9 +66,39 @@ class user extends models{
 		return $result['total'];
 	}
 
-	//User must not exist to be able to create a new one
-	public function user_exists($user){
-		return false;//user doesn't exist
+	/* 
+	 * This function makes sure that User doesn't exist to be able to create a new one
+	 */
+	public function validate_user_exists($user){
+		$datos = $this->registry->datos;
+
+		if(isset($datos['idUser'])){ //1. Dealing with a record update...
+utils::pre("1. record update.");
+			$U = new user();
+			$user = $U->find($datos[$idUser]);
+
+			if($user['user'] == $datos['user']){
+				return true; //It's ok, user is using same 'user' name.
+			}else{ //User is trying to change it's 'user' name...
+				$U = new user();
+				$U->findBy("user", $datos['user']);
+
+				if($U->isNew() === false){
+					return false; //The 'user' already exists.
+				}else{
+					return true; //The 'user' name doesn't exist, it's ok.
+				}
+			}
+		}else{ //2. Adding a new user
+			$U = new user();
+			$U->findby('user', $datos['user']);
+
+			if($U->isNew() === false){ //Does the 'user' already exists?
+				return false; //The 'user' already exists.
+			}else{
+				return true; //The 'user' doesn't exist.
+			}
+		}
 	}
 
 }
