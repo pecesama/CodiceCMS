@@ -77,6 +77,8 @@ class Users_Controller extends appcontroller{
 
 		if($this->data){
 			$user = $this->data['user'];
+			$user['password'] = md5($user['password']);
+			
 			$U = new user();
 			$U->prepareFromArray($user);
 			$action = $U->save();
