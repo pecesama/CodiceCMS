@@ -73,10 +73,9 @@ class user extends models{
 		$datos = $this->registry->datos;
 
 		if(isset($datos['idUser'])){ //1. Dealing with a record update...
-utils::pre("1. record update.");
 			$U = new user();
-			$user = $U->find($datos[$idUser]);
-
+			$user = $U->find($datos['idUser']);
+			
 			if($user['user'] == $datos['user']){
 				return true; //It's ok, user is using same 'user' name.
 			}else{ //User is trying to change it's 'user' name...
