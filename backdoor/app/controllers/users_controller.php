@@ -34,6 +34,9 @@ class Users_Controller extends appcontroller{
 	}
 
 	public function update($idUser = null){
+		if(is_null($idUser) === true){//if we don't have and $idUser coming by GET
+			$this->redirect("users/index");//we redirect to users list
+		}
 
 		if($this->data){
 			$user = $this->data['user'];
@@ -56,11 +59,7 @@ class Users_Controller extends appcontroller{
 				$this->messages->addMessage(Message::ERROR, "There was an error while saving the data of the user. Just try again.");
 			}
 
-			$this->redirect("users");
-		}
-
-		if(is_null($idUser) === true){
-			$this->redirect("users/index");
+			$this->redirect("users/update/$idUser");
 		}
 
 		$U = new user();
