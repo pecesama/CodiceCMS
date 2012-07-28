@@ -4,7 +4,6 @@ class user extends models{
 
 	protected $validate;
 
-
 	public function __construct(){
 		parent::__construct();
 
@@ -12,6 +11,10 @@ class user extends models{
 			'user' => array(
 				'required' => true,
 				'rules' => array(
+					array(
+						'rule' => array('user_exists'),
+						'message' => 'The user already exists. Please choose a differente one.'
+					),
 					array(
 						'rule' => VALID_NOT_EMPTY,
 						'message' => 'Fill the user field.'
@@ -22,7 +25,7 @@ class user extends models{
 				'required' => true,
 				'rules' => array(
 					array(
-						'rule' => VALID_NOT_EMPTY,
+						'rule' => VALID_NOT_EMPTY, 
 						'message' => 'Fill the password field.'
 					)
 				)
@@ -62,4 +65,10 @@ class user extends models{
 
 		return $result['total'];
 	}
+
+	//User must not exist to be able to create a new one
+	public function user_exists($user){
+		return false;//user doesn't exist
+	}
+
 }

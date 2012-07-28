@@ -84,11 +84,11 @@ class Users_Controller extends appcontroller{
 
 			if($action){
 				$this->messages->addMessage(Message::SUCCESS, "The user has added succesfully");
-				$this->redirect("users");
 			}else{
 				$this->messages->addMessage(Message::ERROR, "There was an error while trying to save. Just try again.");
-				$this->redirect("users/add");
 			}
+
+			$this->redirect("users/add");
 		}
 
 		$this->title_for_layout("New user");
