@@ -27,6 +27,10 @@ class Users_Controller extends appcontroller{
 
 		$users = $U->findAll(null, "idUser DESC", $limitQuery, null);
 
+		foreach($users as $key => $user){
+			$users[$key]['created'] = dates::timeago(strtotime($user['created']));
+		}
+
 		$this->view->users = $users;
 
 		$this->title_for_layout("Users management");
