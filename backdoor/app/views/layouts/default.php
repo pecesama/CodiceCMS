@@ -8,6 +8,7 @@
     <meta name="author" content="">
     <meta name="generator" content="flavorPHP" />
     <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css">
+    <?php echo $this->html->includeCss('pagination'); ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     
     <?php echo $this->html->includeJs("bootstrap/dropdown"); ?>
