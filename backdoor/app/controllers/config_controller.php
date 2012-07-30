@@ -4,11 +4,6 @@ class Config_controller extends appcontroller{
 	
 	public function __construct(){
 		parent::__construct();
-
-		// Check loggin
-		if($this->User->isLogged() === FALSE){
-			$this->redirect("login");
-		}
 	}
 
 	public function index($id = null){

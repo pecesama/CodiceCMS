@@ -5,10 +5,6 @@ class tag_controller extends appcontroller {
 	public function __construct() {
 		parent::__construct();
 		
-		if($this->User->isLogged() === FALSE){
-			$this->redirect("login");
-		}
-		
 		$this->plugin->call('codice_init');
 	}
 	
