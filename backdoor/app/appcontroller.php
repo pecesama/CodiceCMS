@@ -8,7 +8,7 @@ abstract class appcontroller extends controller {
 	protected $config;
         protected $messages;
 
-	public function __construct(){
+	public function __construct($checkLogin = true){
 		parent::__construct();
        	
        	$this->messages = Message::getInstance();
@@ -18,6 +18,13 @@ abstract class appcontroller extends controller {
 		$this->html = html::getInstance();
 		$this->plugin = plugin::getInstance();
 		$this->User = User_Lib::getInstance();
+
+		// Check login
+		if($checkLogin){
+			if($this->User->isLogged() === FALSE){
+				$this->redirect("login");
+			}
+		}
 
 		//loads configuration of the logged user and blog.
 		$C = new configuration();
