@@ -11,8 +11,8 @@ class post extends models{
 		//status
 		  $sql .= $extra['status']?"inner join statuses as s on s.idStatus = p.idStatus ":null;
 		//tags
-		  $sql .= $extra['tag']?"inner join rel_tags as rt on rt.idPost = p.idPost ":null;
-		  $sql .= $extra['tag']?"inner join tags as t on t.idTag = rt.idTag ":null;
+		  $sql .= $extra['tag']?"left join rel_tags as rt on rt.idPost = p.idPost ":null;
+		  $sql .= $extra['tag']?"left join tags as t on t.idTag = rt.idTag ":null;
 		$sql .= "where 1=1 ";
 		  $sql .= $extra['status']?"AND s.name = '".$this->sql_escape($extra['status'])." ' ":null;
 		  $sql .= $extra['tag']?"AND t.urlfriendly = '".$this->sql_escape($extra['tag'])." ' ":null;

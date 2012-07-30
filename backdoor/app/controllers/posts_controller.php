@@ -13,7 +13,7 @@ class Posts_controller extends appcontroller{
 	public function index($page = null){
             $post = new post();
 
-            $total_rows = $post->countPosts();
+            $total_rows = $post->countPosts(null);
 
             //preparing pagination.
             $page = (is_null($page)) ? 1 : $page ;
