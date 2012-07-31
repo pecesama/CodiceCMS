@@ -60,18 +60,23 @@ class Users_Controller extends appcontroller{
 			if($saved){
 				$this->messages->addMessage(Message::SUCCESS, "The user \"".htmlentities($user['user'])."\" was updated succesfully.");
 			}else{
+				$this->session->flash($user);
 				$this->messages->addMessage(Message::ERROR, "There was an error while saving the data of the user. Just try again.");
 			}
 
 			$this->redirect("users/update/$idUser");
 		}
 
-		$U = new user();
-		$user = $U->find($idUser);
+		if($this->session->issetFlash()){
+			$user = $this->session->getFlash();
+		}else{
+			$U = new user();
+			$user = $U->find($idUser);
 
-		$user = array_map("htmlentities", $user);
-
-		$this->view->user = $user;
+			$user = array_map("htmlentities", $user);
+		}		
+		
+		$this->view->user = $user;	
 
 		$this->title_for_layout("User " . htmlentities($user['user']));
 		$this->render("add");
@@ -90,11 +95,20 @@ class Users_Controller extends appcontroller{
 			if($action){
 				$this->messages->addMessage(Message::SUCCESS, "The user has added succesfully");
 			}else{
+				$this->session->flash($user);
 				$this->messages->addMessage(Message::ERROR, "There was an error while trying to save. Just try again.");
 			}
 
 			$this->redirect("users/add");
 		}
+
+		if($this->session->issetFlash()){
+			$user = $this->session->getFlash();
+		}else{
+			$user = array();
+		}
+
+		$this->view->user = $user;
 
 		$this->title_for_layout("New user");
 		$this->render();		
