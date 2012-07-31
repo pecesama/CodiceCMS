@@ -38,8 +38,16 @@ class user extends models{
 				'required' => true,
 				'rules' => array(
 					array(
+						'rule' => VALID_NOT_EMPTY,
+						'message' => 'Fill the email field.'
+					),
+					array(
 						'rule' => VALID_EMAIL,
 						'message' => 'Fill the email field with a valid email.'
+					),
+					array(
+						'rule' => array('validate_email_exists'),
+						'message' => 'Email already exists. Please choose a different one.'
 					)
 				)
 			),
@@ -125,6 +133,40 @@ class user extends models{
 		}
 
 		return $valid;
+	}
+
+	/* 
+	 * This function makes sure that Email doesn't exist to be able to create a new one
+	 */
+	public function validate_email_exists($email){
+		$datos = $this->registry->datos;
+
+		if(isset($datos['idUser'])){ //1. Dealing with a record update...
+			$U = new user();
+			$user = $U->find($datos['idUser']);
+
+			if($user['email'] == $datos['email']){
+				return true; //It's ok, email is using same 'email' name.
+			}else{ //User is trying to change it's 'email' name...
+				$U = new user();
+				$U->findBy("email", $datos['email']);
+
+				if($U->isNew() === false){
+					return false; //The 'email' already exists.
+				}else{
+					return true; //The 'email' name doesn't exist, it's ok.
+				}
+			}
+		}else{ //2. Adding a new email
+			$U = new user();
+			$U->findby('email', $datos['email']);
+
+			if($U->isNew() === false){ //Does the 'email' already exists?
+				return false; //The 'email' already exists.
+			}else{
+				return true; //The 'email' doesn't exist.
+			}
+		}
 	}
 
 }
