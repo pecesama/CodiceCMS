@@ -19,13 +19,20 @@
                 <li><?php echo $this->html->linkTo("Waiting for approval","comments/waiting"); ?></li>
               </ul>
             </li>
+			<li class="dropdown <?php echo isset($active['users'])? $active['users'] : ""; ?>">
+				<?php echo $this->html->linkTo("Users","#"," class='dropdown-toggle'"); ?>
+				<ul class="dropdown-menu">
+					<li><?php echo $this->html->linkTo("Users","users"); ?></li>
+					<li><?php echo $this->html->linkTo("Add user","users/add"); ?></li>
+				</ul>
+			</li>
             <li class="dropdown <?php echo isset($active['settings'])? $active['settings'] : ""; ?>">
               <?php echo $this->html->linkTo("Settings","#"," class='dropdown-toggle'"); ?>
               <ul class="dropdown-menu">
                 <li><?php echo $this->html->linkTo("Configuration","config"); ?></li>
-                <li><?php echo $this->html->linkTo("About","index/about"); ?></li>
               </ul>
             </li>
+			<li><?php echo $this->html->linkTo("About","index/about"); ?></li>
           </ul>
 
           <form action="">
