@@ -1,10 +1,10 @@
-﻿<?php
+<?php
 /*
 	Class name: Themes
 	Class autor: Victor De la Rocha http//mis-algoritmos.com/themes-class
 	Email: vyk2rr [at] gmail [dot] com
 */
-class themes{
+class Themes{
 	protected $registry;
 	protected $path;
 	protected $l10n;

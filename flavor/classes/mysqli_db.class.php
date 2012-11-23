@@ -1,6 +1,6 @@
 <?php
 
-class mysqli_db extends singleton implements data {
+class Mysqli_db extends Singleton implements Data {
 
 	private $connectionId;
 	private $query_result;
@@ -121,7 +121,7 @@ class mysqli_db extends singleton implements data {
 		return mysqli_real_escape_string($this->connectionId, $msg);
 	}
 	
-	public function errorInfo($sql = 'NO SQL') { 
+	public function errorInfo($sql = '') { 
 		return '<u>SQL ERROR</u> <br /><br />' . @mysqli_error($this->connectionId) . '<br /><br /><u>SQL ERROR NUMBER</u> <br /><br />' . @mysqli_errno($this->connectionId) . (($sql != '') ? '<br /><br /><u>SQL</u><br /><br />' . $sql : '') . '<br />';
 	}
 	
@@ -138,4 +138,3 @@ class mysqli_db extends singleton implements data {
 	}
 
 }
-?>

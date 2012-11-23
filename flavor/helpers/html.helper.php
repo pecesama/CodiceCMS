@@ -1,6 +1,6 @@
 <?php
 
-class html extends singleton {
+class Html extends Singleton {
 
 	protected $registry;
 	protected $validateErrors;
@@ -63,8 +63,8 @@ class html extends singleton {
 		$js .= $this->includeJs("facebox");
 		$js .= "\t<script type=\"text/javascript\">\n";
 		$js .= "\t	jQuery(document).ready(function($) {\n";
-		$js .= "\t	  $('a[rel*=facebox]').facebox() \n";
-		$js .= "\t	})\n";
+		$js .= "\t	  $('a[rel*=facebox]').facebox(); \n";
+		$js .= "\t	});\n";
 	  	$js .= "\t</script>\n";
 		return $js;
 	}
@@ -144,8 +144,8 @@ class html extends singleton {
 		return $html;
 	}
 
-	public function linkToConfirm($text, $url="", $html_attributes=""){
-		$html = $this->linkTo($text, $url, "$html_attributes onclick=\"return confirm('Are you sure?');\"");
+	public function linkToConfirm($text, $url=""){
+		$html = $this->linkTo($text, $url, "onclick=\"return confirm('Are you sure?');\"");
 		return $html;
 	}
 
@@ -168,13 +168,18 @@ class html extends singleton {
 		return $html;
 	}
 
-	public function checkBox($name, $html_attributes=""){
-		$html = "<input type=\"checkbox\" name=\"".$name."\"";
+	public function checkBox($name, $value = null, $html_attributes=""){
+		$html = "<input type=\"checkbox\" name=\"".$name."\" value=\"$value\"";
 		$html .= $html_attributes;
 		$html .= " />\n";
 		return $html;
 	}
-		
+	
+        public function fileField($name, $value="", $html_attributes = ""){
+            $html = "<input type=\"file\" name=\"{$name}\" value=\"{$value}\" {$html_attributes} />";
+            return $html;
+        }
+
 	public function radioButton($name, $value, $html_attributes=""){
 		$html = "<input type=\"radio\" value=\"".$value."\" name=\"".$name."\" ";
 		$html .= $html_attributes;
@@ -182,8 +187,8 @@ class html extends singleton {
 		return $html;
 	}
 	
-	public function textField($name, $value="", $html_attributes=""){
-		$html = "<input type=\"text\" name=\"".$name."\" id=\"".$name."\" value=\"$value\" ";
+	public function textField($name, $value = null,  $html_attributes=""){
+		$html = "<input type=\"text\" name=\"".$name."\" id=\"".$name."\" value=\"".$value."\" ";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;
@@ -198,15 +203,15 @@ class html extends singleton {
 		return $html;
 	}
 	
-	public function hiddenField($name, $value= "", $html_attributes=""){
+	public function hiddenField($name, $value = null, $html_attributes=""){
 		$html = "<input type=\"hidden\" name=\"".$name."\" value=\"$value\"";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;
 	}
 	
-	public function passwordField($name, $value, $html_attributes=""){
-		$html = "<input type=\"password\" name=\"".$name."\" value=\"$value\" ";
+	public function passwordField($name, $value = null, $html_attributes=""){
+		$html = "<input type=\"password\" name=\"".$name."\" value=\"$value\"";
 		$html .= $html_attributes;
 		$html .= " />";
 		return $html;
@@ -216,9 +221,9 @@ class html extends singleton {
 		$html = "<select name=\"".$name."\">\n";
 		foreach ($values as $key=>$value){
 			$html .= "\t<option ";
-			if (is_numeric($key)){
-				$key = $value;
-			}
+//			if (is_numeric($key)){
+//				$key = $value;
+//			}
 			$html .= " value=\"$key\"";
 			if($selected==$key){
 				$html .= " selected=\"selected\"";
@@ -229,9 +234,19 @@ class html extends singleton {
 		return $html;
 	}
         
-        // Function to create a html select component from a model result.
+        /**
+         * Function to create a html select component from a model result.
+         * 
+         * @param string $name
+         * @param array $items
+         * @param string $selected
+         * @param string $descriptionKey
+         * @param string $valueKey
+         * @param string $htmlAttributs
+         * @return string 
+         */
         public function selectFromModel($name, $items, $selected="", $descriptionKey=NULL, $valueKey=NULL, $htmlAttributs = ""){
-            $html = "<select name=\"".$name."\" $htmlAttributs>\n";
+            $html = "<select name=\"$name\" id=\"$name\" $htmlAttributs>\n";
             foreach ($items as $key => $item){
                 $html .= "\t<option";
 
@@ -239,7 +254,7 @@ class html extends singleton {
                 $value = $valueKey == NULL ? $key : ( isset($item[$valueKey])? $item[$valueKey] : $key );
                 $html .= " value=\"$value\"";
                 if($selected == $value){
-                        $html .= " selected=\"selected\"";
+                    $html .= " selected=\"selected\"";
                 }
                 
                 // Set description

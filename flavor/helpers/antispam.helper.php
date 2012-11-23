@@ -1,6 +1,6 @@
 <?php
 
-class antispam extends singleton {
+class Antispam extends Singleton {
 	
 	protected $registry;
 	protected $path;
@@ -31,11 +31,8 @@ class antispam extends singleton {
 	private function isBadWord( $str = "" ) {
 		$bads = array ("-online", "4u", "adipex", "advicer", "baccarrat", "blackjack", "bllogspot", "booker", "byob", "car-rental-e-site", "car-rentals-e-site", "carisoprodol", "casino", "casinos", "chatroom", "cholesterol", "cialis", "coolcoolhu", "coolhu", "credit-card-debt", "credit-report-4u", "cwas", "cyclen", "cyclobenzaprine", "dating-e-site", "day-trading", "debt-consolidation", "debt-consolidation-consultant", "discreetordering", "duty-free", "dutyfree", "equityloans", "fioricet", "flowers-leading-site", "freenet-shopping", "freenet", "gambling-", "hair-loss", "health-insurancedeals-4u", "homeequityloans", "homefinance", "holdem", "holdempoker", "holdemsoftware", "holdemtexasturbowilson", "hotel-dealse-site", "hotele-site", "hotelse-site", "incest", "insurance-quotesdeals-4u", "insurancedeals-4u", "jrcreations", "levitra", "macinstruct", "milf", "mortgage-4-u", "mortgagequotes", "online-gambling", "onlinegambling-4u", "ottawavalleyag", "ownsthis", "palm-texas-holdem-game", "paxil", "penis", "pharmacy", "phentermine", "poker-chip", "poze", "pussy", "puto", "rental-car-e-site", "ringtones", "roulette", "sesso", "sex", "sexo", "shemale", "shoes", "slot-machine", "texas-holdem", "thorcarlson", "top-site", "top-e-site", "tramadol", "trim-spa", "ultram", "valeofglamorganconservatives", "viagra", "vioxx", "xanax", "zolus");
 		for($i=0; $i < sizeof($bads); $i++) {
-			if (preg_match("/$bads[$i]/",$str)) { return true; }
+			if (eregi($bads[$i],$str)) { return true; }
 		}
 		return false;
 	}
-	
-
 }
-?>

@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 /**
  * JavaScript
@@ -14,7 +14,7 @@
  * @filesource
  */
 
-class javascript {
+class Javascript {
 	
 	function button_to_function($name,$function=null)
 	{
@@ -81,6 +81,3 @@ class javascript {
 		return $return_val;
 	}
 }
-
-
-?>

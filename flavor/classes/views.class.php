@@ -1,6 +1,6 @@
-<?php
+<?php 
 
-class views {
+class Views {
 
 	protected $vars = array();
 	protected $layout = "default";
@@ -74,7 +74,4 @@ class views {
 		ob_end_clean();
 		return $contents;
 	}
-
 }
-
-?>
