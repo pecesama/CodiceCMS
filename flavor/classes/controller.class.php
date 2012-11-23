@@ -19,17 +19,17 @@ abstract class Controller {
 	public $isAjax;
 
 	public function __construct() {
-		$this->registry = registry::getInstance();
+		$this->registry = Registry::getInstance();
 		$this->session = $this->registry["session"];
 		$this->cookie = $this->registry["cookie"];
 		$this->view = $this->registry["views"];
 		$this->themes = $this->registry["themes"];
 		$this->path = $this->registry["path"];
 		$this->debug = $this->registry["debug"];
-		$this->l10n = l10n::getInstance();
-		$this->html = html::getInstance();
-		$this->ajax = new ajax();
-		$this->pagination = pagination::getInstance();
+		$this->l10n = L10n::getInstance();
+		$this->html = Html::getInstance();
+		$this->ajax = new Ajax();
+		$this->pagination = Pagination::getInstance();
 		
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$this->data = $_POST;

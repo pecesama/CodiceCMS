@@ -14,8 +14,8 @@ class Themes{
 	protected $vars=array(); //variable para apilar las variables que se asignan a la plantilla
 	
 	public function __construct(){
-		$this->l10n = l10n::getInstance();
-		$this->html = html::getInstance();
+		$this->l10n = L10n::getInstance();
+		$this->html = Html::getInstance();
 	}
 	
 	public function __set($name, $value){

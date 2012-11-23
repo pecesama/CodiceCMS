@@ -1,5 +1,5 @@
 <?php
-class plugins extends singleton{
+class Plugins extends Singleton{
 
 	protected $registry;
 

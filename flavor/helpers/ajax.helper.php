@@ -9,7 +9,7 @@ class Ajax extends Pquery {
 	public function __construct() {
 		$this->registry = registry::getInstance();
 		$this->path = $this->registry["path"];
-		$this->jquery = new pquery();		
+		$this->jquery = new Pquery();		
 	}
 	
 	public function linkToBox($text, $url="", $html_attributes="") {		

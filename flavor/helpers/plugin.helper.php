@@ -1,5 +1,5 @@
 <?php
-class plugin extends singleton{
+class Plugin extends Singleton{
 	public static function getInstance() {
 		return parent::getInstance(get_class());
 	}
