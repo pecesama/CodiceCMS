@@ -4,6 +4,10 @@ class Posts_controller extends appcontroller{
 	
 	public function __construct(){
 		parent::__construct();
+
+		if($this->User->isLogged() === FALSE){
+			$this->redirect("login");
+		}
 	}
 	
 	public function beforeRender(){
@@ -13,7 +17,7 @@ class Posts_controller extends appcontroller{
 	public function index($page = null){
             $post = new post();
 
-            $total_rows = $post->countPosts(null);
+            $total_rows = $post->countPosts();
 
             //preparing pagination.
             $page = (is_null($page)) ? 1 : $page ;
@@ -149,7 +153,7 @@ class Posts_controller extends appcontroller{
 			$P->prepareFromArray($this->data);
 			
 			if($P->save()){
-				$this->session->flash('Información guardada correctamente.');
+				$this->messages->addMessage('Information saved successfully.');
 				$this->redirect("posts/view/{$P['urlfriendly']}");
 			} else {
 				
