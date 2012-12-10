@@ -16,6 +16,7 @@ if(!version_compare(PHP_VERSION, '5.2.0', '>=' ) ) {
 
 define('DIRSEP', DIRECTORY_SEPARATOR);
 define('Absolute_Path', dirname(__FILE__).DIRSEP);
+define('APPDIR','app');
 
 $configFile = Absolute_Path.'config.php';
 
@@ -23,23 +24,30 @@ if (!file_exists($configFile)) {
 	die('Installation required');
 } else {
     require_once($configFile);
+	if(!defined('Absolute2Flavor')){
+		define('Absolute2Flavor',Absolute_Path);
+	}
 }
 
 function __autoload($className) {
+	$className = strtolower($className);
+
 	$directories = array(
-		Absolute_Path.'..'.DIRSEP.'flavor'.DIRSEP.'classes'.DIRSEP.$className.'.class.php', // Flavor classes
-		Absolute_Path.'..'.DIRSEP.'flavor'.DIRSEP.'interfaces'.DIRSEP.$className.'.interface.php', // maybe we want an interface
-		Absolute_Path.'..'.DIRSEP.'flavor'.DIRSEP.'helpers'.DIRSEP.$className.'.helper.php', // maybe we want a helper
-		Absolute_Path.'app'.DIRSEP.$className.'.php', // maybe we want appcontroller or appviews
-		Absolute_Path.'app'.DIRSEP."controllers".DIRSEP.$className.'.php', // maybe we want a controller
-		Absolute_Path.'app'.DIRSEP.'models'.DIRSEP.$className.'.php', // maybe we want a model
-		Absolute_Path.'app'.DIRSEP.'libs'.DIRSEP.$className.'.class.php', // maybe we want a third party class
-            
-                Absolute_Path.'..'.DIRSEP.'app'.DIRSEP.'models'.DIRSEP.$className.'.php', // maybe we want a model
-		Absolute_Path.'..'.DIRSEP.'app'.DIRSEP.'libs'.DIRSEP.$className.'.class.php' // maybe we want a third party class
+		Absolute2Flavor.'../flavor'.DIRSEP.'classes'.DIRSEP.$className.'.class.php', // Flavor classes
+		Absolute2Flavor.'../flavor'.DIRSEP.'interfaces'.DIRSEP.$className.'.interface.php', // maybe we want an interface
+		Absolute2Flavor.'../flavor'.DIRSEP.'helpers'.DIRSEP.$className.'.helper.php', // maybe we want a helper
+		Absolute_Path.APPDIR.DIRSEP.$className.'.php', // maybe we want appcontroller or appviews
+		Absolute_Path.APPDIR.DIRSEP."controllers".DIRSEP.$className.'.php', // maybe we want a controller
+		Absolute_Path.APPDIR.DIRSEP.'models'.DIRSEP.$className.'.php', // maybe we want a model
+		Absolute_Path.APPDIR.DIRSEP.'libs'.DIRSEP.$className.'.class.php', // maybe we want a third party class
+		// if the file is not located in the app look for it in the main app.
+		Absolute_Path.'../'.APPDIR.DIRSEP.$className.'.php', // maybe we want appcontroller or appviews
+		Absolute_Path.'../'.APPDIR.DIRSEP."controllers".DIRSEP.$className.'.php', // maybe we want a controller
+		Absolute_Path.'../'.APPDIR.DIRSEP.'models'.DIRSEP.$className.'.php', // maybe we want a model
+		Absolute_Path.'../'.APPDIR.DIRSEP.'libs'.DIRSEP.$className.'.class.php' // maybe we want a third party class
 		// If you need more directories just add them here
 	);
-	
+
 	$success = false;
 	foreach($directories as $file){
 		if(!$success){
@@ -91,10 +99,10 @@ try {
 
 	$router = new router();
 	$registry->router = $router;
-	
-//	$debug = debug::getInstance();
-//	$registry->debug = $debug;
-	
+
+	$debug = Debug::getInstance();
+	$registry->debug = $debug;
+
 	$registry->validateErrors = array();
 
 	$router->dispatch(); // Here starts the party
