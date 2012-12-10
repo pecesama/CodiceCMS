@@ -1,0 +1,79 @@
+/*header*/
+div#codice div#header {
+	padding:10px;
+	margin:10px;
+}
+div#codice div#header > .header {
+
+}
+/*body*/
+/*messages*/
+div#codice div#messages > .messages {
+	float:left;
+	border:1px solid red;
+	padding:10px;
+	margin:10px;
+display:none;
+}
+/*content*/
+div#codice div#content > .content {
+	float:left;
+	background-color:black;
+}
+/*entries*/
+div#codice div#content > .content div#entries {
+	float:left;
+	border:10px solid blue;
+}
+/*entry*/
+div#codice div#content > .content div#entries > .entry {
+	float:left;
+	background-color:white;
+	border:2px dashed red;
+	border-radius:10px;
+	margin:20px;
+	padding:10px;
+}
+div#codice div#content > .content div#entries > .metadata {
+	display: none;
+}
+div#codice div#content > .content div#entries > .comunity {
+	display: none;
+}
+/*navigation*/
+div#codice div#content div#navigation {
+	float:left;
+	border:1px solid #f0f;
+	padding:10px;
+	margin:10px;
+display:none;
+}
+
+/*footer*/
+div#codice div#footer {
+	float:left;
+	border:1px solid purple;
+	padding:10px;
+	margin:10px;
+display: none;
+}
+div#codice div#footer > .footer {
+
+}
+
+
+
+.debug {
+	padding:0px;
+	margin:0px;
+	border:1px solid blue;
+}
+.debug > * {
+	padding:0px;
+	margin:0px;
+	border:1px dashed red;
+}
+.debug > * > * {border:1px dashed blue;}
+.debug > * > * > * {border:1px dashed green;}
+.debug > * > * > * > * {border:1px dashed orange;}
+.debug > * > * > * > * > * {border:1px dashed purple;}

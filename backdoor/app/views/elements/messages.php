@@ -1,5 +1,5 @@
 <?php if($this->messages->issetMessages()): ?>
-<div id="messages">
+<div class="messages">
     <ul>
     <?php foreach($this->messages->getMessages() as $message): ?>
         <li class="alert-message fade in <?php echo $message['type']; ?>">
