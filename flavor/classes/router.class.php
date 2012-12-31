@@ -1,5 +1,6 @@
-<?php
-class router{
+<?php 
+
+class Router{
 	private $registry;
 	private $class = array(
 		'controller'=>'index',
@@ -15,49 +16,32 @@ class router{
 		$this->getRoutes();
 	}
 	
+	private function getClass(){
+		return $this->class;
+	}
+
 	public function dispatch() {
 		$this->getController();
 
-		$controller = $this->class['controller'];
-		$action = $this->class['action'];
-		$params = $this->class['params'];
-		
-		$class = $controller."_controller";
-                
-                /**
-                 * Validation 
-                 */
-                if($this->controllerExists($controller) == FALSE || class_exists($class) == FALSE){
-                    $this->notFound();
-                }
+        $controller = $this->class['controller'];
+        $action = $this->class['action'];
+        $params = $this->class['params'];
+        
+        $class = $controller."_controller";
+        
+        $this->parts = array_pad($this->parts, -(count($this->parts) + count($params)), $params);
+        
+        $reflection_class = new ReflectionClass($class);
+        $controller = $reflection_class->newInstanceArgs(array()); // FIXME: how get the construct params?
 
-                /**
-                 * FIXME: maybe use ReflectionClass::newInstance
-                 *
-                 * Explication:
-                 * http://www.php.net/manual/en/reflectionclass.newinstance.php,
-                 * http://rabaix.net/en/articles/2009/02/06/how-to-instantiate-a-php-class-with-dynamic-parameters
-                 */
-		$controller = new $class(); 
-
-		if(!is_callable(array($controller,$action))) {
-			$this->notFound();
-		}
-
-                // FIXME: $params must have a array with all the params
-                $this->parts = array_pad($this->parts, - (count($this->parts) + 1), $params);
-                
-                array_reverse($this->parts, true); // reverse the order of the variables
-                
-		$controller->action = $action;
-		$controller->params = $this->parts;
-
-                call_user_func_array(array($controller, $controller->action), $controller->params);
-
-//		if($params)
-//			$controller->$action($params);
-//		else
-//			$controller->$action();
+        if(!is_callable(array($controller,$action))) {
+            $this->notFound();
+        }
+        
+        $controller->params = $this->parts;
+        
+        $controller->action = $action;
+        call_user_func_array(array($controller, $controller->action), $controller->params);
 	}
 	
 	private function getController(){
@@ -71,9 +55,6 @@ class router{
 		$this->getParams();
 		
 		$params = null;
-                $controller = "index";
-                $action = "index";
-                
 		if (isset($this->parts[0])){
 			if (is_numeric($this->parts[0])){
 				$controller = "index";
@@ -105,7 +86,7 @@ class router{
 					}
 				} else {					
 					if ($this->parts[0] == "index") {
-						$path = Absolute_Path."app".DIRSEP."views/start/index.php";
+						$path = Absolute_Path.APPDIR.DIRSEP."views/start/index.php";
 						if(file_exists($path)){
 							ob_start();
 							include ($path);
@@ -114,14 +95,8 @@ class router{
 							echo $contents;
 							exit;
 						}
-					} elseif(is_numeric($this->parts[0]) == false && $this->controllerExists("restaurantes") ){ // FIXME: Pensar en una condicion donde se tenga que mostrar la accion no Found
-                                            $controller = "restaurantes";
-                                            $action = 'read';
-                                            $params = $this->parts[0];
-                                            unset($this->parts[1]);
-                                        }else {
-                                            $this->notFound();
-                                        }
+					}
+					$this->notFound();
 				}
 			}
 		}else{
@@ -142,7 +117,7 @@ class router{
 	/*
 	 * - Si no se envia el parametro $route, deja en $this->uri la url formateada y 
 	 *   en $this->parts deja todas las partes listas para procesar.
-	 * - Si se define $route, �nicamente retorna la url formateada correctamente.
+	 * - Si se define $route, únicamente retorna la url formateada correctamente.
 	 *
 	 * ejemplo de salida => 
 	 *  uri: index/saludo/1
@@ -171,7 +146,7 @@ class router{
 	}
 	
 	/*
-	 * Extrae el par�metro que se enviar� y busca las rutas definidas en $this->routes para procesarlas.
+	 * Extrae el parámetro que se enviará y busca las rutas definidas en $this->routes para procesarlas.
 	 */
 	private function getParams(){
 		foreach($this->routes as $target=>$route){
@@ -187,17 +162,36 @@ class router{
 					}
 				}
 			}
-		}		
+		}
+
+		/*
+		 * Generador del relativePath a la carpeta "app" para utilizar desde las views
+		 * genera algo así: ../../../app/folder/folder/folder/...etc/
+		 */
+		$relativePath = "";
+		$relative = substr_count(trim($this->uri,"/")."/","/");
+
+		if(substr($this->route,-1,1) == "/"){
+			$offset = 0;
+		}else{
+			$offset = 1;
+		}
+
+		for($c=0;$c<$relative-$offset;$c++){
+			$relativePath .= "../";
+		}
+		
+		define("relativePathToApp",$relativePath);
 	}
 
 	private function controllerExists($controller){
-		return file_exists(Absolute_Path.'app'.DIRSEP.'controllers'.DIRSEP."{$controller}_controller.php");
+		return file_exists(Absolute_Path.APPDIR.DIRSEP.'controllers'.DIRSEP."{$controller}_controller.php");
 	}
 	/*
 	 * Obtiene las rutas desde el archivo app/routes.php
 	 */
 	private function getRoutes(){
-		require(Absolute_Path.'app'.DIRSEP.'routes.php');
+		require(Absolute_Path.APPDIR.DIRSEP.'routes.php');
 	}
 	
 	/*
@@ -213,4 +207,3 @@ class router{
 		$this->routes[$target] = $GET;
 	}
 }
-?>

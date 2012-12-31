@@ -1,6 +1,6 @@
 <?php
 
-class pgsql_db extends singleton implements data {
+class Pgsql_db extends Singleton implements Data {
 
 	private $connectionId;
 	private $query_result;
@@ -138,4 +138,3 @@ class pgsql_db extends singleton implements data {
 	}
 
 }
-?>

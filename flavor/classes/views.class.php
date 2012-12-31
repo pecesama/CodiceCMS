@@ -1,6 +1,6 @@
-<?php
+<?php 
 
-class views {
+class Views {
 
 	protected $vars = array();
 	protected $layout = "default";
@@ -13,13 +13,13 @@ class views {
 	protected $l10n;
 
 	public function __construct() {
-		$this->registry = registry::getInstance();
+		$this->registry = Registry::getInstance();
 		$this->path = $this->registry["path"];
-		$this->html = html::getInstance();
-		$this->ajax = new ajax();
-		$this->session = session::getInstance();
-		$this->cookie = session::getInstance();
-		$this->l10n = l10n::getInstance();
+		$this->html = Html::getInstance();
+		$this->ajax = new Ajax();
+		$this->session = Session::getInstance();
+		$this->cookie = Session::getInstance();
+		$this->l10n = L10n::getInstance();
 	}
 	
 	public function __set($name, $value){
@@ -74,7 +74,4 @@ class views {
 		ob_end_clean();
 		return $contents;
 	}
-
 }
-
-?>

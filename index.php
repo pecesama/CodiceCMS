@@ -30,6 +30,8 @@ if (!file_exists($configFile)) {
 }
 
 function __autoload($className) {
+	$className = strtolower($className);
+
 	$directories = array(
 		Absolute2Flavor.'flavor'.DIRSEP.'classes'.DIRSEP.$className.'.class.php', // Flavor classes
 		Absolute2Flavor.'flavor'.DIRSEP.'interfaces'.DIRSEP.$className.'.interface.php', // maybe we want an interface
@@ -92,7 +94,10 @@ try {
 
 	$router = new router();
 	$registry->router = $router;
-		
+	
+	$debug = Debug::getInstance();
+	$registry->debug = $debug;
+
 	$registry->validateErrors = array();
 
 	$router->dispatch(); // Here starts the party

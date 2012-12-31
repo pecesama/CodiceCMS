@@ -6,7 +6,7 @@
  * 
  * @author Aaron Munguia
  */
-class Message extends singleton implements ArrayAccess{
+class Message extends Singleton implements ArrayAccess{
     
     const INFORMATION = 'info';
     const ERROR = 'error';

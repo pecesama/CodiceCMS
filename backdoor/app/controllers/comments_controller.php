@@ -3,6 +3,10 @@
 class comments_controller extends appcontroller{
 	public function __construct(){
 		parent::__construct();
+
+		if($this->User->isLogged() === FALSE){
+			$this->redirect("login");
+		}
 	}
 	
 	public function beforeRender(){
@@ -71,7 +75,7 @@ class comments_controller extends appcontroller{
 			$Comment->prepareFromArray($this->data);
 
 			if($Comment->save()){
-				$this->session->flash("Comment updated.");
+				$this->messages->addMessage("Comment updated.");
 				$this->redirect("comments/");
 			} else {
 				$comment = $this->data;

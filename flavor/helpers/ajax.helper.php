@@ -1,6 +1,6 @@
 <?php
 
-class ajax extends pquery {
+class Ajax extends Pquery {
 	
 	protected $registry;
 	protected $path;
@@ -9,7 +9,7 @@ class ajax extends pquery {
 	public function __construct() {
 		$this->registry = registry::getInstance();
 		$this->path = $this->registry["path"];
-		$this->jquery = new pquery();		
+		$this->jquery = new Pquery();		
 	}
 	
 	public function linkToBox($text, $url="", $html_attributes="") {		

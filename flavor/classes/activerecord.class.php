@@ -1,28 +1,20 @@
-<?php
+<?php 
 
-class activeRecord implements ArrayAccess {
-	private $record = array(); // Contiene los campos de la tabla
+class ActiveRecord implements ArrayAccess {
+	protected $record = array(); // Contiene los campos de la tabla
 	private $auxRecord = array(); //contiene propiedades agregadas fuera de los campos de la tabla.
-	public $validateErrors;
-	public $filterErrors;
 	private $keyField = "";
 	private $table = NULL;
 	private $isNew = true;
-	private $multipleRecords = false;
-	private $isValid = true;
 	protected $registry;
 	public $db;	
 	private $columns;
 	
 	public function __construct() {
 		$this->registry = registry::getInstance();
-		$this->validateErrors = $this->registry->validateErrors;
-		$this->filterErrors = $this->registry->filterErrors;
-
 		$this->db = $this->registry["db"];
-
 		$this->table = $this->modelName();
-		
+
 		$rs = $this->db->query("SHOW COLUMNS FROM ".$this->table);
 		
 		while ($row = $this->db->fetchRow()) {
@@ -36,6 +28,8 @@ class activeRecord implements ArrayAccess {
 		if(empty($this->keyField)) {
 		    throw new Exception( "Primary Column not found for Table: '".$this->table."'");
 		}
+		
+
 	}
 	
 	public function __set($key, $value){
@@ -72,8 +66,8 @@ class activeRecord implements ArrayAccess {
 	}	
 	
 	public function prepareFromArray($array){
-		foreach ($array as $key => $val) {
-                    $this->$key = $val;
+		foreach ($array as $key => $var) {
+			$this->record[$key] = $var;
 		}		
 	}
 	
@@ -132,32 +126,17 @@ class activeRecord implements ArrayAccess {
 		return $this->db->lastId();
 	}
 	
-	public function invalidate(){
-		$this->isValid = false;
-	}
 	
 	public function save() {
-		$this->record =	$this->doFilter($this->record);
-		$this->isValid = $this->validates($this->record);
-
-		if ($this->isValid) {		
 			if( $this->isNew ) {
-				if(isset($this->columns["created"])){
-					$this->record["created"] = date("Y-m-d H:i:s",strtotime("now"));
-				}
-				if(isset($this->columns["modified"])){
-					$this->record["modified"] = date("Y-m-d H:i:s",strtotime("now"));
-				}			
 				$id = $this->create($this->record);
 				$this->record[$this->keyField] = $id;
 				$this->isNew = false;
+
 				return $id;
 			} else {
 				return $this->update();
 			}
-		} else {
-			return NULL;
-		}
 	}	
 	
 	public function update() {
@@ -200,7 +179,6 @@ class activeRecord implements ArrayAccess {
 			$rs = $this->db->query($sql);
 		}
 		
-		return true;
 		if (!$rs) {
 			throw new Exception("SQL Error, Remove Failed");
 		}
@@ -213,11 +191,20 @@ class activeRecord implements ArrayAccess {
 	}
 	
 	public function find($id) { 
-		$sql = "SELECT * FROM ".$this->table." WHERE ".$this->keyField."=".intval($id)." LIMIT 1";
-        return $this->findBySql($sql);
+		
+		$sql = "SELECT * FROM ".$this->table." WHERE ".$this->keyField."=".intval($id);
+		$rs = $this->db->query($sql);
+		$row = $this->db->fetchRow();
+		
+		if($row != null){
+			$this->record = $row;
+			$this->isNew = false;
+		}
+		
+		return $this->record;
 	}	
 	
-	public function findBy($field, $value) {
+	public function findBy($field, $value) { 
 		if(is_array($field)){
 			$where = "";
 			foreach($field as $k=>$v){
@@ -229,33 +216,25 @@ class activeRecord implements ArrayAccess {
 		}else{
 			$sql = "SELECT * FROM ".$this->table." WHERE ".$field."='".$this->db->sql_escape($value)."' LIMIT 1";
 		}
-
 		return $this->findBySql($sql);
 	}
 	
-	public function findBySql($sql){
+	public function findBySql($sql) { 		
 		$rs = $this->db->query($sql);
-
-		if($this->db->numRows() > 0){
-			$this->record = $this->db->fetchRow();
-			$this->isNew = false;
+        if($this->db->numRows() != 0){
+            $this->record = $this->db->fetchRow();
+            $this->isNew = false;
 			$this->multipleRecords = false;
-		}else{
-			$this->isNew = true;
-//			$this->record = array();
-			$this->multipleRecords = false;
-		}
-		
+        }
 		return $this->record;
 	}
 	
-	public function findAll($fields=NULL, $order=NULL ,$limit=NULL, $extra=NULL){
+	public function findAll($fields=NULL, $order=NULL ,$limit=NULL, $extra=NULL) {
 		$fields = $fields ? $fields : '*';
 		$sql = "SELECT ".$fields." FROM ". $this->table." ";
 		if($extra) $sql.= $extra." ";
 		if($order) $sql.= "ORDER BY ".$order.' ';
 		if($limit) $sql.= "LIMIT ".$limit;
-		
 		return $this->findAllBySql($sql);
 	}
 	
@@ -274,7 +253,7 @@ class activeRecord implements ArrayAccess {
 		return $this->findAllBySql($sql);
 	}
 	
-	public function findAllBySql($sql){
+	public function findAllBySql($sql) { 		
 		$rs = $this->db->query($sql);
 		$rows = array();
 		if($this->db->numRows() != 0){
@@ -283,7 +262,6 @@ class activeRecord implements ArrayAccess {
 			$this->multipleRecords = true;
 			$this->record = $rows;
 		}
-
 		return $rows;
 	}
 	
@@ -326,5 +304,3 @@ class activeRecord implements ArrayAccess {
 		return $this->db->sql_escape($msg);
 	}
 }
-?>
-
