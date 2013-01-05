@@ -66,11 +66,12 @@ class tag_controller extends appcontroller {
 
 		$this->themes->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 
-		$posts = $post->getPostsByTag($tag,$limitQuery);
+		$posts = $post->getByTag($tag,$limitQuery);
 
 		foreach($posts as $k=>$p){
 			$posts[$k]['title'] = htmlspecialchars($p['title']);
-			$posts[$k]['tags'] = $post->getTags($p['ID']);
+			$tag = new Tag();
+			$posts[$k]['tags'] = $tag->getByPost($p['ID']);
 			$posts[$k]['comments_count'] = $comment->countCommentsByPost($posts[$k]['ID']);
 
 			$user = new user();

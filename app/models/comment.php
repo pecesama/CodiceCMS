@@ -1,6 +1,9 @@
 <?php
-
-class comment extends models {
+/**
+ * Comment model
+ *
+ */
+class Comment extends models {
 
 	private $spam;
 	private $security;
@@ -76,7 +79,7 @@ class comment extends models {
 			)
 		);
 	}
-	
+
 	public function setPingback(){
 		$this->validate['email']['required'] = false;
 	}
@@ -106,7 +109,7 @@ class comment extends models {
 		return $valid;
 	}
 
-	public function countCommentsByPost($idPost = null,$status = null){
+	public function countByPost($idPost = null,$status = null){
 		$idPost = $this->db->sql_escape($idPost);
 		$status = $this->db->sql_escape($status);
 

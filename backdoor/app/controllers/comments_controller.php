@@ -14,7 +14,7 @@ class comments_controller extends appcontroller{
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
 
 		$comment = new comment();
-		$total_rows = $comment->countCommentsByPost();
+		$total_rows = $comment->countByPost();
 		$page = $id;
 		$page = (is_null($page)) ? 1 : $page ;
 		$limit = $this->config['postsPerPageAdmin'];

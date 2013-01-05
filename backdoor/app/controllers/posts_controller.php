@@ -59,7 +59,8 @@ class Posts_controller extends appcontroller{
                 
                 if($post->save()){
                     // TODO: Validate if every tag is saved
-                    $post->updateTags($post['idPost'], $this->data['tags']);
+                    $relTag = new RelTag();
+                    $relTag->updateRel($post['idPost'], $this->data['tags']);
                     
                     $this->messages->addMessage(Message::SUCCESS, "New posts saved.");
                     $this->redirect("posts/");
@@ -144,7 +145,8 @@ class Posts_controller extends appcontroller{
 			}
 			
 			// update tags registry and relations
- 			$P->updateTags($id,$this->data['tags']);
+			$relTag = new RelTag();
+ 			$relTag->updateRel($id,$this->data['tags']);
 			
 			$P->prepareFromArray($this->data);
 			
@@ -162,7 +164,10 @@ class Posts_controller extends appcontroller{
 		$post = $P->find($id);
 		$post['title'] = utils::convert2HTML($P['title']);
 		$post['content'] = utils::convert2HTML($P['content']);
-		$post['tags'] = $P->getTags($id,'string');
+
+		$tag = new Tag();
+		$tags = $tag->getByPost($id);
+		$post['tags'] = Tag::toString($tags);
 		
 		$this->title_for_layout($this->l10n->__("Update entry - Codice CMS"));
 		
