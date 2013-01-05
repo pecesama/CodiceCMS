@@ -4,10 +4,6 @@ class Posts_controller extends appcontroller{
 	
 	public function __construct(){
 		parent::__construct();
-
-		if($this->User->isLogged() === FALSE){
-			$this->redirect("login");
-		}
 	}
 	
 	public function beforeRender(){
@@ -17,7 +13,7 @@ class Posts_controller extends appcontroller{
 	public function index($page = null){
             $post = new post();
 
-            $total_rows = $post->countPosts();
+            $total_rows = $post->countPosts(null);
 
             //preparing pagination.
             $page = (is_null($page)) ? 1 : $page ;
@@ -63,7 +59,8 @@ class Posts_controller extends appcontroller{
                 
                 if($post->save()){
                     // TODO: Validate if every tag is saved
-                    $post->updateTags($post['idPost'], $this->data['tags']);
+                    $relTag = new RelTag();
+                    $relTag->updateRel($post['idPost'], $this->data['tags']);
                     
                     $this->messages->addMessage(Message::SUCCESS, "New posts saved.");
                     $this->redirect("posts/");
@@ -148,12 +145,13 @@ class Posts_controller extends appcontroller{
 			}
 			
 			// update tags registry and relations
- 			$P->updateTags($id,$this->data['tags']);
+			$relTag = new RelTag();
+ 			$relTag->updateRel($id,$this->data['tags']);
 			
 			$P->prepareFromArray($this->data);
 			
 			if($P->save()){
-				$this->messages->addMessage('Information saved successfully.');
+				$this->session->flash('Información guardada correctamente.');
 				$this->redirect("posts/view/{$P['urlfriendly']}");
 			} else {
 				
@@ -166,7 +164,10 @@ class Posts_controller extends appcontroller{
 		$post = $P->find($id);
 		$post['title'] = utils::convert2HTML($P['title']);
 		$post['content'] = utils::convert2HTML($P['content']);
-		$post['tags'] = $P->getTags($id,'string');
+
+		$tag = new Tag();
+		$tags = $tag->getByPost($id);
+		$post['tags'] = Tag::toString($tags);
 		
 		$this->title_for_layout($this->l10n->__("Update entry - Codice CMS"));
 		
@@ -197,3 +198,5 @@ class Posts_controller extends appcontroller{
 	}
 	
 }
+
+

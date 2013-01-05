@@ -1,4 +1,8 @@
 <?php
+/**
+ * Configuration model
+ *
+ */
 class configuration extends models{
 	
 	public function findLast(){

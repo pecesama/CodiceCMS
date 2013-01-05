@@ -76,12 +76,13 @@ class tag_controller extends appcontroller {
 		$this->view->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
 		
 
-		$posts = $post->getPostsByTag($tag,$limitQuery);
+		$posts = $post->getByTag($tag,$limitQuery);
 
 		foreach($posts as $k=>$p){
 			$posts[$k]['title'] = htmlspecialchars($p['title']);
-			$posts[$k]['tags'] = $post->getTags($p['idPost']);
-			$posts[$k]['comments_count'] = $comment->countCommentsByPost($posts[$k]['idPost']);
+			$tagObject = new Tag();
+			$posts[$k]['tags'] = $tagObject->getByPost($p['idPost']);
+			$posts[$k]['comments_count'] = $comment->countByPost($posts[$k]['idPost']);
 
 			$user = new user();
 			if($posts[$k]['idUser']<2){

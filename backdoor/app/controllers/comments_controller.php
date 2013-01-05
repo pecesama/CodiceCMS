@@ -3,10 +3,6 @@
 class comments_controller extends appcontroller{
 	public function __construct(){
 		parent::__construct();
-
-		if($this->User->isLogged() === FALSE){
-			$this->redirect("login");
-		}
 	}
 	
 	public function beforeRender(){
@@ -18,7 +14,7 @@ class comments_controller extends appcontroller{
 		$this->title_for_layout($this->l10n->__("Comentarios - Codice CMS"));
 
 		$comment = new comment();
-		$total_rows = $comment->countCommentsByPost();
+		$total_rows = $comment->countByPost();
 		$page = $id;
 		$page = (is_null($page)) ? 1 : $page ;
 		$limit = $this->config['postsPerPageAdmin'];
@@ -75,7 +71,7 @@ class comments_controller extends appcontroller{
 			$Comment->prepareFromArray($this->data);
 
 			if($Comment->save()){
-				$this->messages->addMessage("Comment updated.");
+				$this->session->flash("Comment updated.");
 				$this->redirect("comments/");
 			} else {
 				$comment = $this->data;
@@ -160,3 +156,5 @@ class comments_controller extends appcontroller{
         $this->render();
     }
 }
+
+
