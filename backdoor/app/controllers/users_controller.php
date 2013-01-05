@@ -1,6 +1,6 @@
 <?php
 
-class Users_Controller extends appcontroller{
+class Users_controller extends appcontroller{
 
 	public function __construct(){
 		parent::__construct();
@@ -18,7 +18,7 @@ class Users_Controller extends appcontroller{
 
 		$total_rows = $U->countUsers();
 		$page = (is_null($page)) ? 1 : $page ;
-		$limit = $this->config["user"]['posts_per_page'];
+		$limit = 15;
 		$offset = (($page-1) * $limit);
 		$limitQuery = $offset.",".$limit;
 		$targetpage = $this->path.'users/';
