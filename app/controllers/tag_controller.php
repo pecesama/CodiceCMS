@@ -1,14 +1,13 @@
 <?php
 
 class tag_controller extends appcontroller {
-	
+
 	public function __construct() {
 		parent::__construct();
-		
+
 		$this->plugin->call('codice_init');
 	}
-	
-	
+
 	public function __call($method, $args){
 		$page = (int) (isset($args[0])?$args[0]:1);
 		if($page)
@@ -16,23 +15,20 @@ class tag_controller extends appcontroller {
 		else
 			$this->redirect('');
 	}
-	
+
 	public function beforeRender(){
-		
-		$link = new link();
+		$link = new Link();
 		$this->view->links = $link->findAllBy("type","external");//links para el sidebar
 	}
-	
-	
+
 	public function index($tag=NULL, $page=1){
 		if(is_null($tag)/* or !preg_match("/^[a-z\-\_]]$/i",$tag) */){
 			die('redirect');
 			$this->redirect('');
 		}
-		
-		$post = new post();
-		$link = new link();
-		$comment = new comment();
+		$post = new Post();
+		$link = new Link();
+		$comment = new Comment();
 
 //		$this->html->useTheme($this->config["blog"]['blog_current_theme']);
 
@@ -62,7 +58,6 @@ class tag_controller extends appcontroller {
 			$strIncludes .= $include;
 		}
 		$this->view->includes = $strIncludes;
-		
 //		$this->themes->links = $link->findAll();
 //		$this->themes->single = false;
 		$total_rows = $post->countPosts(array('status'=>'Publish','tag'=>$tag));
@@ -74,7 +69,6 @@ class tag_controller extends appcontroller {
 		$targetpage = $this->path."tag/$tag/";
 
 		$this->view->pagination = $this->pagination->init($total_rows, $page, $limit, $targetpage);
-		
 
 		$posts = $post->getByTag($tag,$limitQuery);
 
@@ -84,11 +78,11 @@ class tag_controller extends appcontroller {
 			$posts[$k]['tags'] = $tagObject->getByPost($p['idPost']);
 			$posts[$k]['comments_count'] = $comment->countByPost($posts[$k]['idPost']);
 
-			$user = new user();
+			$user = new User();
 			if($posts[$k]['idUser']<2){
-				$posts[$k]['autor'] = $user->find(1);
+				$posts[$k]['author'] = $user->find(1);
 			}else{
-				$posts[$k]['autor'] = $user->find($posts[$k]['id_user']);
+				$posts[$k]['author'] = $user->find($posts[$k]['id_user']);
 			}
 		}
 
@@ -98,7 +92,7 @@ class tag_controller extends appcontroller {
 //		$this->themes->posts = $this->registry->posts;
 
 		$this->title_for_layout("{$this->config['blogName']} - $tag");
-	
+
 		$this->view->setLayout("codice");
 		$this->render('index');
 	}

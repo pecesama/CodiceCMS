@@ -3,7 +3,7 @@
  * Comment model
  *
  */
-class Comment extends models {
+class Comment extends Models {
 
 	private $spam;
 	private $security;

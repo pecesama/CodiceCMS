@@ -2,7 +2,7 @@
 /**
 * Pluging model
 */
-class Pluging extends models {
+class Plugin extends Models {
 	
 }
 ?>

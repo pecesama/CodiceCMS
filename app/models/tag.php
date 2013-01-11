@@ -2,7 +2,7 @@
 /**
 * Tag model
 */
-class Tag extends models {
+class Tag extends Models {
 	
 	public function getByPost($idPost){
 		$sql = "SELECT * FROM rel_tags

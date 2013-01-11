@@ -2,7 +2,7 @@
 /**
 * RelTag model
 */
-class RelTag extends models {
+class RelTag extends Models {
 
 	public function updateRel($idPost, $rawTags){
 		if(get_magic_quotes_gpc())

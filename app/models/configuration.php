@@ -3,7 +3,7 @@
  * Configuration model
  *
  */
-class configuration extends models{
+class Configuration extends Models{
 	
 	public function findLast(){
 		return $this->findBySql("SELECT * FROM configurations ORDER BY idConfiguration DESC LIMIT 1");

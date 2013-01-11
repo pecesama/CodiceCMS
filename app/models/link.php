@@ -1,5 +1,5 @@
 <?php
 
-class link extends models {
+class Link extends Models {
 	
 }
