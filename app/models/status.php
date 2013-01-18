@@ -4,7 +4,7 @@
  *
  * @author aaronmunguia
  */
-class status extends models{
+class Status extends Models{
     
 }
 

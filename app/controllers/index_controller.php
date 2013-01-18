@@ -16,7 +16,7 @@ class index_controller extends appcontroller {
 
 		switch($element){
 			case 'index_sidebars':
-				$L = new link();
+				$L = new Link();
 
 				$this->view->links = $L->findAllBy("type","external");
 				$this->view->element = $element;
@@ -39,8 +39,8 @@ class index_controller extends appcontroller {
 		
 		$page = (int) (is_null($page)) ? 1 : $page ;
 
-		$P = new post();
-		$L = new link();
+		$P = new Post();
+		$L = new Link();
 		
 		$urlfriendly = rawurlencode($P->sql_escape($urlfriendly));//Sanitize
 		
@@ -143,7 +143,7 @@ class index_controller extends appcontroller {
 			}
 			
 			// find the post
-			$P = new post();
+			$P = new Post();
 			$post = $P->findBy('urlfriendly',$urlfriendly);
 			
 			// if post don't found
@@ -182,7 +182,7 @@ class index_controller extends appcontroller {
 			$this->cookie->url = $this->data['url'];
 			
 			// Set values at comment and save
-			$C = new comment();
+			$C = new Comment();
 			$C->prepareFromArray($this->data);
 			$valid = $C->save();
 

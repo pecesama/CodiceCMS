@@ -1,6 +1,6 @@
 <?php
 
-class post extends models{
+class Post extends Models{
 
 	/***
 	 *  FIXME
@@ -85,10 +85,12 @@ class post extends models{
 		$C = new comment();
 		foreach($posts as $k => $post){
 			$posts[$k]['title'] = htmlspecialchars($post['title']);
-			$posts[$k]['tags'] = $this->getTags($post['idPost']);
+
+			$tag = new Tag();
+			$posts[$k]['tags'] = $tag->getByPost($post['idPost']);
 			
 			//TODO: if it's admin logged, include too comments with "Waiting" status (waiting to be approved).
-			$posts[$k]['comments_count'] = $C->countCommentsByPost($post['idPost'],"Publish");
+			$posts[$k]['comments_count'] = $C->countByPost($post['idPost'],"Publish");
 			
 			// Get autor
 			$user = new user();
@@ -136,10 +138,11 @@ class post extends models{
 				$post['title'] = "Untitled";
 			}
 			
-			$post['tags'] = $this->getTags($post['idPost']);
+			$tag = new Tag();
+			$post['tags'] = $tag->getByPost($post['idPost']);
 			
 			$C = new comment();
-			$post["comments_count"] = $C->countCommentsByPost($post['idPost'], 'Publish');
+			$post["comments_count"] = $C->countByPost($post['idPost'], 'Publish');
 			$post["comments"] = $C->getAll($post['idPost'], $status['idStatus']);
 
 			// Get autor
@@ -163,44 +166,38 @@ class post extends models{
 	 * Use bajo su propio riesgo.
 	 */
 	function buildUrl($name,$id=null,$validateExists=true){
-		$name = str_replace('-',' ',$name);
-		$a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ ¡?_.';
-		$b = 'AAAAAAACEEEEIIIIDNOOOOOOUUUUYbsaaaaaaaceeeeiiiidnoooooouuuyybyRr     ';
-		$name = strtr(utf8_decode($name), utf8_decode($a), $b);
-		$name = trim($name); //sin espacios a los extremos.
-		$values = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-							'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-							'1','2','3','4','5','6','7','8','9','0',
-							' ','-');
-		$out = '';
-		$len = strlen($name);
-		for($chr=0;$chr<=$len-1;$chr++){
-				if(in_array($name[$chr],$values,true))
-				$out.= $name[$chr];
-			}
-
-		$out = preg_replace('/ +/','-',$out); //reduce todos espacios repetidos a uno solo.
+		
+		$urlFriendly = Url::build($name);
 
 		$c=0;
 		if($validateExists){
 			#Check if this urlFriendly exists on table posts
 			do{ 
-				++$c;
+				
+				// Generate next urlFriendly
+				$out = $urlFriendly.($c>1?"_$c":'');
+
 				/*
 				 * id se utilizar para evitar compare con el mismo registro y agregue _2 al final.
 				 */
 				if($id)
-				$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out".($c>1?"_$c":'')."' and idPost<>$id");
-					else
-				$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out".($c>1?"_$c":'')."'");
+					$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out' and idPost<>$id");
+				else
+					$this->db->query("SELECT urlFriendly FROM posts WHERE urlFriendly='$out'");
+
+				++$c;
+
 			}while($this->db->fetchRow());
+
+			$urlFriendly = $out;
 		}
 		
-		$urlFriendly = $out.($c>1?"_$c":'');
+		// $urlFriendly = $out.($c>1?"_$c":'');
 		
 		return $urlFriendly;
 	}
 	
+	/*
 	public function getTags($post_id,$type=null){
 		$post_id = (int) $post_id;
 
@@ -226,14 +223,15 @@ class post extends models{
 		
 		return $tags;
 	}
+	*/
 	
+	/*
 	public function updateTags($post_id,$tags_raw=''){
 		if(get_magic_quotes_gpc())
 			$tags_raw = stripslashes($tags_raw);
 
-		/* 
-		 * Extrayendo Etiquetas que estan entre "tag" o 'tag'.
-		 */
+		
+		// Extrayendo Etiquetas que estan entre "tag" o 'tag'.
 		$tags_raw = preg_replace('/\s+?/',' ',$tags_raw);		
 		$tags_regexp = '/[\"\']((?:[^\S]|[\s\w])+?)[\"\']/';
 		preg_match_all($tags_regexp,$tags_raw,$tags);
@@ -241,16 +239,14 @@ class post extends models{
 		unset($tags[0]);
 		$tags = $tags[1];
 
-		/*
-		 * Extraemos el resto de tags separados por espacios.
-		 */		
+		
+		// Extraemos el resto de tags separados por espacios.
 		$tags = array_merge($tags,array_unique(explode(' ',$tags_raw)));
 		unset($tags_raw);
 
-		/*
-		 * Actualizamos tags para el $post_id pasado como parametro.
-		 * $tags contiene todos los tags que se relacionaran con la entrada actual.
-		 */
+		
+		// Actualizamos tags para el $post_id pasado como parametro.
+		// $tags contiene todos los tags que se relacionaran con la entrada actual.
 		foreach($tags as $tag){
 			if($tag != ''){
 				$tag = $this->sql_escape($tag);
@@ -269,7 +265,9 @@ class post extends models{
 			}
 		}
 	}
+	*/
 	
+	/*
 	public function tagExists($tag){
 		$tag = $this->sql_escape($tag);
 		$this->db->query("select * from tags as t where t.urlfriendly = '".$this->buildUrl($tag,null,false)."'"); 
@@ -277,14 +275,17 @@ class post extends models{
 			return $row['idTag'];
 		return false;
 	}
+	*/
 	
+	/*
 	public function addTag($tag){
 		$tag = $this->sql_escape($tag);
 		$this->db->query("insert into tags(tag,urlfriendly) values('".$tag."','".$this->buildUrl($tag,null,false)."')");
 		return $this->db->lastId();
 	}
+	*/
 	
-	public function getPostsByTag($tag,$limitQuery){
+	public function getByTag($tag,$limitQuery){
 		$tag = $this->sql_escape($tag);
 
 			$sql = "SELECT \n";

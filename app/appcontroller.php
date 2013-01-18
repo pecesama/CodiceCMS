@@ -1,6 +1,6 @@
 <?php
 
-abstract class appcontroller extends controller {
+abstract class AppController extends Controller {
 
 	protected $html;
 	protected $plugin;
@@ -13,14 +13,14 @@ abstract class appcontroller extends controller {
                 
                 $this->messages = Message::getInstance();
                 
-		$this->registry = registry::getInstance();
+		$this->registry = Registry::getInstance();
 		
-		$this->html = html::getInstance();
-		$this->plugin = plugin::getInstance();
+		$this->html = Html::getInstance();
+		$this->plugin = Plugin::getInstance();
 		$this->User = User_Lib::getInstance();
 
 		//loads configuration of the logged user and blog.
-		$C = new configuration();
+		$C = new Configuration();
 		$this->config = $C->findLast();
 
 		$this->view->config = $this->config;

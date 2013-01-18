@@ -14,13 +14,13 @@ class Login_controller extends appcontroller {
 
 		//FIXME: utilizar librería para mensajes.
 		if ($msg == "nosession") {
-			$this->session->flash("You need to authenticate to get in this place. Please use your credentiales in the form below.");
+			$this->messages->addMessage("You need to authenticate to get in this place. Please use your credentiales in the form below.");
 			$this->redirect("login");
 		} elseif ($msg == "fail") {
-			$this->session->flash("The username or password you entered is incorrect.");
+			$this->messages->addMessage("The username or password you entered is incorrect.");
 			$this->redirect("login");
 		} elseif ($msg == "logout") {
-			$this->session->flash("Your session has terminated.");
+			$this->messages->addMessage("Your session has terminated.");
 			$this->redirect("login");
 		}
 

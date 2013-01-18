@@ -1,15 +1,15 @@
 <?php
 
-class debug extends plugins {   
+class Debug extends Plugins {
 
 	function __construct(){
 		parent::__construct();
-		$this->registry = registry::getInstance();
-		
+		$this->registry = Registry::getInstance();
+
 		$this->addAction('index_init', 'init');
 		$this->addAction('index_load', 'addToolbar');
 	}
-	
+
 	public function init(){
 		$action = isset($_GET['action'])?$_GET['action']:'';
 		switch($action){
@@ -25,7 +25,7 @@ class debug extends plugins {
 			case 'delete_commentss': $this->delete_comments(); break;
 		}
 	}
-	
+
 	public function addToolbar(){
 	?>
 		<style>
@@ -58,11 +58,11 @@ class debug extends plugins {
 		</div>
 	<?php
 	}
-	
+
 	public function delete_tables(){
-		$M = mysqli_db::getInstance();
+		$M = Mysqli_db::getInstance();
 		$sqls = array();
-		
+
 		$sqls[] = "DROP TABLE IF EXISTS `comments`;";
 		$sqls[] = "DROP TABLE IF EXISTS `configurations`;";
 		$sqls[] = "DROP TABLE IF EXISTS `files`;";
@@ -71,19 +71,19 @@ class debug extends plugins {
 		$sqls[] = "DROP TABLE IF EXISTS `tags`;";
 		$sqls[] = "DROP TABLE IF EXISTS `tags_rel`;";
 		$sqls[] = "DROP TABLE IF EXISTS `users`;";
-		
+
 		foreach($sqls as $sql){
 			$M->query($sql);
 		}
 	}
-	
+
 	public function create_tables(){
 		$this->delete_tables();
-		
-		$M = mysqli_db::getInstance();
-		
+
+		$M = Mysqli_db::getInstance();
+
 		$sqls = array();
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `comments` (
   `suscribe` varchar(255) default NULL,
   `user_id` varchar(255) default NULL,
@@ -108,7 +108,7 @@ class debug extends plugins {
   `id` int(11) NOT NULL auto_increment,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `files` (
   `id_file` int(10) unsigned NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
@@ -122,7 +122,7 @@ class debug extends plugins {
   `type` varchar(255) NOT NULL,
   PRIMARY KEY  (`id_file`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `links` (
   `name` varchar(255) NOT NULL,
   `link` varchar(255) NOT NULL,
@@ -132,7 +132,7 @@ class debug extends plugins {
   `ID` int(10) unsigned NOT NULL auto_increment,
   PRIMARY KEY  (`ID`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `posts` (
   `urlfriendly` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
@@ -145,19 +145,19 @@ class debug extends plugins {
   PRIMARY KEY  (`ID`),
   FULLTEXT KEY `title` (`title`,`content`,`urlfriendly`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `tags` (
   `tag_id` int(11) NOT NULL auto_increment,
   `tag` varchar(255) NOT NULL,
   `urlfriendly` varchar(255) NOT NULL,
   PRIMARY KEY  (`tag_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `tags_rel` (
   `tag_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		
+
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `users` (
   `id_user` int(10) unsigned NOT NULL auto_increment,
   `name` varchar(100) default NULL,
@@ -170,16 +170,16 @@ class debug extends plugins {
   `modified` datetime default NULL,
   PRIMARY KEY  (`id_user`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;";
-		
+
 		foreach($sqls as $sql){
 			$M->query($sql);
 		}
 	}
-	
+
 	public function generate_configurations(){
 		$this->delete_configurations();
-		$M = mysqli_db::getInstance();
-		
+		$M = Mysqli_db::getInstance();
+
 		$sql = "INSERT INTO `configurations` (`name`, `value`, `id_user`, `id`) VALUES
 ('blog_name', 'Codice CMS', 1, 1),
 ('blog_description', 'Content management made easy', 1, 2),
@@ -189,15 +189,15 @@ class debug extends plugins {
 ('blog_upload_folder', 'uploads', 1, 8);";
 		$M->query($sql);
 	}
-	
+
 	public function delete_configurations(){
-		$M = mysqli_db::getInstance();
-		
+		$M = Mysqli_db::getInstance();
+
 		$sql = "TRUNCATE TABLE `configurations`";
-		
+
 		$M->query($sql);
 	}
-	
+
 	public function add_posts(){
 		$sql = "SU5TRVJUIElOVE8gYHBvc3RzYCAoYHVybGZyaWVuZGx5YCwgYHRpdGxlYCwgYGNvbnRlbnRgLCBg
 c3RhdHVzYCwgYElEYCwgYGlkX3VzZXJgLCBgY3JlYXRlZGAsIGBtb2RpZmllZGApIFZBTFVFUw0K
@@ -251,32 +251,32 @@ Y29kZT5cclxuXHJcbjxzY3JpcHQ+XHJcbiQoZG9jdW1lbnQpLnJlYWR5KGZ1bmN0aW9uKCl7XHJc
 bgkkKCJsaSNib3Rvbi1jaW5jbyIpLmNzcygiYmFja2dyb3VuZC1jb2xvciIsInllbGxvdyIpO1xy
 XG59KTtcclxuPC9zY3JpcHQ+JywgJ3B1Ymxpc2gnLCAxLCAwLCAnMjAxMC0wOC0yMyAyMTowNjow
 NicsICcyMDEwLTA4LTIzIDIxOjEwOjUwJyk7DQo=";
-		
-		$M = mysqli_db::getInstance();
+
+		$M = Mysqli_db::getInstance();
 		$M->query(base64_decode($sql));
 	}
-	
+
 	public function delete_posts(){
-		$M = mysqli_db::getInstance();
+		$M = Mysqli_db::getInstance();
 
 		$sql = "DELETE FROM posts";
-		
+
 		$M->query($sql);
 	}
-	
+
 	public function add_tags(){
-	
+
 	}
-	
+
 	public function delete_tags(){
-	
+
 	}
-	
+
 	public function add_comments(){
-	
+
 	}
-	
+
 	public function delete_comments(){
-	
+
 	}
 }

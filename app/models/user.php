@@ -1,6 +1,6 @@
 <?php
 
-class user extends models{
+class User extends Models{
 
 	protected $validate;
 

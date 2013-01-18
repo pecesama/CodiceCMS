@@ -1,5 +1,9 @@
 <?php
-class configuration extends models{
+/**
+ * Configuration model
+ *
+ */
+class Configuration extends Models{
 	
 	public function findLast(){
 		return $this->findBySql("SELECT * FROM configurations ORDER BY idConfiguration DESC LIMIT 1");

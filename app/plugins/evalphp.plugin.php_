@@ -1,12 +1,12 @@
 <?php
-class evalphp extends plugins{
+class Evalphp extends Plugins{
 
 	public function __construct(){
 		parent::__construct();
-		
+
 		$this->addAction('index_post_content', 'findPHPcode');
 	}
-	
+
 	public function findPHPcode(){
 		if(is_null($this->registry->post) === false){
 			$row = $this->registry->post;
@@ -44,11 +44,11 @@ class evalphp extends plugins{
 			$this->registry->modify('posts',$rows);
 		}
 	}
-	
+
 	private function interpret($code){
 		$code[1] = str_replace('\$','$',$code[1]);
 
 		return "\";\n\n".stripslashes($code[1])."\n\necho \"";
 	}
-	
+
 }

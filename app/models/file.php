@@ -3,7 +3,7 @@
 *  file
 */
 
-class file extends models {
+class File extends Models {
 	
 	private $config;
 	

@@ -1,15 +1,15 @@
 <?php
 
-class kodrs extends plugins {   
+class kodrs extends plugins {
 
 	function __construct(){
 		parent::__construct();
-		$this->registry = registry::getInstance();
-		
+		$this->registry = Registry::getInstance();
+
 		if (!defined('GESHI_VERSION')) {
 			require_once(Absolute_Path."app/plugins/geshi/GeSHi.php");
 		}
-		
+
 		$this->addAction('index_post_content', 'source_code_beautifier');
 		$this->addAction('admin_comments_content', 'comment_source_code_beautifier');
 		$this->addAction('index_comment_content', 'comment_source_code_beautifier');
@@ -19,19 +19,19 @@ class kodrs extends plugins {
 		if(is_null($this->registry->post) === false){
 			$row = $this->registry->post;
 			$text = $row['content'];
-			
+
 			#$regexp = "/<code\s+.*lang\s*=\"(.*)\">(.*)<\/code>/siU";
 			$regexp = "/<code(.*)>(.*)<\/code>/siU";
-			
+
 			$result = preg_replace_callback($regexp, array('kodrs', 'replace_with_geshi'), $text);
 			$row['content'] = $result;
-			
+
 			$this->registry->modify('post',$row);
 		}else if(is_null($this->registry->posts) === false){
 			$rows = $this->registry->posts;
 			if(count($rows)>0){
 				foreach($rows as $key=>$post){
-					$text = $rows[$key]['content'];            
+					$text = $rows[$key]['content'];
 
 					#$regexp = "/<code\s+.*lang\s*=\"(.*)\">(.*)<\/code>/siU";
 					$regexp = "/<code(.*)>(.*)<\/code>/siU";
@@ -40,7 +40,7 @@ class kodrs extends plugins {
 					$rows[$key]['content'] = $result;
 				}
 			}
-			
+
 			$this->registry->modify('posts',$rows);
 		}
 	}
@@ -50,13 +50,13 @@ class kodrs extends plugins {
 
 		if(count($rows)>0){
 			foreach($rows as $key=>$post){
-				$text = $rows[$key]['content'];            
+				$text = $rows[$key]['content'];
 
 				$result = preg_replace_callback("/<code\s+(.*)>(.*)<\/code>/siU", array('kodrs', 'replace_with_geshi'), $text);
 				$rows[$key]['content'] = $result;
 			}
 		}
-		
+
 		$this->registry->modify('comments',$rows);
 	}
 
@@ -64,7 +64,7 @@ class kodrs extends plugins {
 		$params = $this->getParams(strtolower($matches[1]));
 		$code = trim($matches[2]);
 		$lang = $params['lang'];
-		$geshi = new geshi($code, (isset($lang)) ? $lang : "");    
+		$geshi = new geshi($code, (isset($lang)) ? $lang : "");
 		$geshi->enable_classes(false);
 		$geshi->set_overall_id('geshi_code');
 
@@ -84,10 +84,10 @@ class kodrs extends plugins {
 
 	private function getParams($data){
 		// utils::pre($data,false);
-		
+
 		preg_match_all("/(\w+?)\s*=\s*\"(.+?)\"/",$data,$out);
 		unset($out[0]);
-		
+
 		foreach($out[2] as $k => $v){
 			$resultado[$out[1][$k]] = trim($v);
 		}
@@ -101,7 +101,7 @@ class kodrs extends plugins {
 				if(strpos($v,"-")){
 					unset($lines[$k]);
 					$values = explode("-",$v);
-				
+
 					$c = $values[0];
 					$lines[] = $c;
 					do{
@@ -117,11 +117,11 @@ class kodrs extends plugins {
 			parametro estandar de la etiqueta <code>, de lo contrario si el plugin no 
 			estuviera activado habria un error en el codigo HTML.
 		*/
-		
+
 		//utils::pre($lines);
-		
+
 		//utils::pre($out,false);
-		
+
 		//utils::pre($resultado);
 		if(isset($resultado))
 			return $resultado;
