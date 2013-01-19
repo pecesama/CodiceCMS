@@ -11,7 +11,7 @@ class Users_controller extends appcontroller{
 	}
 
 	/*
-	 * This action shows the complete list of users. 
+	 * This action shows the complete list of users.
 	 */
 	public function index($page = 1){
 		$U = new user();
@@ -74,9 +74,9 @@ class Users_controller extends appcontroller{
 			$user = $U->find($idUser);
 
 			$user = array_map("htmlentities", $user);
-		}		
-		
-		$this->view->user = $user;	
+		}
+
+		$this->view->user = $user;
 
 		$this->title_for_layout("User " . htmlentities($user['user']));
 		$this->render("add");
@@ -87,7 +87,7 @@ class Users_controller extends appcontroller{
 		if($this->data){
 			$user = $this->data['user'];
 			$user['password'] = md5($user['password']);
-			
+
 			$U = new user();
 			$U->prepareFromArray($user);
 			$action = $U->save();
@@ -111,7 +111,7 @@ class Users_controller extends appcontroller{
 		$this->view->user = $user;
 
 		$this->title_for_layout("New user");
-		$this->render();		
+		$this->render();
 	}
 
 	public function remove($idUser = null){

@@ -1,4 +1,4 @@
-<div id="sidebar">
+<div id="navigation">
 	<div class="navigation">
 		<h4>Navigation</h4>
 		<?php foreach($links as $link){ ?>

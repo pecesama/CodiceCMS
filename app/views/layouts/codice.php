@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<?php echo $this->html->charsetTag("UTF-8"); ?>
-		<?php echo $this->html->includeCss('codice'); ?>
-		<?php echo $this->html->includeCss('pagination'); ?>
 		<?php echo $this->html->includeCss('bootstrap.min'); ?>
+		<?php echo $this->html->includeCss('pagination'); ?>
+		<?php echo $this->html->includeCss('codice'); ?>
 		<?php //echo $this->html->includeCss('bootstrap-responsive.min'); ?>
 		<?php echo $includes; ?>
 		<meta name="generator" content="Codice CMS" />
@@ -38,10 +38,10 @@
 			</div>
 		</div>
 
-		<?php echo $this->html->includeJs("jquery"); ?>
-		<?php echo $this->html->includeJs("bootstrap"); ?>
-		<?php echo $this->html->includeJs("bootstrap/dropdown"); ?>
-		<?php echo $this->html->includeJs("bootstrap/twipsy"); ?>
-		<?php echo $this->html->includeJs("bootstrap/popover"); ?>
+		<?php echo $this->html->includeJs('jquery/jquery-1.9.0.min'); ?>
+		<?php echo $this->html->includeJs('jquery/jquery.masonry.min'); ?>
+		<?php echo $this->html->includeJs('bootstrap/bootstrap.min'); ?>
+		<?php echo $this->html->includeJs('bootstrap/dropdown'); ?>
+		<?php echo $this->html->includeJs('codice');?>
 	</body>
 </html>

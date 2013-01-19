@@ -1,67 +1,71 @@
+body {
+	background-color: #ddd;
+	font-family: "helvetica neue",​arial,​sans-serif;
+}
+
 /*header*/
-div#codice div#header {
+div#codice div#header > .header {
 	padding:10px;
 	margin:10px;
 }
-div#codice div#header > .header {
 
-}
-/*body*/
 /*messages*/
 div#codice div#messages > .messages {
-	float:left;
 	border:1px solid red;
 	padding:10px;
 	margin:10px;
-display:none;
 }
 /*content*/
 div#codice div#content > .content {
-	float:left;
 	background-color:black;
 }
 /*entries*/
-div#codice div#content > .content div#entries {
-	float:left;
-	border:10px solid blue;
+div#codice div#content div#entries {
+
 }
 /*entry*/
-div#codice div#content > .content div#entries > .entry {
-	float:left;
+div#codice div#content div#entries > .entry {
 	background-color:white;
-	border:2px dashed red;
 	border-radius:10px;
-	margin:20px;
+	border:1px solid #bbb;
 	padding:10px;
-}
-div#codice div#content > .content div#entries > .metadata {
-	display: none;
-}
-div#codice div#content > .content div#entries > .comunity {
-	display: none;
-}
-/*navigation*/
-div#codice div#content div#navigation {
+	margin:5px;
+	font-size:0.9em;
 	float:left;
+}
+div#codice div#content div#entries > .entry h3 {
+	font-size:0.9em;
+	font-weight: 400;
+	text-transform: lowercase;
+	padding:0px 0 0 5px;
+}
+div#codice div#content div#entries > .entry h3:first-letter {
+	text-transform: capitalize;
+}
+div#codice div#content div#entries > .entry h3 a {
+	color:black;
+}
+div#codice div#content div#entries > .entry .comments .comments-list {
+
+}
+div#codice div#content div#entries > .entry .comments .comments-list .comment {
+	border-top: 1px solid #ddd;
+	background-color: #dedede;
+}
+
+/*navigation*/
+div#codice div#content div#navigation > .navigation {
 	border:1px solid #f0f;
 	padding:10px;
 	margin:10px;
-display:none;
 }
 
 /*footer*/
-div#codice div#footer {
-	float:left;
+div#codice div#footer > .footer {
 	border:1px solid purple;
 	padding:10px;
 	margin:10px;
-display: none;
 }
-div#codice div#footer > .footer {
-
-}
-
-
 
 .debug {
 	padding:0px;
