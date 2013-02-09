@@ -66,15 +66,15 @@ class ActiveRecord implements ArrayAccess {
 	}	
 	
 	public function prepareFromArray($array){
-		// foreach ($array as $key => $var) {
-		// 	$this->record[$key] = $var;
-		// }
-		
-		if(array_key_exists($key,$this->record)){
-			$this->record[$key]=$value;
-		}else{
-			$this->auxRecord[$key] = $value;
+		foreach ($array as $key => $value) {
+			// $this->record[$key] = $var;
+			if(array_key_exists($key,$this->record)){
+				$this->record[$key]=$value;
+			}else{
+				$this->auxRecord[$key] = $value;
+			}
 		}
+		
 	}
 	
 	public function prepareFromJSON($jsonData){
