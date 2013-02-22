@@ -1,1 +1,7 @@
-Codice CMS
+CodiceCMS is a PHP 5 CMS created to demostrate how is that FlavorPHP works.
+
+FlavorPHP is a PHP 5 framework based on the MVC architectural pattern, constructed with the help of several patterns http://flavorphp.com/
+
+@author Victor de la Rocha <vyk2rr_at_gmail_dot_com>
+@author Pedro Santana <pecesama_at_gmail_dot_com>
+@author Aaron Munguia <aamm89_at_gmail_dot_com>
