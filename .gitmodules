@@ -1,0 +1,3 @@
+[submodule "flavor"]
+	path = flavor
+	url = https://github.com/vyk2rr/flavor.git
